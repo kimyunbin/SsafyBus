@@ -43,7 +43,7 @@ public class AuthController {
 
         Optional<User> user = userService.getUserByUserId(id);
         if (user.isEmpty()) {
-            ResponseEntity.status(401).body(UserLoginPostRes.of(401, "invalid Id", null));
+            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "invalid Id", null));
         }
 //        try{
 //            User user = userService.getUserByUserId(id);
