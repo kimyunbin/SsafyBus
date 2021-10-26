@@ -16,7 +16,6 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
-
     private String userId;
 
     @JsonIgnore
