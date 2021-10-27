@@ -17,7 +17,7 @@ public class BaseEntity {
     Long id ;
 
     @CreatedDate
-    LocalDateTime created_at;
+    LocalDateTime createdAt;
 
 
 
