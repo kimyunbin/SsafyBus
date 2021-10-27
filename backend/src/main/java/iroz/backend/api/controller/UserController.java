@@ -3,14 +3,15 @@ package iroz.backend.api.controller;
 import iroz.backend.api.request.UserRegisterPostReq;
 import iroz.backend.api.service.UserService;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.db.Mapping.UserMapping;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -54,6 +55,19 @@ public class UserController {
             return ResponseEntity.status(403).body(BaseResponseBody.of(403, "already exist"));
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
+    @GetMapping()
+    public ResponseEntity getUserByNickname(@RequestParam String nickname) {
+        if (nickname.equals("")) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "invalidate data"));
+        }
+        List<UserMapping> result = userService.getUserByNickname(nickname);
+
+        HashMap map = new HashMap();
+        map.put("users",result);
+        return ResponseEntity.ok().body(map);
+
     }
 
 }
