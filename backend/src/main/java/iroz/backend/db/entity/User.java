@@ -16,12 +16,11 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
-
     private String userId;
 
+    private String nickname;
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String nickname;
     private String password;
 
     private int generation;

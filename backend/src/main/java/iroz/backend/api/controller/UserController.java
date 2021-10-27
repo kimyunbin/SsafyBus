@@ -43,6 +43,17 @@ public class UserController {
         //임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
         User user = userService.createUser(registerInfo);
 
-        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "true"));
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "success"));
     }
+
+    @PostMapping("/check")
+    public ResponseEntity<? extends BaseResponseBody> idCheck(
+            @RequestBody UserRegisterPostReq registerInfo) {
+
+        if(userRepository.findByUserId(registerInfo.getUserId()).isPresent())  // 같은 id의 회원이 이미 존재하는 경우
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "already exist"));
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+    }
+
 }
