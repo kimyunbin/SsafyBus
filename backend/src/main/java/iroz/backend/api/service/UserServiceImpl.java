@@ -4,7 +4,6 @@ import iroz.backend.api.request.UserRegisterPostReq;
 import iroz.backend.db.Mapping.UserMapping;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
-import iroz.backend.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserRepositorySupport userRepositorySupport;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Override
     public User createUser(UserRegisterPostReq userRegisterInfo) {
@@ -42,7 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
     public List<UserMapping> getUserByNickname(String nickname) {
         return userRepository.findAllByNickname(nickname);
+    }
+    public List<UserMapping> findAll(){
+        return userRepository.findAllBy();
     }
 }

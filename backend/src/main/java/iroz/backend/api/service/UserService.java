@@ -15,4 +15,5 @@ public interface UserService {
     User createUser(UserRegisterPostReq userRegisterInfo);
     Optional<User> getUserByUserId(String userId);
     List<UserMapping> getUserByNickname(String nickname);
+    List<UserMapping> findAll();
 }
