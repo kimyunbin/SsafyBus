@@ -3,12 +3,14 @@ package iroz.backend.api.controller;
 import iroz.backend.api.request.UserRegisterPostReq;
 import iroz.backend.api.service.UserService;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.db.Mapping.UserMapping;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,8 +58,11 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public List<User> all(){
-        return userService.getAll();
+    public ResponseEntity all(){
+        List<UserMapping> result = userService.findAll();
+        HashMap map = new HashMap();
+        map.put("user",result);
+        return ResponseEntity.ok().body(map);
     }
 
 }
