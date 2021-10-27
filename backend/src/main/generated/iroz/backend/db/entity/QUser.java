@@ -23,6 +23,9 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> classNum = createNumber("classNum", Integer.class);
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final NumberPath<Integer> generation = createNumber("generation", Integer.class);
 
     //inherited
