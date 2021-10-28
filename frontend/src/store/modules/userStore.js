@@ -50,16 +50,23 @@ const userStore = {
       const response = await instance.post("/users/login", login_info)
       console.log(response.data)
 
-      const token = response.data.accessToken
+      const token = response.data.token
       localStorage.setItem('token', token)
 
-      const user = response.data.user
-      const data = JSON.stringify(user) 
-      localStorage.setItem('userInfo', data)
+      const users = response.data.users
+      // const data = JSON.stringify(users) 
+      localStorage.setItem('userInfo', users)
 
       context.commit("TOKEN", token)
-      context.commit("USER_INFO", data)
-    }
+      context.commit("USER_INFO", users)
+    },
+    async idCheck(context, id) {
+      console.log('중복체크 들어옴?')
+      const instance = createInstance()
+      const response = await instance.post("/users/check", id)
+      console.log(response)
+      // context.commit("SIGNUP",response.data.status)
+    },
   }
 }
 

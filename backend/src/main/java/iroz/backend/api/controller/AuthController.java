@@ -2,7 +2,6 @@ package iroz.backend.api.controller;
 
 import iroz.backend.api.response.UserRes;
 import iroz.backend.api.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,15 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import iroz.backend.api.request.UserLoginPostReq;
-import iroz.backend.api.response.UserLoginPostRes;
-import iroz.backend.common.model.response.BaseResponseBody;
 import iroz.backend.common.util.JwtTokenUtil;
 import iroz.backend.db.entity.User;
-import iroz.backend.db.repository.UserRepositorySupport;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
