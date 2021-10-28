@@ -1,6 +1,7 @@
 package iroz.backend.api.service;
 
 import iroz.backend.api.request.StudyRoomRegisterPostReq;
+import iroz.backend.db.Mapping.StudyRoomRegiMapping;
 import iroz.backend.db.entity.StudyRoom;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.entity.UserStudyRoom;
@@ -47,5 +48,10 @@ public class StudyRoomServiceImpl implements StudyRoomService {
     @Override
     public List<StudyRoom> getListGroupBy(int year, int month, int day, int hour, int room) {
         return studyRoomRepository.getListGroupBy(year,month,day,hour,room);
+    }
+
+    @Override
+    public List<Object[]> getListGroupByDay(int year, int month, int day, int room) {
+        return studyRoomRepository.getListGroupByDay(year,month,day,room);
     }
 }

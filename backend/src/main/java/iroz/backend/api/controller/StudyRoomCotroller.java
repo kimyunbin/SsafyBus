@@ -1,11 +1,14 @@
 package iroz.backend.api.controller;
 
 import iroz.backend.api.request.StudyRoomRegisterPostReq;
+import iroz.backend.api.request.StudyRoomfindGetReq;
 import iroz.backend.api.service.StudyRoomService;
 import iroz.backend.api.service.UserService;
 import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.db.Mapping.StudyRoomRegiMapping;
 import iroz.backend.db.entity.StudyRoom;
+import org.hibernate.type.TrueFalseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +16,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Type;
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -36,8 +46,8 @@ public class StudyRoomCotroller {
         int dayOfMonth = studyRoomRegisterPostReq.getDate().getDayOfMonth();
         int hour = studyRoomRegisterPostReq.getDate().getHour();
         int room = studyRoomRegisterPostReq.getRoom();
-        List<StudyRoom> listGroupBy = studyRoomService.getListGroupBy(year, month, dayOfMonth, hour,room);
-        if (listGroupBy.size()>0) {
+        List<StudyRoom> listGroupBy = studyRoomService.getListGroupBy(year, month, dayOfMonth, hour, room);
+        if (listGroupBy.size() > 0) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(403, "already exist"));
         }
 
@@ -51,8 +61,30 @@ public class StudyRoomCotroller {
             }
         }
 
-        studyRoomService.register(userDetails.getUser(),studyRoomRegisterPostReq);
+        studyRoomService.register(userDetails.getUser(), studyRoomRegisterPostReq);
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, "success"));
     }
+
+    @GetMapping("/check")
+    public ResponseEntity findOpenRoom(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date, @RequestParam int room) {
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        int dayOfMonth = date.getDayOfMonth();
+        List<Object[]> result = studyRoomService.getListGroupByDay(year, month, dayOfMonth, room);
+        HashMap map = new HashMap();
+        for (int i = 0; i < 24; i++) {
+            map.put(i, true);
+        }
+        for (Object[] obj : result) {
+            String s = obj[3].toString();
+            int substring = Integer.parseInt(s.substring(11, 13));
+            map.replace(substring,false);
+        }
+        HashMap r = new HashMap();
+        r.put("time",map);
+        return ResponseEntity.ok().body(r);
+
+    }
+
 
 }
