@@ -14,5 +14,5 @@ public interface StudyRoomService {
     StudyRoom register(User user,StudyRoomRegisterPostReq studyRoomRegisterPostReq);
     List<StudyRoom> getListGroupBy(int year, int month, int day, int hour, int room);
     List<Object[]> getListGroupByDay(int year, int month, int day, int room);
-    List<StudyRoomRegiMapping> findByRoomAndReservationBetweenOrderBOrderByReservation(int room, LocalDateTime start, LocalDateTime end);
+    List<StudyRoomRegiMapping> findByRoomAndReservationBetween(int room, LocalDateTime start, LocalDateTime end);
 }

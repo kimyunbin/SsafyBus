@@ -68,6 +68,9 @@ public class StudyRoomCotroller {
 
     @GetMapping("/check")
     public ResponseEntity findOpenRoom(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date, @RequestParam int room) {
+        if (room >= 4 || room <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
         int year = date.getYear();
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
@@ -91,13 +94,28 @@ public class StudyRoomCotroller {
     public ResponseEntity getkiosk(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date) {
         HashMap map = new HashMap();
         LocalDateParser localDateParser = new LocalDateParser(date);
-        map.put(1,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(1,localDateParser.startDate(), localDateParser.endDate()));
-        map.put(2,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(2,localDateParser.startDate(), localDateParser.endDate()));
-        map.put(3,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(3,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(1,studyRoomService.findByRoomAndReservationBetween(1,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(2,studyRoomService.findByRoomAndReservationBetween(2,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(3,studyRoomService.findByRoomAndReservationBetween(3,localDateParser.startDate(), localDateParser.endDate()));
         HashMap r = new HashMap();
         r.put("kiosk",map);
         return ResponseEntity.ok().body(r);
     }
+
+    @GetMapping("/{room}")
+    public ResponseEntity getroom(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date, @PathVariable("room") int room) {
+        if (room >= 4 || room <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        HashMap map = new HashMap();
+        LocalDateParser localDateParser = new LocalDateParser(date);
+        map.put(room,studyRoomService.findByRoomAndReservationBetween(room,localDateParser.startDate(), localDateParser.endDate()));
+        HashMap r = new HashMap();
+        r.put("room",map);
+        return ResponseEntity.ok().body(r);
+
+    }
+
 
 
 }

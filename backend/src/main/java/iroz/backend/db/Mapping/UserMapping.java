@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 public interface UserMapping {
+
     String getUserId();
     String getNickname();
     int getGeneration();
