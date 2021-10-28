@@ -6,6 +6,7 @@ import iroz.backend.api.service.StudyRoomService;
 import iroz.backend.api.service.UserService;
 import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.common.util.LocalDateParser;
 import iroz.backend.db.Mapping.StudyRoomRegiMapping;
 import iroz.backend.db.entity.StudyRoom;
 import org.hibernate.type.TrueFalseType;
@@ -84,6 +85,18 @@ public class StudyRoomCotroller {
         r.put("time",map);
         return ResponseEntity.ok().body(r);
 
+    }
+
+    @GetMapping()
+    public ResponseEntity getkiosk(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date) {
+        HashMap map = new HashMap();
+        LocalDateParser localDateParser = new LocalDateParser(date);
+        map.put(1,studyRoomService.findByRoomAndReservationBetween(1,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(2,studyRoomService.findByRoomAndReservationBetween(2,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(3,studyRoomService.findByRoomAndReservationBetween(3,localDateParser.startDate(), localDateParser.endDate()));
+        HashMap r = new HashMap();
+        r.put("kiosk",map);
+        return ResponseEntity.ok().body(r);
     }
 
 

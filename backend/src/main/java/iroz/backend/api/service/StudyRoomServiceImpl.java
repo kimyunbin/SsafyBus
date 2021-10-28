@@ -11,6 +11,7 @@ import iroz.backend.db.repository.UserStudyRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,10 @@ public class StudyRoomServiceImpl implements StudyRoomService {
     @Override
     public List<Object[]> getListGroupByDay(int year, int month, int day, int room) {
         return studyRoomRepository.getListGroupByDay(year,month,day,room);
+    }
+
+    @Override
+    public List<StudyRoomRegiMapping> findByRoomAndReservationBetween(int room, LocalDateTime start, LocalDateTime end) {
+        return studyRoomRepository.findByRoomAndReservationBetween(room,start,end);
     }
 }
