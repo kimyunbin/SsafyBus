@@ -63,12 +63,26 @@ public class UserController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
     }
 
+
+    @GetMapping()
+    public ResponseEntity getUserByNickname(@RequestParam String nickname) {
+        if (nickname.equals("")) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "invalidate data"));
+        }
+        List<UserMapping> result = userService.getUserByNickname(nickname);
+
+        HashMap map = new HashMap();
+        map.put("users",result);
+        return ResponseEntity.ok().body(map);
+    }
+
     @GetMapping("/profile")
     public ResponseEntity all(){
         List<UserMapping> result = userService.findAll();
         HashMap map = new HashMap();
         map.put("user",result);
         return ResponseEntity.ok().body(map);
+
     }
 
     @GetMapping("/profile/{id}")

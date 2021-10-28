@@ -18,6 +18,7 @@ import java.util.Optional;
 public interface UserService {
     User createUser(UserRegisterPostReq userRegisterInfo);
     Optional<User> getUserByUserId(String userId);
+    List<UserMapping> getUserByNickname(String nickname);
     List<UserMapping> findAll();
     List<AnonymousMapping> findQuestion(String id);
     Anonymous questionSave(String id,  QuestionPostReq questionPostReq);

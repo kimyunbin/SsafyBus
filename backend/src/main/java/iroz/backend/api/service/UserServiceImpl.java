@@ -46,6 +46,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
+    public List<UserMapping> getUserByNickname(String nickname) {
+        return userRepository.findAllByNickname(nickname);
+    }
     public List<UserMapping> findAll(){
         return userRepository.findAllBy();
     }

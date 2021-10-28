@@ -35,7 +35,7 @@ public class GuestBookController {
 
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         guestBookService.saveGuestBook(userDetails.getUser(), guestBookSavePostReq);
-        return ResponseEntity.status(403).body(BaseResponseBody.of(201, "success"));
+        return ResponseEntity.status(201).body(BaseResponseBody.of(201, "success"));
     }
     @GetMapping()
     public ResponseEntity getListByGuestBook(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date) {
