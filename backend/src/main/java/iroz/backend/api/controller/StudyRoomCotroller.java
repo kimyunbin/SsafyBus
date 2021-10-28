@@ -91,9 +91,9 @@ public class StudyRoomCotroller {
     public ResponseEntity getkiosk(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date) {
         HashMap map = new HashMap();
         LocalDateParser localDateParser = new LocalDateParser(date);
-        map.put(1,studyRoomService.findByRoomAndReservationBetween(1,localDateParser.startDate(), localDateParser.endDate()));
-        map.put(2,studyRoomService.findByRoomAndReservationBetween(2,localDateParser.startDate(), localDateParser.endDate()));
-        map.put(3,studyRoomService.findByRoomAndReservationBetween(3,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(1,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(1,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(2,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(2,localDateParser.startDate(), localDateParser.endDate()));
+        map.put(3,studyRoomService.findByRoomAndReservationBetweenOrderBOrderByReservation(3,localDateParser.startDate(), localDateParser.endDate()));
         HashMap r = new HashMap();
         r.put("kiosk",map);
         return ResponseEntity.ok().body(r);
