@@ -36,6 +36,7 @@
           <br>
           <label>
             <span>ID</span>
+            <button class="img__btn" style="background-color:black" @click="idCheckClick()">중복체크</button>
             <input type="text" v-model='signup_info.userId'/>
           </label>
           <label>
@@ -99,7 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(userStore, ['signUp', 'login']),
+    ...mapActions(userStore, ['signUp', 'login', 'idCheck']),
     signUpClick() {
       if (this.signup_info.password == this.signup_info.password_confirmation) {
         delete this.signup_info['password_confirmation']
@@ -122,7 +123,21 @@ export default {
       this.$router.push({name:"Gate"})
     },
     change() {
-      document.querySelector('.cont').classList.toggle('s--signup');    }
+      document.querySelector('.cont').classList.toggle('s--signup');  
+    },
+    idCheckClick() {
+      var value = {
+          'userId' : this.signup_info.userId
+      }
+      this.idCheck(value)
+      .then(()=>{
+        alert('사용가능한 아이디입니다')
+      })
+      .catch((e)=>{
+        console.log(e.response)
+        alert('존재하는 아이디입니다')
+      })
+    },
     
   },
 }

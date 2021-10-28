@@ -18,7 +18,7 @@ function createInstance2() { // JWT
     baseURL: BASE_URL,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `JWT ${token}`
+      Authorization: `Bearer ${token}`
     },
   });
   return instance;
