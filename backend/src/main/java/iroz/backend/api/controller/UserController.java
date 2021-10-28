@@ -1,13 +1,19 @@
 package iroz.backend.api.controller;
 
+import iroz.backend.api.request.AnswerPostReq;
+import iroz.backend.api.request.QuestionPostReq;
 import iroz.backend.api.request.UserRegisterPostReq;
 import iroz.backend.api.service.UserService;
+import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.db.Mapping.AnonymousMapping;
 import iroz.backend.db.Mapping.UserMapping;
+import iroz.backend.db.entity.Anonymous;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -79,4 +85,23 @@ public class UserController {
 
     }
 
+    @GetMapping("/profile/{id}")
+    public ResponseEntity personal(@PathVariable String id){
+        List<AnonymousMapping> result = userService.findQuestion(id);
+        HashMap map = new HashMap();
+        map.put("question",result);
+        return ResponseEntity.ok().body(map);
+    }
+
+    @PostMapping("/question/{id}")
+    public ResponseEntity<? extends BaseResponseBody> postQuestion(@PathVariable String id, @RequestBody QuestionPostReq questionPostReq){
+        userService.questionSave(id, questionPostReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(201, "success"));
+    }
+
+    @PostMapping("/answer/{user_id}/{qna_pk}")
+    public  ResponseEntity<? extends BaseResponseBody> postAnswer(@PathVariable String user_id, @PathVariable Long qna_pk, @RequestBody AnswerPostReq answerPostReq){
+        userService.answerSave(user_id, qna_pk, answerPostReq);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(201, "success"));
+    }
 }

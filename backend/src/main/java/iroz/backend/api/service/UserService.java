@@ -1,7 +1,11 @@
 package iroz.backend.api.service;
 
+import iroz.backend.api.request.AnswerPostReq;
+import iroz.backend.api.request.QuestionPostReq;
 import iroz.backend.api.request.UserRegisterPostReq;
+import iroz.backend.db.Mapping.AnonymousMapping;
 import iroz.backend.db.Mapping.UserMapping;
+import iroz.backend.db.entity.Anonymous;
 import iroz.backend.db.entity.User;
 
 import java.util.List;
@@ -16,4 +20,7 @@ public interface UserService {
     Optional<User> getUserByUserId(String userId);
     List<UserMapping> getUserByNickname(String nickname);
     List<UserMapping> findAll();
+    List<AnonymousMapping> findQuestion(String id);
+    Anonymous questionSave(String id,  QuestionPostReq questionPostReq);
+    void answerSave(String user_id, Long qna_pk, AnswerPostReq answerPostReq);
 }

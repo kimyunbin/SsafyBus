@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "../views/Login.vue";
 import Gate from "../views/Gate.vue";
+import Locker from "../views/Locker.vue";
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/gate",
     name: "Gate",
     component: Gate,
+  },
+  {
+    path: "/locker",
+    name: "Locker",
+    component: Locker,
   },
 ]
 
