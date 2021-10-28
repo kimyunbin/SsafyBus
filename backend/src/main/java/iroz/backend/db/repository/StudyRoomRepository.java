@@ -21,6 +21,6 @@ public interface StudyRoomRepository extends JpaRepository<StudyRoom, Long> {
     @Query(value = "SELECT * FROM study_room WHERE YEAR(reservation)=:year AND MONTH(reservation)=:month AND DAY(reservation)=:day AND room=:room group by hour(reservation)",nativeQuery = true)
     List<Object[]> getListGroupByDay(@Param("year") int year , @Param("month") int month, @Param("day") int day ,@Param("room") int room);
 
-    List<StudyRoomRegiMapping> findByRoomAndReservationBetween(int room, LocalDateTime start, LocalDateTime end);
+    List<StudyRoomRegiMapping> findByRoomAndReservationBetweenOrderByReservation(int room, LocalDateTime start, LocalDateTime end);
 }
 

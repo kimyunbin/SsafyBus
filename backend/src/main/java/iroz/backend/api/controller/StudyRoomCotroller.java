@@ -68,6 +68,9 @@ public class StudyRoomCotroller {
 
     @GetMapping("/check")
     public ResponseEntity findOpenRoom(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("date") LocalDate date, @RequestParam int room) {
+        if (room >= 4 || room <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
         int year = date.getYear();
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
@@ -98,6 +101,21 @@ public class StudyRoomCotroller {
         r.put("kiosk",map);
         return ResponseEntity.ok().body(r);
     }
+
+    @GetMapping("/{room}")
+    public ResponseEntity getroom(@DateTimeFormat(pattern = "yyyy-MM-dd") @RequestParam String date, @PathVariable("room") int room) {
+        if (room >= 4 || room <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        HashMap map = new HashMap();
+        LocalDateParser localDateParser = new LocalDateParser(date);
+        map.put(room,studyRoomService.findByRoomAndReservationBetween(room,localDateParser.startDate(), localDateParser.endDate()));
+        HashMap r = new HashMap();
+        r.put("room",map);
+        return ResponseEntity.ok().body(r);
+
+    }
+
 
 
 }

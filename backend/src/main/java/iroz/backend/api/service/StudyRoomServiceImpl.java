@@ -58,6 +58,6 @@ public class StudyRoomServiceImpl implements StudyRoomService {
 
     @Override
     public List<StudyRoomRegiMapping> findByRoomAndReservationBetween(int room, LocalDateTime start, LocalDateTime end) {
-        return studyRoomRepository.findByRoomAndReservationBetween(room,start,end);
+        return studyRoomRepository.findByRoomAndReservationBetweenOrderByReservation(room,start,end);
     }
 }

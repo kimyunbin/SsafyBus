@@ -46,7 +46,7 @@ public class AuthController {
             // matches - 암호화되지 않은 비밀번호(raw-)와 암호화된 비밀번호(encoded-)가 일치하는지 비교
         if (passwordEncoder.matches(password, user.get().getPassword())) {
             // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-            UserRes res = UserRes.builder().nickname(user.get().getNickname()).classNum(user.get().getClassNum()).generation(user.get().getGeneration()).position(user.get().getPosition()).build();
+            UserRes res = UserRes.builder().userId(user.get().getUserId()).nickname(user.get().getNickname()).classNum(user.get().getClassNum()).generation(user.get().getGeneration()).position(user.get().getPosition()).build();
 
             HashMap map = new HashMap();
             map.put("message","success");

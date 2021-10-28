@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserRes {
+    String userId;
     String nickname;
     int generation;
     int classNum;
