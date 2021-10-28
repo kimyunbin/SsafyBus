@@ -1,13 +1,14 @@
 package iroz.backend.api.service;
 
 import iroz.backend.api.request.UserRegisterPostReq;
+import iroz.backend.db.Mapping.UserMapping;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
-import iroz.backend.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,10 +18,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserRepositorySupport userRepositorySupport;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Override
     public User createUser(UserRegisterPostReq userRegisterInfo) {
@@ -37,5 +36,10 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserByUserId(String userId) {
         return userRepository.findByUserId(userId);
 
+    }
+
+    @Override
+    public List<UserMapping> findAll(){
+        return userRepository.findAllBy();
     }
 }
