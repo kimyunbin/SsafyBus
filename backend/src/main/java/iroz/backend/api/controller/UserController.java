@@ -91,6 +91,7 @@ public class UserController {
         List<AnonymousMapping> result = userService.findQuestion(id);
         User user = userRepository.findByUserId(id).orElseThrow();
         map.put("nickname",user.getNickname());
+        map.put("userId",user.getUserId());
         map.put("question",result);
 
         return ResponseEntity.ok().body(map);
