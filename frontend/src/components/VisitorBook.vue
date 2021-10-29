@@ -1,76 +1,143 @@
 <template>
   <div class="container">
+    <!-- {{visitor.guestbook.length}} -->
     <article class="date-carousel">
-      <input type="button" class="date-carousel-prev" value="&lt;">
-      <input type="date" class="date-carousel-input">
-      <input type="button" class="date-carousel-next" value="&gt;">
+      <input type="button" class="date-carousel-prev" @click="prev()" value="&lt;">
+      <input type="date" class="date-carousel-input" v-model="date">
+      <input type="button" class="date-carousel-next" @click="next()" value="&gt;">
     </article>
     <hr>
-    <div class ="write">
-      modal
+    <div  v-if="visitor.guestbook" class ="write">
+      <WriteModal :list="visitor.guestbook"/>
     </div>
-    <div class = "list">
-      반복문으로?
+    <br>
+    <hr>
+    <div v-if="visitor.guestbook">
+      <div v-if="visitor.guestbook.length > 0" class = "list" >
+        <VisitorBookDetail
+          v-for="(visitorDetail,key) in visitor.guestbook"
+          :key = key
+          :visitorDetail = visitorDetail
+        />
+      </div>
+      <div v-else>
+        <h3>방명록이 없습니다</h3>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import VisitorBookDetail from './VisitorBookDetail.vue';
+const boardStore = 'boardStore'
+
+import WriteModal from './WriteModal.vue';
 export default {
+  components: { WriteModal, VisitorBookDetail},
   name: 'VisitorBook',
   data() {
     return {
-
+      date: '', // yyyy-mm-dd형식
+      visitor: [],
+      today: new Date(), // DateTime형식
+    }
+  },
+  watch: {
+    date() {
+      // 문자열을 읽어서 다시 date()바꿔서 today넣어야된다.
+      this.today = this.to_date2(this.date)
     }
   },
   computed: {
+    // ...mapGetters(boardStore, ['visitor_info']),
 
   },
+
+  created() {
+    // 당일 글 조회 용
+    this.date = this.dateFormat(this.today)
+    this.getVisitorBook(this.date)
+    .then(()=>{
+      // console.log(this.visitor_info(),'dddddd')
+      this.visitor = this.visitor_info()
+    }) 
+  },
+
   methods: {
-    calender() {
-        var util = {
-          qs(sel, ctx){ 
-            return (ctx || document).querySelector(sel);
-          },
-          qsa(sel, ctx){
-            return Array.from((ctx || document).querySelectorAll(sel));
-          }
-        };
+    ...mapActions(boardStore, ['getVisitorBook']),
+    ...mapGetters(boardStore, ['visitor_info']),
 
-        class DateCarousel {
-          constructor(el) {
-            this.element = el;
-            this.prevButton = util.qs(".date-carousel-prev", el);
-            this.input = util.qs(".date-carousel-input",el);
-            this.nextButton = util.qs(".date-carousel-next",el);
-            this.input.valueAsDate = new Date();
-            this.prevButton.addEventListener("click",this.prev.bind(this));
-            this.nextButton.addEventListener("click",this.next.bind(this));
-          }
-          
-          prev(){
-            this.input.stepDown();
-          }
-          
-          next() {
-            this.input.stepUp();
-          }
-        }
+    dateFormat(date) {
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      // let day = 26;
 
-        util.qsa('.date-carousel').forEach(function(el){ new DateCarousel(el) });
-    }
+      month = month >= 10 ? month : '0' + month;
+      day = day >= 10 ? day : '0' + day;
+      return date.getFullYear() + '-' + month + '-' + day;
+    },
+
+    to_date2(date_str)
+    {
+        var yyyyMMdd = String(date_str);
+        var sYear = yyyyMMdd.substring(0,4);
+        var sMonth = yyyyMMdd.substring(5,7);
+        var sDate = yyyyMMdd.substring(8,10);
+
+        //alert("sYear :"+sYear +"   sMonth :"+sMonth + "   sDate :"+sDate);
+        return new Date(Number(sYear), Number(sMonth)-1, Number(sDate));
+    },
+
+    prev() {
+      // console.log(this.today,'today')
+      this.today = new Date(this.today.setDate(this.today.getDate() - 1))
+      console.log(this.today)
+      this.date = this.dateFormat(this.today)
+
+      this.getVisitorBook(this.date)
+      .then(()=>{
+        // console.log(this.visitor_info(),'dddddd')
+        this.visitor = this.visitor_info()
+      }) 
+
+    },
+    next() {
+      // console.log(this.today,'today')
+      this.today = new Date(this.today.setDate(this.today.getDate() + 1))
+      // console.log(this.today)
+      this.date = this.dateFormat(this.today)
+
+      this.getVisitorBook(this.date)
+      .then(()=>{
+        // console.log(this.visitor_info(),'dddddd')
+        this.visitor = this.visitor_info()
+      }) 
+
+    },
+
+    
   },
   
-  created() {
-    // 방명록 조회
+  mounted() {
   },
   
 }
 </script>
 
 <style scoped>
+.container {
+  width: 1000px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.list {
+  margin-top: 30px;
+}
+
 .date-carousel {
-  background-color: black;
+  background-color: white;
   box-sizing: border-box;
   display: flex;
   height: 0.5in;
@@ -90,7 +157,7 @@ export default {
 .date-carousel-next,
 .date-carousel-prev {
   background-color: transparent;
-  color: white;
+  color: black;
   cursor: pointer;
   font-size: larger;
   font-weight: bold;
@@ -98,7 +165,7 @@ export default {
 }
 
 .date-carousel-input {
-  color: white;
+  color: black;
   background-color: transparent;
   text-align: center;
   width: 2in;

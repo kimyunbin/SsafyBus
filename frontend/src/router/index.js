@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Gate from "../views/Gate.vue";
 import Reserve from "../views/Reserve.vue";
 import StudyRoom from "../views/StudyRoom.vue";
+import Locker from "../views/Locker.vue";
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/studyroom",
     name: "StudyRoom",
     component: StudyRoom,
+  },
+  {
+    path: "/locker",
+    name: "Locker",
+    component: Locker,
   },
 ]
 
