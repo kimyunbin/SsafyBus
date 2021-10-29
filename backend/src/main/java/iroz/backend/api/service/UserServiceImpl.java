@@ -67,7 +67,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(id).orElseThrow(()->{
             return new IllegalArgumentException("실패");
         });
-        System.out.println(questionPostReq.getContent());
         Anonymous anonymous = Anonymous.builder().user(user).content(questionPostReq.getContent()).build();
         return anonymousRepository.save(anonymous);
     }
