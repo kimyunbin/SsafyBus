@@ -44,13 +44,17 @@ public class ShareService {
             //db 넣기
             Share share = Share.builder().title(shareRegisterPostReq.getTitle()).user(user).path(s3Service.getFileUrl(fileName)).build();
             shareRepository.save(share);
+            //공유자
+            UserShare u = UserShare.builder().share(share).user(user).build();
+            userShareRepository.save(u);
+            // 피공유자
             List list = shareRegisterPostReq.getUserid();
-
             for (int i = 0; i < list.size(); i++) {
                 Optional<User> byUserId = userRepository.findByUserId(list.get(i).toString());
                 UserShare userShare = UserShare.builder().user(byUserId.get()).share(share).build();
                 userShareRepository.save(userShare);
             }
+
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
         }

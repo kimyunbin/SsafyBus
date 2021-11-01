@@ -3,15 +3,15 @@ package iroz.backend.api.controller;
 import iroz.backend.api.request.ShareRegisterPostReq;
 import iroz.backend.api.service.ShareService;
 import iroz.backend.api.service.UserService;
+import iroz.backend.api.service.UserShareService;
 import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
+import iroz.backend.db.Mapping.UserShareMapping;
+import iroz.backend.db.entity.UserShare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -21,7 +21,8 @@ import java.util.List;
 public class ShareController {
     @Autowired
     ShareService shareService;
-
+    @Autowired
+    UserShareService userShareService;
     @Autowired
     UserService userService;
 
@@ -43,5 +44,12 @@ public class ShareController {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String result = shareService.uploadImage(file, shareRegisterPostReq, userDetails.getUser());
         return ResponseEntity.status(201).body(BaseResponseBody.of(201, result));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserShareMapping>> getShare(Authentication authentication) {
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        List<UserShareMapping> result = userShareService.findshare(userDetails.getUser());
+        return ResponseEntity.ok().body(result);
     }
 }
