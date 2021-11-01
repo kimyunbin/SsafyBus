@@ -7,6 +7,8 @@ import iroz.backend.db.Mapping.AnonymousMapping;
 import iroz.backend.db.Mapping.UserMapping;
 import iroz.backend.db.entity.Anonymous;
 import iroz.backend.db.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +21,7 @@ public interface UserService {
     User createUser(UserRegisterPostReq userRegisterInfo);
     Optional<User> getUserByUserId(String userId);
     List<UserMapping> getUserByNickname(String nickname);
-    List<UserMapping> findAll();
+    Page<UserMapping> findAll(Pageable pageable);
     List<AnonymousMapping> findQuestion(String id);
     Anonymous questionSave(String id,  QuestionPostReq questionPostReq);
     void answerSave(String user_id, Long qna_pk, AnswerPostReq answerPostReq);
