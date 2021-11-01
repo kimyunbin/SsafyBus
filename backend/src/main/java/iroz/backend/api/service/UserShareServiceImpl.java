@@ -13,7 +13,7 @@ public class UserShareServiceImpl implements UserShareService {
     @Autowired
     UserShareRepository userShareRepository;
     @Override
-    public List<UserShareMapping> findshare(User user) {
+    public List<UserShareMapping> findShare(User user) {
         return userShareRepository.findByUserOrderByCreatedAt(user);
     }
 }

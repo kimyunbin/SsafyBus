@@ -7,13 +7,13 @@ import iroz.backend.api.service.UserShareService;
 import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
 import iroz.backend.db.Mapping.UserShareMapping;
-import iroz.backend.db.entity.UserShare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -47,9 +47,11 @@ public class ShareController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserShareMapping>> getShare(Authentication authentication) {
+    public ResponseEntity getShare(Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        List<UserShareMapping> result = userShareService.findshare(userDetails.getUser());
-        return ResponseEntity.ok().body(result);
+        List<UserShareMapping> result = userShareService.findShare(userDetails.getUser());
+        HashMap map = new HashMap();
+        map.put("sharefile",result);
+        return ResponseEntity.ok().body(map);
     }
 }

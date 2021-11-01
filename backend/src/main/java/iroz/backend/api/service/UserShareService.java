@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserShareService {
 
-    List<UserShareMapping> findshare(User user);
+    List<UserShareMapping> findShare(User user);
 
 }
