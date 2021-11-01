@@ -1,97 +1,136 @@
 <template>
   <div>
-    <h1>오늘의 방명록을 남겨주세요!✍</h1>
-    <button @click="bclick()">방명록 남기기</button>
-    <!-- {{list[0].user.nickname}} -->
-    <!-- modal -->
-    <div class="modal-overlay" v-bind:class="{active: is_active}">
-      <div class="modal" v-bind:class="{active: is_active}">
-          <a class="close-modal" @click="xclick()">
-            <svg viewBox="0 0 20 20">
-              <path fill="#000000" d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
-            </svg>
-          </a><!-- close modal -->
+    <div class="head">
+      <h2 style="font-weight:bold;">{{name}}</h2>
+      <h2>에게 무엇이든 물어보는 게시판</h2>
+    </div>
+    <!-- {{this.qboard}} -->
+    <div class="board" v-if="this.qboard.length > 0">
+      <div class="container">
+        <QBoardDetail
+          v-for="(QBoardDetail,key) in qboard"
+          :key = key
+          :QBoardDetail = QBoardDetail
+          />
+      </div>
+      <div>
+        <!-- <button v-if="this.user_info.userId == this.qboard_info" @click="bclick()">질문하기</button> -->
+        <button @click="bclick()">질문하기</button>
 
-        <div class="modal-content">
-         <h3>출석체크!</h3>
-         <form>
-            <input type="textarea" v-model="content">
-            <button type="button" @click="submitClick()">완료</button>
-         </form>
-        </div><!-- content -->
-        
-      </div><!-- modal -->
-    </div><!-- overlay -->
+        <div class="modal-overlay" v-bind:class="{active: is_active}">
+          <div class="modal" v-bind:class="{active: is_active}">
+              <a class="close-modal" @click="xclick()">
+                <svg viewBox="0 0 20 20">
+                  <path fill="#000000" d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
+                </svg>
+              </a><!-- close modal -->
+
+            <div class="modal-content">
+            <h3>질문하기</h3>
+            <form>
+                <input type="textarea" v-model="content">
+                <button type="button" @click="submitClick()">완료</button>
+            </form>
+            </div><!-- content -->
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div v-else>
+      <h2>아직 질문이 없어요</h2>      
+      <button @click="bclick()">질문하기</button>
+    </div>
 
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-const boardStore = 'boardStore'
 const userStore = 'userStore'
+const boardStore = 'boardStore'
+import QBoardDetail from '../components/QBoardDetail.vue'
 export default {
-  name: "WriteModal",
-  props: {
-    list:{
-      type: Array,
-      required:true
-      },
-  },
+  components: { QBoardDetail },
+  name: "QBoard",
   data() {
-    return {
-      is_active: false, 
+    return  {
       content: '',
+      is_active: false,
+      qboard:'',
+      name: '',
+      user_id: '',
     }
   },
+  created() {
+    this.user_id = this.qboard_info.userId
+    this.getQBoard(this.user_id)
+    .then(()=>{
+      this.qboard = this.qboard_info.question
+      this.name = this.qboard_info.nickname
+    })
+  },
   computed: {
-  ...mapGetters(userStore, ['user_info']),
+    ...mapGetters(userStore, ['user_info']),
+    ...mapGetters(boardStore, ['qboard_info']),
 
   },
   methods: {
-  ...mapActions(boardStore, ['writeVisitorBook']),
-
+    ...mapActions(boardStore, ['writeQBoard', 'getQBoard']),
     bclick() {
-      this.is_active = true
+    this.is_active = true
     },
     xclick() {
       this.is_active = false
     },
-    submitClick() {
-      var arr = []
-      if (this.list.length > 0) {
-        
-        for (let i = 0; i < this.list.length; i++) {
-          const userId = this.list[i].user.userId;
-          arr.push(userId)
-        }
-      }
-      console.log(arr,'arr')
-      console.log(this.user_info.userId,'nick')
-      if (arr.includes(this.user_info.userId) ) {
-        alert('이미 출석체크 했습니다!')
-      }
-      else {
-        var value = {
+    submitClick(){
+        var content = {
           'content' : this.content
         }
-        this.writeVisitorBook(JSON.stringify(value))
-        .then(()=>{
-          alert('완료됌')
-        })
-        .then(()=>{
-          this.$router.go()
-        })
-      }
-    }
+        const user_id = this.user_id
+        console.log(user_id)
+        const value = {
+          'user_id' : user_id,
+          'content': JSON.stringify(content),
+        }
+      this.writeQBoard(value)
+      .then(()=>{
+        alert('답변이 언젠가 올꺼에요!')
+        this.$router.go()
+      })
+    },
   },
   mounted() {
-
-  },
+    this.qboard = this.qboard_info.question
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.head {
+  display: flex;
+  justify-content: center;
+}
+.board {
+ border: 4px solid #FFE651;
+ border-radius: 10px;
+ margin-top: 50px;
+ padding-bottom: 30px;
+ background-color: white;
+ max-width: 1200px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+.container {
+  max-width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 35px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
 /**
  * Variables
  */
@@ -283,12 +322,5 @@ form button {
   background-color: rgb(8, 99, 235);
   color: #fff;
 }
-.head { 
-  width: 100%;
-  height: 32px;
-  padding: 12px 30px;
-  overflow: hidden;
-  background: #e2525c;
-}
-</style>>
 
+</style>
