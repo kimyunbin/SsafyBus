@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Login from "../views/Login.vue";
 import Gate from "../views/Gate.vue";
 import Locker from "../views/Locker.vue";
+import QBoard from "../views/QBoard.vue";
+import Help from "../views/Help.vue";
 
 Vue.use(VueRouter)
 
@@ -21,6 +23,16 @@ const routes = [
     path: "/locker",
     name: "Locker",
     component: Locker,
+  },
+  {
+    path: "/qboard",
+    name: "QBoard",
+    component: QBoard,
+  },
+  {
+    path: "/help",
+    name: "Help",
+    component: Help,
   },
 ]
 

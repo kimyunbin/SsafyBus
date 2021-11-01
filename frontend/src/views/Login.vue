@@ -109,7 +109,9 @@ export default {
         .then(()=>{
           alert('회원가입이 완료되었습니다')
         })
-        this.$router.push({name:"Login"})
+        // this.$router.push({name:"Login"})
+        this.$router.go()
+
       }
       else if (this.signup_info.password != this.signup_info.password_confirmation) {
         alert('비밀번호 확인과 다릅니다')
@@ -119,9 +121,11 @@ export default {
       this.login(this.login_info)
       .then(()=>{
         alert('로그인 되었습니다')
+        this.$router.push({name:"Gate"})
       })
-      this.$router.push({name:"Gate"})
+      
     },
+
     change() {
       document.querySelector('.cont').classList.toggle('s--signup');  
     },
