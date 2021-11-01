@@ -14,7 +14,43 @@
           </span>
         </div>
         <div class="box1">
-          <div>
+          <div class="room-box">
+            <div class="room">
+              <p class="room__name">1번방</p>
+              <hr>
+              <div class="room__content" v-for="(status,idx) in statusRoom[1]" :key="idx">
+                <p class="content-time">
+                {{ status.reservation.substring(11,16) }}
+                </p>
+                <p class="content-user">
+                  {{ status.user.nickname }}
+                </p>
+              </div>
+            </div>
+            <div class="room">
+              <p class="room__name">2번방</p>
+              <hr>
+              <div class="room__content" v-for="(status,idx) in statusRoom[2]" :key="idx">
+                <p class="content-time">
+                {{ status.reservation.substring(11,16) }}
+                </p>
+                <p class="content-user">
+                  {{ status.user.nickname }}
+                </p>
+              </div>
+            </div>
+            <div class="room">
+              <p class="room__name">3번방</p>
+              <hr>
+              <div class="room__content" v-for="(status,idx) in statusRoom[3]" :key="idx">
+                <p class="content-time">
+                {{ status.reservation.substring(11,16) }}
+                </p>
+                <p class="content-user">
+                  {{ status.user.nickname }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -124,8 +160,8 @@ export default {
       console.log("스터디방 예약 현황")
       const instance = createInstance()
       const response = await instance.get(`/studyroom?date=${data['date']}`)
-      this.statusRoom= response.data
-      console.log(response.data)
+      this.statusRoom= response.data.kiosk
+      console.log(this.statusRoom)
     },
     async emptyStudyRoom() {
       const data = {
@@ -148,6 +184,13 @@ export default {
       }
       const instance = createInstance2()
       await instance.post('/studyroom',data)
+      this.statusStudyRoom(this.now)
+      this.room = 0
+      this.yesTime = ''
+      this.reserve_num = 0
+      this.userid = []
+      this.members = []
+      this.password = ''
       }
       else{
         alert('빈 칸을 다 채워주세요.')
@@ -255,8 +298,6 @@ export default {
       this.members.splice(idx,1)
     }
   },
-  computed: {
-  }
 }
 </script>
 
@@ -302,14 +343,26 @@ input, button {
 .yes-time{
   color: white;
   background-color: #67cef3;
+  cursor: pointer;
+}
+.yes-time:hover{
+  background-color: #67cef3;
+  color: white;
+  cursor: pointer;
 }
 .no-time{
   color: #17B0E7;
   background-color: white;
+  cursor: pointer;
+}
+.no-time:hover{
+  background-color: #67cef3;
+  color: white;
+  cursor: pointer;
 }
 .x-time{
-  background-color: rgb(148, 148, 148);
-  background-color: white;
+  background-color: rgb(201, 201, 201);
+  color: white;
 }
 .reserve-page{
   width: 100%;
@@ -359,6 +412,34 @@ input, button {
         -webkit-box-shadow: 2px 4px 4px 0px rgba(84,84,84,1);
         -moz-box-shadow: 2px 4px 4px 0px rgba(84,84,84,1);
         box-shadow: 2px 4px 4px 0px rgba(84,84,84,1);
+        .room-box{
+          margin: 50px 0px 0px 0px;
+          padding: 0px 40px;
+          height: 450px;
+          overflow: auto;
+          .room{
+            margin-bottom: 30px;
+            &__name{
+              text-align: left;
+              font-size: 15px;
+              margin-bottom: 5px;
+              margin-left: 10px;
+            }
+            &__content{
+              display:flex;
+              align-items: center;
+              font-size: 14px;
+              margin-left: 10px;
+              .content-time{
+                padding-top: 8px;
+              }
+              .content-user{
+                margin-left: 100px;
+                padding-top: 5px;
+              }
+            }
+          }
+        }
       }
     }
     .table{
@@ -448,11 +529,6 @@ input, button {
             margin: 1px 2px;
             padding: 1px 1px 1px 3px;
             font-size: 15px;
-            cursor: pointer;
-          }
-          .time:hover {
-            background-color: #67cef3;
-            color: white
           }
         }
         .select-team{
