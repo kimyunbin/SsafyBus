@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "../views/Login.vue";
 import Gate from "../views/Gate.vue";
+import Reserve from "../views/Reserve.vue";
+import StudyRoom from "../views/StudyRoom.vue";
 import Locker from "../views/Locker.vue";
 import QBoard from "../views/QBoard.vue";
 import Help from "../views/Help.vue";
@@ -18,6 +20,17 @@ const routes = [
     path: "/gate",
     name: "Gate",
     component: Gate,
+  },
+  {
+    path: "/reserve",
+    name: "Reserve",
+    component: Reserve,
+  },
+  {
+    path: "/studyroom/:roomId",
+    name: "StudyRoom",
+    component: StudyRoom,
+    props: true,
   },
   {
     path: "/locker",
