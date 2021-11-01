@@ -316,7 +316,7 @@ input, button {
 
 ::-webkit-scrollbar{
     height: 5px;
-    width: 5px;
+    width: 4px;
 }
 
 /* 스크롤바 막대 설정*/
@@ -434,7 +434,7 @@ input, button {
                 padding-top: 8px;
               }
               .content-user{
-                margin-left: 100px;
+                margin-left: 80px;
                 padding-top: 5px;
               }
             }

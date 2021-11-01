@@ -25,9 +25,10 @@ const routes = [
     component: Reserve,
   },
   {
-    path: "/studyroom",
+    path: "/studyroom/:roomId",
     name: "StudyRoom",
     component: StudyRoom,
+    props: true,
   },
   {
     path: "/locker",
