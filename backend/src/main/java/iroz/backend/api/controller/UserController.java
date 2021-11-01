@@ -12,6 +12,8 @@ import iroz.backend.db.entity.Anonymous;
 import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -77,8 +79,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity all(){
-        List<UserMapping> result = userService.findAll();
+    public ResponseEntity all(final Pageable pageable){
+        Page<UserMapping> result = userService.findAll(pageable);
         HashMap map = new HashMap();
         map.put("user",result);
         return ResponseEntity.ok().body(map);

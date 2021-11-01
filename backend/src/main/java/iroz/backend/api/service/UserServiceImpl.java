@@ -10,6 +10,8 @@ import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.AnonymousRepository;
 import iroz.backend.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -50,8 +52,8 @@ public class UserServiceImpl implements UserService {
     public List<UserMapping> getUserByNickname(String nickname) {
         return userRepository.findAllByNickname(nickname);
     }
-    public List<UserMapping> findAll(){
-        return userRepository.findAllBy();
+    public Page<UserMapping> findAll(Pageable pageable){
+        return userRepository.findAllBy(pageable);
     }
 
     @Override
