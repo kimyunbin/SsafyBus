@@ -1,7 +1,7 @@
 // import axios from 'axios'
 // const BASE_URL = process.env.VUE_APP_BASE_URL
 
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 // import jwt_decode from "jwt-decode";
 
 import { createInstance } from "@/api/index.js";
@@ -10,7 +10,7 @@ import { createInstance } from "@/api/index.js";
 
 
 const userStore = {
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],
   namespaced: true,
 
   state: {
@@ -40,7 +40,7 @@ const userStore = {
     async signUp(context, signup_info) {
       console.log('회원가입 들어옴?')
       const instance = createInstance()
-      const response = await instance.post("/users/", signup_info)
+      const response = await instance.post("/users", signup_info)
       console.log(response.data)
       // context.commit("SIGNUP",response.data.status)
     },
