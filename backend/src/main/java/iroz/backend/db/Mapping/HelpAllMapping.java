@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public interface HelpAllMapping {
     String getTitle();
     Long getId();
-    UserInfoMapping getUser();
+    UserMapping getUser();
     String getContent();
     LocalDateTime getCreatedAt();
 }
