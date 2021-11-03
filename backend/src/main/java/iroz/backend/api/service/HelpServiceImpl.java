@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class HelpServiceImpl implements HelpService{
@@ -36,25 +37,27 @@ public class HelpServiceImpl implements HelpService{
     @Override
     public String deleteHelp(User user, Long help_pk){
         Help help = helpRepository.findById(help_pk).orElseThrow();
-        if (user == help.getUser()){
+        if (Objects.equals(user.getUserId(), help.getUser().getUserId())){
             helpRepository.deleteById(help_pk);
             return "Success";
+        } else {
+            return "fail";
         }
-        return "해당 게시물 작성 유저가 아닙니다.";
     }
 
     @Override
     public String putHelp(User user, Long help_pk, HelpPostReq helpPostReq){
         Help help = helpRepository.findById(help_pk).orElseThrow();
-        if (user == help.getUser()){
+        if (Objects.equals(user.getUserId(), help.getUser().getUserId())){
             help.setCode(helpPostReq.getCode());
             help.setContent(helpPostReq.getContent());
             help.setLink(helpPostReq.getLink());
             help.setTitle(helpPostReq.getTitle());
             helpRepository.save(help);
             return "Success";
+        } else {
+            return "fail";
         }
-        return "해당 게시물 작성 유저가 아닙니다.";
     }
 
     @Override
