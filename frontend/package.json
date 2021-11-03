@@ -10,10 +10,13 @@
   "dependencies": {
     "axios": "^0.23.0",
     "core-js": "^3.6.5",
+    "inko": "^1.1.1",
     "node-sass": "^6.0.1",
+    "openvidu-browser": "^2.21.0-beta1",
     "sass-loader": "^10.2.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.2",
+    "vuetify": "^2.5.10",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0"
   },

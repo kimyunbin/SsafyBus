@@ -7,6 +7,7 @@ import StudyRoom from "../views/StudyRoom.vue";
 import Locker from "../views/Locker.vue";
 import QBoard from "../views/QBoard.vue";
 import Help from "../views/Help.vue";
+import Live from "../views/Live.vue";
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     name: "Help",
     component: Help,
   },
+  {
+    path: "/live",
+    name: "Live",
+    component: Live,
+  }
 ]
 
 const router = new VueRouter({
