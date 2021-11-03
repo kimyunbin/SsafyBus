@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api-boot/help")
@@ -49,14 +50,23 @@ public class HelpController {
     public ResponseEntity<? extends BaseResponseBody> deleteHelp(Authentication authentication, @PathVariable Long help_pk){
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String msg = helpService.deleteHelp(userDetails.getUser(), help_pk);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(201, msg));
+        if (Objects.equals(msg, "fail")) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(201, "게시글 작성자와 다른 유저 입니다."));
+        } else {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(201, msg));
+        }
+
     }
 
     @PutMapping("/{help_pk}")
     public ResponseEntity<? extends BaseResponseBody> putHelp(Authentication authentication, @PathVariable Long help_pk, @RequestBody HelpPostReq helpPostReq){
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String msg = helpService.putHelp(userDetails.getUser(), help_pk, helpPostReq);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(201, msg));
+        if (Objects.equals(msg, "fail")) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(201, "게시글 작성자와 다른 유저 입니다."));
+        } else {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(201, msg));
+        }
     }
 
     @GetMapping("/{help_pk}")
