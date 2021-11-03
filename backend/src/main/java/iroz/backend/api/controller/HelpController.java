@@ -64,6 +64,7 @@ public class HelpController {
         HashMap map = new HashMap();
         Help result = helpService.getHelp(help_pk);
         List<CommentMapping> comments = helpService.getComments(help_pk);
+        map.put("helpId",result.getId());
         map.put("title",result.getTitle());
         map.put("content",result.getContent());
         map.put("code",result.getCode());
