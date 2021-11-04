@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    driver-class-name:org.mariadb.jdbc.Driver
+    url:jdbc:mariadb://k5c104.p.ssafy.io:3306/ssafy_web_db?serverTimezone=UTC&characterEncoding=UTF-8
+    username:iroz
+    password:root1234
+
+  jpa:
+    hibernate.ddl-auto:update
+    properties.hibernamte.format_sql:true
+    show-sql:true
+  servlet:
+    multipart:
+      max-file-size:10MB
+      max-request-size:10MB
+  # jwt
+jwt:
+  secret:dyAeHubOOc8KaOfYB6XEQoEj1QzRlVgtjNL8PYs1A1tymZvvqkcEU7L1imkKHeDa
+  expiration:86400000
+  # unit is ms. 1* 24 * 60 * 60 * 1000 = 1day
+
+
+  #AWS S3
+cloud:
+  aws:
+    credentials:
+      accessKey:AKIA3QQ443NJLC44STOF
+      secretKey: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
+    region:
+      static:ap-northeast-2
+    stack:
+      auto:false
+    s3:
+      bucket:iroz-bucket
+      region:
+        static:ap-northeast-2
+      stack:
+        auto:false
+      credentials:
+        instanceProfile:true
+
