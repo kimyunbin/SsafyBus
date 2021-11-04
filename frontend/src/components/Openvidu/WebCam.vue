@@ -1,9 +1,7 @@
 <template>
-  <div id="webcam">
-    <div id="session" v-if="data.session">
-      <Chat :data="data" v-on:sendMessage="send"/>
-      <Camera :data="data" :location="location" v-on:leaveSession="leaveSession" v-on:updateStream="updateStream"/>
-    </div>
+  <div id="session" v-if="data.session">
+    <Camera :data="data" :location="location" v-on:leaveSession="leaveSession" v-on:updateStream="updateStream"/>
+    <Chat :data="data" v-on:sendMessage="send"/>
   </div>
 </template>
 
@@ -12,11 +10,13 @@ import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import Camera from './Camera';
 import Chat from './Chat';
-import Inko from 'inko';
+import { mapGetters } from 'vuex'
+const userStore = 'userStore'
+
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-const OPENVIDU_SERVER_URL = "https://k5c104.p.ssafy.io:5443";
+const OPENVIDU_SERVER_URL = "https://k5c104.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 export default {
     name : "Webcam",
@@ -60,9 +60,8 @@ export default {
       location : String,
     },
     created(){
-      this.user = this.$store.state.user_info;
-      let inko = new Inko();
-      this.data.roomName = inko.ko2en(this.schoolName)+"-"+this.location;
+      this.user = this.user_info.nickname;
+      this.data.roomName = this.location;
       this.joinSession();
 
     },
@@ -77,6 +76,9 @@ export default {
       this.data.share.active = false;
       this.data.share.screen = undefined;
     },
+    computed: {
+      ...mapGetters(userStore, ['user_info']),
+    },
     methods: {
       joinSession() {
         this.data.OV = new OpenVidu();
@@ -89,8 +91,6 @@ export default {
             this.data.share.screen = subscriber;
           }
           this.data.subscribers.push(subscriber);
-          console.log(this.data.subscriber)
-          console.log("_____________________")
           this.data.participants = this.data.subscribers.length+1;
         });
         this.data.session.on("streamDestroyed", ({ stream }) => {
@@ -111,14 +111,12 @@ export default {
 
         this.getToken(this.data.roomName).then((token) => {
           this.data.session
-            .connect(token, this.user)
+            .connect(token, {clientData:this.user})
             .then(() => {
               let publisher = this.data.OV.initPublisher(undefined, this.data.setting);
               
               this.data.mainStreamManager = publisher;
               this.data.publisher = publisher;
-              this.data.publisher.publishAudio(true);
-              this.data.publisher.publishVideo(true);
               this.data.session.publish(this.data.publisher);
             })
             .catch((error) => {
@@ -151,8 +149,6 @@ export default {
       },
       createSession(sessionId) {
         return new Promise((resolve, reject) => {
-          console.log(sessionId)
-          console.log("----------")
           axios
             .post(
               `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
@@ -228,19 +224,15 @@ export default {
 </script>
 
 <style scoped >
-#webcam{
-  flex : 1;
-}
 #session{
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width : 80%;
-  height : 100%;
-  margin : 0 auto;
-  text-align: center;
-  flex : 1;
+  width: 90%;
+  height: 90%;
+  padding: 10px;
+  border: 5px solid #17B0E7;
+  border-radius: 10px;
 }
 </style>

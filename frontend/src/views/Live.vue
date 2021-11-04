@@ -31,8 +31,11 @@ export default {
 <style scoped>
 #computer{
   display: flex;
-  height : 90vh;
-  overflow: hidden;
-  flex-direction: column;
+  width: 99vw;
+  height: 98vh;
+  margin: 0%;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
 }
 </style>

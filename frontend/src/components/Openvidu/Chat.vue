@@ -1,49 +1,26 @@
 <template>
 <div id="chat-container">
-  <div id="chat-nav">
-    <div class="icon" @click="showChange(0)">
-        <!-- <img src="@/../public/Image/bts_favicon.png" id="bts-icon"> -->
-    </div>
-    <div class="icon-bottom">
-      <div @click="showChange(1)" class="messenger">
-        <i id="message-icon" class="fas fa-comments" :class="{active : showChatting}"></i>
-        <!-- <div class="bell" v-if="showBell">fas fa-bell</div> -->
-      </div>
-      <div @click="showChange(2)">
-        <div id="participant-icon" class="fas fa-users" :class="{active : showUsers}">fas fa-users</div>
-      </div>
-      <div id="live-container">
-        <div id="live-circle"></div>
-        <div id="participant-counter">{{ data.participants }}명</div>
-      </div>
-    </div>
-      
-  </div>
-  <div id="chat-main" v-if="showChatting || showUsers">
+  <div id="chat-main">
     <div id="chat-title">
         <p v-if="showChatting">Chat</p>
         <p v-if="showUsers">User</p>
     </div>
-    <div id="receive-container" v-if="showChatting">
+    <div id="receive-container" v-if="showChatting||showUsers">
         <div class="message"  v-for="(message, index) in data.receiveMessage" :key="index">
-        <table class="message-table" v-if="message.sender.userId !== user.userId">
-            <tr class="user-profile">
-            <td class="user-name">{{message.sender.userNickname}}</td>
-            </tr>
-            <tr>
+        <table class="message-table" v-if="message.sender.clientData !== user.nickname">
+          <tr class="user-profile">
+            <td class="user-name">{{message.sender.clientData}}</td>
+          </tr>
+          <tr>
             <td><p class="user-message">{{message.message}}</p></td>
-            </tr>
+          </tr>
         </table>
         <table class="message-table my-message" v-else>
             <tr class="user-profile">
-            <td class="user-name">{{message.sender.userNickname}}</td>
-            <td rowspan="2">
-                <!-- <img class="user-img" v-if="message.sender.userImg===''" src="@/../public/Image/user_profile.png" /> -->
-                <!-- <img class="user-img" v-else :src="message.sender.userImg"/> -->
-            </td>
+              <td class="user-name">{{message.sender.clientData}}</td>
             </tr>
             <tr>
-            <td><p class="user-message">{{message.message}}</p></td>
+              <td><p class="user-message">{{message.message}}</p></td>
             </tr>
         </table>
         </div>
@@ -63,10 +40,32 @@
       </div>
     </div>
   </div>
+  <div id="chat-nav">
+    <div class="icon" @click="showChange(0)">
+      <button>bbbb</button>
+    </div>
+    <div class="icon-bottom">
+      <div @click="showChange(1)" class="messenger">
+        <i id="message-icon" class="fas fa-comments" :class="{active : showChatting}"></i>
+        <!-- <div class="bell" v-if="showBell">fas fa-bell</div> -->
+      </div>
+      <div @click="showChange(2)">
+        <div id="participant-icon" class="fas fa-user" :class="{active : showUsers}"></div>
+      </div>
+      <div id="live-container">
+        <div id="live-circle"></div>
+        <div id="participant-counter">{{ data.participants }}명</div>
+      </div>
+    </div>
+      
+  </div>
 </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+const userStore = 'userStore'
+
 export default {
   name : "Chat",
   data() {
@@ -85,9 +84,10 @@ export default {
     if(container !== null) container.scrollTop = container.scrollHeight;
   },
   created() {
-    this.user = this.$store.getters.getUser;
+    this.user = this.user_info
   },
   computed : {
+    ...mapGetters(userStore, ['user_info']),
     // showBell : function(){
     //     if(this.showChatting){
     //         this.data.receiveMessageBell = false;
@@ -125,13 +125,10 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    border: 1px solid var(--color-grey-6);
-    border-radius: 20px 0px 0px 0px;
+    background-color: #17B0E7;
     height: 100%;
 }
 #chat-nav{
-    border-radius: 20px 0px 0px 0px;
-    background-color: #202540;
     display: flex;
     flex-direction: column;
 }
@@ -198,7 +195,7 @@ export default {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    background-color: rgb(40 45 78 / 70%);
+    background-color: #FFE651;
 }
 #chat-main #chat-title{
     width: 100%;
