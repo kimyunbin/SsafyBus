@@ -20,5 +20,6 @@ public class Share extends BaseEntity {
     private String title;
 
     private String path;
+    private String original;
 
 }
