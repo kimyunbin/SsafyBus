@@ -5,6 +5,7 @@ import store from '@/store/index.js'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
+// Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 Vue.use(Vuetify);
 
