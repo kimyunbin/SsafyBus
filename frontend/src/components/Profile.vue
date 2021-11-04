@@ -130,7 +130,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   max-width: 1200px;
   margin: auto;
   /* border: 1px solid black; */

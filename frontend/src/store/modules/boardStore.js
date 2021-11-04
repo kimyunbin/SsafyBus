@@ -14,6 +14,10 @@ const boardStore = {
     profile_info: Object,
     search_user: Object,
     qboard_info: Array,
+    help_info: Object,
+    help_one_info: Object,
+    edit_info: Object,
+    share_info: Array,
   },
 
   getters: {
@@ -29,6 +33,18 @@ const boardStore = {
     qboard_info(state) {
       return state.qboard_info
     },
+    help_info(state) {
+      return state.help_info
+    },
+    help_one_info(state) {
+      return state.help_one_info
+    },
+    edit_info(state) {
+      return state.edit_info
+    },
+    share_info(state) {
+      return state.share_info
+    },
   },
 
   mutations: {
@@ -43,6 +59,18 @@ const boardStore = {
     },
     GET_QBOARD(state, data) {
       state.qboard_info = data
+    },
+    GET_HELPLIST(state, data) {
+      state.help_info = data
+    },
+    GET_HELPITEM(state, data) {
+      state.help_one_info = data
+    },
+    EDIT_HELPITEM(state, data) {
+      state.edit_info = data
+    },
+    GET_SHARELIST(state, data) {
+      state.share_info = data
     },
   },
 
@@ -67,8 +95,8 @@ const boardStore = {
       console.log('프로필 조회 들어옴?')
       const instance = createInstance()
       const response = await instance.get("/users/profile")
-      // console.log(response.data)
-      context.commit("GET_PROFILE",response.data.user)
+      console.log(response.data)
+      context.commit("GET_PROFILE",response.data.user.content)
     },
     async searchUser(context, name) { // 유저검색 조회
       console.log('유저검색 들어옴?')
@@ -105,6 +133,64 @@ const boardStore = {
       const response = await instance.post(`/users/answer/${user_id}/${qna_pk}`, answer)
       console.log(response.data)
       // context.commit("GET_VISITORBOOK",response.data)
+    },
+    // Help
+    async getHelpList(context) { // 헬프게시판 조회
+      console.log('헬프게시판 조회 들어옴?')
+      const instance = createInstance()
+      const response = await instance.get("/help")
+      console.log(response.data)
+      context.commit("GET_HELPLIST",response.data.help)
+    },
+    async writeHelpList(context, content) { // 헬프게시판 쓰기
+      console.log(content)
+      console.log('헬프게시판 쓰기 들어옴?')
+      const instance = createInstance2()
+      const response = await instance.post("/help", content)
+      console.log(response.data)
+    },
+    async getHelpItem(context, help_pk) { // 헬프게시판 단일조회
+      console.log('헬프게시판 단일조회 들어옴?')
+      const instance = createInstance()
+      const response = await instance.get(`/help/${help_pk}`)
+      console.log(response.data)
+      context.commit("GET_HELPITEM",response.data)
+    },
+    async writeComment(context, value) { // 헬프게시판 답글 쓰기
+      const help_pk = value.help_pk
+      const content = value.content
+      console.log(help_pk, content)
+      console.log('헬프게시판 답글쓰기 들어옴?')
+      const instance = createInstance2()
+      const response = await instance.post(`/help/${help_pk}`, content)
+      console.log(response.data)
+    },    
+    editHelp(context, value) { // 헬프게시판 수정할때 데이터
+      console.log('헬프게시판 수정정보 들어옴?')
+      console.log(value)
+      context.commit("EDIT_HELPITEM", value)
+    },
+    async editHelpItem(context, value) { // 헬프게시판 수정
+      console.log('헬프게시판 수정 들어옴?')
+      const help_pk = value.help_pk
+      const instance = createInstance2()
+      const response = await instance.put(`/help/${help_pk}`, value.data)
+      console.log(response.data)
+    }, 
+    async deleteHelpItem(context, help_pk) { // 헬프게시판 삭제
+      console.log('헬프게시판 삭제 들어옴?')
+      const instance = createInstance2()
+      const response = await instance.delete(`/help/${help_pk}`)
+      console.log(response.data)
+    }, 
+
+    //
+    async getShareList(context) { // 공유게시판 조회
+      console.log('공유게시판 조회 들어옴?')
+      const instance = createInstance2()
+      const response = await instance.get("/sharefile")
+      console.log(response.data)
+      context.commit("GET_SHARELIST",response.data.sharefile)
     },
   }
 }
