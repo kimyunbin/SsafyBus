@@ -1,33 +1,28 @@
 <template>
   <div id="webcam-container">
     <div id="webcam-title">
-      <div id="school-title">
-        <!-- <img src="@/../public/Image/school_icon.png" id="school-icon"> -->
-        <p>{{schoolName}}</p>
-      </div>
+      <p>{{location}}</p>
     </div>
     <div id="webcam-main">
-      <div id="share-container" v-if="data.share.active">
-        <div id="share-screen" v-if="data.share.screen">
-          <user-video class="flex-item screen-video" :stream-manager="data.share.screen"></user-video>
-        </div>
-      </div>
-      <div id="video-container" :class="{'flex-column': data.share.active, 'screen-share' : data.share.active}">
+      <div id="video-container" :class="{'screen-share' : data.share.active}">
         <div id="prev">
           <button class="webcam-button page-button" @click="page -= 1;" v-if="prev">
-            <div v-if="!data.share.active">fas fa-chevron-left</div>
-            <div v-else>fas fa-angle-up</div>
+            <div class="fas fa-chevron-left"></div>
           </button>
         </div>
-        <div id="videos" :class="{'flex-column': data.share.active}">
-          <user-video :class="{publisher : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" :stream-manager="data.publisher" v-if="page == 0"></user-video>
-          <user-video :class="{subscribers : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" v-for="(sub, idx) in pageSub" :key="idx" :stream-manager="sub"></user-video>
+        <div id="videos" >
+          <user-video :ss=true :class="{publisher : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" :stream-manager="data.publisher" v-if="page == 0"></user-video>
+          <user-video :ss=true :class="{subscribers : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" v-for="(sub, idx) in pageSub" :key="idx" :stream-manager="sub"></user-video>
         </div>
         <div id="next">
           <button class="webcam-button page-button" @click="page += 1;" v-if="next">
-            <div v-if="!data.share.active">fas fa-chevron-right</div>
-            <div v-else>fas fa-angle-down</div>
+            <div class="fas fa-chevron-right"></div>
           </button>
+        </div>
+      </div>
+      <div id="share-container" v-if="data.share.active">
+        <div class="screen-video">
+          <user-video class="screen-video" :ss=false :stream-manager="data.share.screen"></user-video>
         </div>
       </div>
     </div>
@@ -63,7 +58,6 @@ export default {
     return {
       page : 0,
       screenShare : false,
-      schoolName : '',
       maxHeight : 0,
     }
   },
@@ -177,80 +171,59 @@ export default {
 
 <style scoped>
 #webcam-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    height: 100%;
-    border : 1px solid var(--color-grey-6);
-    border-radius: 0px 20px 0px 0px;
-    flex : 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
 }
 #webcam-title{
-    width: 100%;
-    text-align: left;
-    flex-grow: 1;
-    flex-basis: 0;
-}
-#webcam-title #school-title{
-    width: 90%;
-    margin: 30px auto 0px;
-}
-#webcam-title #school-title p{
-    display: inline-block;
-    margin : 0px 0px 0px 10px;
-    font-size : var(--font-size-30);
-    font-family: 'AppleSDGothicNeoEB';
-    font-weight: var(--weight-regular);
-    vertical-align: bottom;
-}
-#school-icon{
-    display: inline-block;
-    height : 50px;
-    width : 50px;
-    vertical-align: middle;
+  width: 100%;
+  height: 10%;
+  text-align: center;
 }
 #webcam-main{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-grow: 8;
-    flex-basis: 0;
-    align-items: center;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-#webcam-main #share-container{
-    border: 1px solid var(--color-grey-6);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 5px;
-    flex-grow: 8;
-    flex-basis: 0;
+
+#share-container{
+  height: 80%;
+  overflow: hidden;
+  padding-right: 10px;
 }
-#webcam-main #video-container {
-    display: flex;
-    flex-wrap: nowrap;
-    align-content: space-around;
-    justify-content: space-around;
-    align-items: center;
-    flex-grow: 2;
-    flex-basis: 0;
+
+#video-container {
+  display: flex;
+  width: 100%;
+  align-content: space-around;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .screen-share{
-    width : 20%!important;
-    height: 100%!important;
+  height: 20%!important;
 }
 .screen-share #videos{
-    flex : none!important;
-    width : 60%!important;
+  flex : 1 !important;
+  width : 10%!important;
+  flex-direction: row;
+}
+.screen-share #videos .flex-item{
+  width: 10% !important;
+  /* height: 10% !important; */
 }
 .screen-share #prev{
     height: 10%!important;
-    width : 100%!important;
+    width : 10%!important;
 }
 .screen-share #next{
     height: 10%!important;
-    width : 100%!important;
+    width : 10%!important;
 }
 #webcam-main #video-container #prev{
     flex-grow: 1;
@@ -260,19 +233,18 @@ export default {
     flex-grow: 1;
     flex-basis: 0;
 }
-.flex-column{
-    flex-direction: column!important;
+.flex-row{
+  /* flex-direction: row!important; */
 }
-.flex-column #next button{
-    height: auto!important;
+.flex-row #next button{
+  /* height: auto!important; */
 }
-.flex-column #prev button{
-    height: auto!important;
+.flex-row #prev button{
+  /* height: auto!important; */
 }
-.flex-column .inactive-user-name{
+.flex-row .inactive-user-name{
     font-size: initial;
 }
-
 .page-button{
     margin : 0px;
     width : 80%;
@@ -282,146 +254,64 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+    margin: auto;
     width: 80%;
-    margin: auto;
-    flex-grow: 8;
-    flex-basis: 0;
-}
-.active-user {
-    width: 100%;
-    height: auto;
-    border-radius : 20px;
-    vertical-align: middle;
-}
-.active-user-name {
-    width: 30%;
-    position: absolute;
-    bottom: 0px;
-}
-.active-user-name p {
-    display: inline-block;
-    background: var(--color-grey-5);
-    padding : 5px;
-    color: var(--color-grey-2);
-    font-size : var(--font-size-16);
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    width : 100%;
-    margin : 0px!important;
-    min-width: 80px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align: bottom;
-    text-align: center;
-}
-.inactive-user{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: 0px;
-}
-.inactive-user-img{
-    width : 30%;
-    border-radius: 50%;
-    background-color: none;
-    display: block;
-    margin: auto;
-    margin-top : 10%;
-    margin-bottom: 5%;
-}
-.inactive-user-name{
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
-    font-size: var(--font-size-30);
-    color : var(--color-white);
-    text-align: center;
-}
-.inactive-user-video{
-    display: inline-block;
-    position: absolute;
-    right: 5%;
-    bottom: 5%;
-}
-.inactive-user-audio{
-    display: inline-block;
-    position: absolute;
-    right: 15%;
-    bottom: 5%;
-}
-.inactive-user .inactive{
-    font-size : 15px!important;
-    color : var(--color-red)!important;
 }
 
+.screen-video{
+  height: 100%;
+}
 .screen-video video{
-    border-radius: 0px;
-    max-height: 600px;
+  width: 100%;
 }
 .screen-video .active-user-name{
-    display: none;
+  display: none;
+}
+.share-screen .inactive-user{
+  display: none !important;
 }
 .flex-item {
-    flex: 1 auto;
-    position:relative;
-    margin : 5px;
+  flex: 1 auto;
+  position:relative;
+  margin : 5px;
 }
 .width-40{
-    max-width: 40%;
+  max-width: 40%;
 }
 
 .width-40 .inactive-user-name{
-    font-size: var(--font-size-30);
+  font-size: var(--font-size-30);
 }
 
 .width-30 {
-    max-width : 30%;
+  max-width : 30%;
 }
 
 #webcam-nav{
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    width: 100%;
-    border-top: 1px solid var(--color-grey-6);
-    flex-grow: 1;
-    flex-basis: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  height: 75px;
+  flex-grow: 1;
+  flex-basis: 0;
 }
 .webcam-button{
-    margin: 15px 10px;
-    background-color : var(--color-white) 0% 0% no-repeat padding-box;
-    border: 1px solid var(--color-grey-2);
-    border-radius : 20px;
-    width: 100px;
-    height: 45px;
-}
-#publish-screen{
-    color : var(--color-mainBlue);
-}
-#publish-video{
-    color : var(--color-grey-2);
-}
-#unpublish-video{
-    color : var(--color-red);
-}
-#publish-audio{
-    color : var(--color-grey-2);
-}
-#unpublish-audio{
-    color : var(--color-red);
+  margin: 15px 10px;
+  background-color : var(--color-white) 0% 0% no-repeat padding-box;
+  border: 1px solid var(--color-grey-2);
+  border-radius : 20px;
+  width: 100px;
+  height: 45px !important;
 }
 #btnLeaveSession{
-    width: 45px;
-    border-radius: 50px;
-    border-color: var(--color-red);
-    background-color: var( --color-red);
+  width: 45px;
+  border-radius: 50px;
 }
 #leave-session{
-    color : var(--color-white);
+  color : var(--color-white);
 }
 </style>
