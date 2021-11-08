@@ -56,6 +56,7 @@ public class ShareController {
         return ResponseEntity.ok().body(map);
     }
     @GetMapping("/{path}")
+    @CrossOrigin(value = {"*"}, exposedHeaders = {"Content-Disposition"})
     public ResponseEntity<byte[]> download(@PathVariable String path) throws IOException {
         return shareService.getObject(path);
     }
