@@ -227,12 +227,16 @@ export default {
 #session{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   width: 90%;
   height: 90%;
-  padding: 10px;
-  border: 5px solid #17B0E7;
-  border-radius: 10px;
+  margin: 10px;
+  border-radius: 30px;
+  background-color: #FFF;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 </style>
