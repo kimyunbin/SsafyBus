@@ -56,11 +56,16 @@ public class ShareService {
             //db 넣기
             Share share = Share.builder().title(shareRegisterPostReq.getTitle()).user(user).path(fileName).original(file.getOriginalFilename()).build();
             shareRepository.save(share);
-            //공유자
-            UserShare u = UserShare.builder().share(share).user(user).build();
-            userShareRepository.save(u);
-            // 피공유자
             List list = shareRegisterPostReq.getUserid();
+            UserShare u = UserShare.builder().share(share).user(user).build();
+            if (! list.contains(user.getUserId())) {
+                //공유자
+                userShareRepository.save(u);
+            }
+
+
+
+            // 피공유자
             for (int i = 0; i < list.size(); i++) {
                 Optional<User> byUserId = userRepository.findByUserId(list.get(i).toString());
                 UserShare userShare = UserShare.builder().user(byUserId.get()).share(share).build();
