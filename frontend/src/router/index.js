@@ -12,6 +12,7 @@ import HelpWrite from "../views/HelpWrite.vue";
 import HelpDetail from "../views/HelpDetail.vue";
 import Share from "../views/Share.vue";
 import ShareWrite from "../views/ShareWrite.vue";
+import Unity from "../views/Unity.vue";
 
 Vue.use(VueRouter)
 
@@ -76,6 +77,11 @@ const routes = [
     path: "/sharewrite",
     name: "ShareWrite",
     component: ShareWrite,
+  },
+  {
+    path : "/unityGame",
+    name : "Unity",
+    component : Unity,
   },
 ]
 
