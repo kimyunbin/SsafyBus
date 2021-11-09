@@ -11,33 +11,26 @@
     </div>
 
     <div class="code">
-      <CodeEditor
-        class="code"
-        :language_selector="true"
-        :languages="[['javascript', 'JS'],['python', 'Python']]"
-        z_index="0"
-        v-model ="help_item.code"
-        min_height="300px"
-        min_width="80%"
-        max_width="1000px"
+      <!-- <CodeEditor
 
       >
-      </CodeEditor>
+      </CodeEditor> -->
       <!-- {{help_item.code}} -->
     </div>
 
     <div class="content">
-      <p class="txt_left">{{help_item.content}}</p>
+      <viewer :initialValue="viewerText" height="500px" />
+      <!-- <p class="txt_left">{{help_item.content}}</p> -->
     </div>
 
-     <div class="link">
+     <div v-if="help_item.link" class="link">
       링크: <a v-bind:href="help_item.link"> {{help_item.link}}</a>
     </div>
 
 
     <div class="comment-wirte">
       <!-- <label>댓글:</label> -->
-      <input type="text" name="" id=""  v-model="comment">
+      <input type="text" name="" id="" class="comment-input"  v-model="comment">
       <button size="sm" class="btn" @click="submitClick(help_item.helpId)">댓글 등록하기</button>
     </div>
     <div class="comment-list">
@@ -58,15 +51,19 @@
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
 const userStore = 'userStore'
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 
-import CodeEditor from 'simple-code-editor';
+import { Viewer } from '@toast-ui/vue-editor';
+
+// import CodeEditor from 'simple-code-editor';
 import CommentDetail from '../components/CommentDetail.vue'
 
 export default {
-    components: {
-      CodeEditor,
-      CommentDetail,
-    },
+  components: {
+    // CodeEditor,
+    CommentDetail,
+     viewer: Viewer
+  },
   name: 'HelpDetail',
   data() {
     return  {
@@ -75,11 +72,16 @@ export default {
       comment: '',
       is_active : false,
       nickname: this.user_info().nickname,
+      viewerText: this.help_one_info().content,
+      editorOptions: {
+        hideModeSwitch: true
+      }
     }
   },
   created() {
     // console.log( this.help_one_info())
-    this.getHelpItem(this.help_one_info().helpId)
+    
+    this.getHelpItem(this.$route.params.help_pk)
     .then(()=>{
       this.help_item = this.help_one_info()
     })
@@ -131,7 +133,7 @@ export default {
       this.deleteHelpItem(help_pk)
       .then(()=>{
         alert('삭제되었습니다')
-        this.$router.go()
+         this.$router.push({name:"Help"})
       })
 
     },
@@ -158,6 +160,8 @@ $button-bg: #17B0E7;
   justify-content: end;
 }
 .code {
+  width: 80%;
+  max-width: 1000px;
   margin: auto;
   margin-bottom: 50px;
 }
@@ -165,10 +169,11 @@ $button-bg: #17B0E7;
   margin: auto;
   width: 80%;
   max-width: 1000px;
-  height: 500px;
-  border: 1px solid black;
-  border-radius: 10px;
+  height: 600px;
+  border: 5px solid #17B0E7;
+  border-radius: 20px;
   margin-bottom: 50px;
+  padding: 20px;
 }
 .content .txt_left {
   padding-top: 15px;
@@ -202,14 +207,18 @@ $button-bg: #17B0E7;
 }
 .comment-wirte input {
   width: 60%;
+  height: 40px;
   margin: auto;
   margin-right: 20px;
+  background-color: #eee;
+  padding: 8px;
+  padding-left: 15px;
 }
-.btn {
+.btn  {
   background-color: $button-bg;
   color: #fff;
   border: none;
-  // padding: 8px;
+  padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
   &:hover {
     background: darken($button-bg, 3%);

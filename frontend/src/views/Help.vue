@@ -271,7 +271,7 @@ h3 {
   color: #fff;
   margin-bottom: 20px;
   border: none;
-  // padding: 8px;
+  padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
   &:hover {
     background: darken($button-bg, 3%);

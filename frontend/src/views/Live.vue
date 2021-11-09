@@ -36,6 +36,6 @@ export default {
   margin: 0%;
   padding: 0;
   align-items: center;
-  justify-content: center;;
+  justify-content: center;
 }
 </style>

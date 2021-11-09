@@ -2,6 +2,7 @@
 // import createPersistedState from "vuex-persistedstate";
 import { createInstance } from "@/api/index.js";
 import { createInstance2 } from "@/api/index.js";
+import { createInstance3 } from "@/api/index.js";
 
 
 
@@ -191,6 +192,22 @@ const boardStore = {
       const response = await instance.get("/sharefile")
       console.log(response.data)
       context.commit("GET_SHARELIST",response.data.sharefile)
+    },
+    async writeShareList(context, data) { // 공유게시판 쓰기
+      console.log('공유게시판 쓰기 들어옴?')
+      const instance = createInstance3()
+      const response = await instance.post("/sharefile", data)
+      console.log(response.data)
+      // context.commit("GET_SHARELIST",response.data.sharefile)
+    },
+    async shareDownload(context,path) { // 공유 다운로드
+      console.log('공유 다운로드 들어옴?')
+      const instance = createInstance()
+      const response = await instance.get(`/sharefile/${path}`, {
+        responseType: "blob",
+    })
+      console.log(response)
+      return response
     },
   }
 }

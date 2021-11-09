@@ -69,6 +69,7 @@ export default {
 
 <style scoped>
 .head-box {
+  margin-top: 60px;
   display: flex;
   /* justify-content: end; */
   justify-content: center;
@@ -110,7 +111,7 @@ export default {
     transition: .2s;
 
 }
-.box:hover i{
+.box:hover .search-icon{
     opacity: 0;
     z-index: -1;
 }
@@ -122,21 +123,24 @@ export default {
   right: 15% ;
 }
 
-.profile-list{
-  display: flex;
-  justify-content: center;
-}
+
 .card-box {
   display: flex;
   justify-content: center;
-  align-items: center;
-  /* flex-wrap: wrap; */
+  /* align-items: center; */
+  flex-wrap: wrap;
+  /* width: 220px; */
   max-width: 1200px;
   margin: auto;
   /* border: 1px solid black; */
 }
 .content-box {
   margin-top: 20px ;
+  max-width: 1200px;
+  margin: auto;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* flex-wrap: wrap; */
   /* border: 1px solid black; */
 }
 .out {
@@ -146,6 +150,7 @@ export default {
   text-decoration: none;
   color: white;
   margin-top: 20px;
+  margin-bottom: 40px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
   font-size: 15px;

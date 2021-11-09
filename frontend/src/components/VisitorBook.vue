@@ -47,6 +47,13 @@ export default {
     date() {
       // 문자열을 읽어서 다시 date()바꿔서 today넣어야된다.
       this.today = this.to_date2(this.date)
+      // 당일 글 조회 용
+      this.date = this.dateFormat(this.today)
+      this.getVisitorBook(this.date)
+      .then(()=>{
+        // console.log(this.visitor_info(),'dddddd')
+        this.visitor = this.visitor_info()
+      }) 
     }
   },
   computed: {
@@ -127,6 +134,7 @@ export default {
 
 <style scoped>
 .container {
+  margin-top: 60px;
   width: 1000px;
   max-width: 1000px;
   margin: auto;
