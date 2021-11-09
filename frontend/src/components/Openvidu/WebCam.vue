@@ -64,15 +64,15 @@ export default {
       this.joinSession();
     },
     destroyed(){
-      if (this.data.session) this.data.session.disconnect();
-      this.data.session = undefined;
-      this.data.mainStreamManager = undefined;
-      this.data.publisher = undefined;
-      this.data.subscribers = [];
-      this.data.OV = undefined;
-      this.data.receiveMessage = [];
-      this.data.share.active = false;
-      this.data.share.screen = undefined;
+      // if (this.data.session) this.data.session.disconnect();
+      // this.data.session = undefined;
+      // this.data.mainStreamManager = undefined;
+      // this.data.publisher = undefined;
+      // this.data.subscribers = [];
+      // this.data.OV = undefined;
+      // this.data.receiveMessage = [];
+      // this.data.share.active = false;
+      // this.data.share.screen = undefined;
     },
     computed: {
       ...mapGetters(userStore, ['user_info']),
@@ -93,7 +93,14 @@ export default {
             this.data.share.screen = subscriber;
           }
         });
-        
+        this.data.share.sessionScreen.on("streamDestroyed", ({ stream }) => {
+          console.log('*****++++',this.data.sessionScreen)
+          if(stream.typeOfVideo == "SCREEN"){
+            this.data.share.active = false;
+            this.data.share.screen = undefined;
+          }
+        })
+
         this.data.session.on("streamCreated", ({ stream }) => {
           const subscriber = this.data.session.subscribe(stream);
           console.log('*****',subscriber)
@@ -101,11 +108,8 @@ export default {
           this.data.participants = this.data.subscribers.length+1;
         });
         this.data.session.on("streamDestroyed", ({ stream }) => {
+          console.log('^^^^^^',stream)
           const index = this.data.subscribers.indexOf(stream.streamManager, 0);
-          if(stream.typeOfVideo == "SCREEN"){
-            this.data.share.active = false;
-            this.data.share.screen = undefined;
-          }
           if (index >= 0) {
             this.data.subscribers.splice(index, 1);
           }
