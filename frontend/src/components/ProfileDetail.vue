@@ -37,7 +37,7 @@ export default {
     QBoardClick() {
       this.getQBoard(this.profileDetail.userId)
       .then(()=>{
-        this.$router.push({name:"QBoard"})
+        this.$router.push({name:"QBoard", params: { userid: this.profileDetail.userId}})
       })
     },
   },
@@ -65,10 +65,11 @@ export default {
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 40px 0;
+  // align-items: center;
+  // flex-wrap: wrap;
+  max-width:220px;
+  margin: 10px 20px;
+  // min-width: 220px;
 }
 
 .container .card {

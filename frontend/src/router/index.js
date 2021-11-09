@@ -11,6 +11,7 @@ import Live from "../views/Live.vue";
 import HelpWrite from "../views/HelpWrite.vue";
 import HelpDetail from "../views/HelpDetail.vue";
 import Share from "../views/Share.vue";
+import ShareWrite from "../views/ShareWrite.vue";
 
 Vue.use(VueRouter)
 
@@ -42,7 +43,7 @@ const routes = [
     component: Locker,
   },
   {
-    path: "/qboard",
+    path: "/qboard/:userid",
     name: "QBoard",
     component: QBoard,
   },
@@ -70,6 +71,11 @@ const routes = [
     path: "/share",
     name: "Share",
     component: Share,
+  },
+  {
+    path: "/sharewrite",
+    name: "ShareWrite",
+    component: ShareWrite,
   },
 ]
 
