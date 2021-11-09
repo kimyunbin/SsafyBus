@@ -111,6 +111,7 @@ export default {
 .head {
   display: flex;
   justify-content: center;
+  margin-top: 60px;
 }
 .board {
  border: 4px solid #FFE651;
@@ -175,6 +176,7 @@ button {
   cursor: pointer;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
   transition: background 0.25s $easing;
+  border-radius: 10px;
   
   &:hover {
     background: darken($button-bg, 3%);

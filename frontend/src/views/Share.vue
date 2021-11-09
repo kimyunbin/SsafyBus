@@ -1,11 +1,12 @@
 <template>
   <div>
-    {{share_list}}
+    <!-- {{share_list}} -->
     <div class="my-board">
       <h2>공유 리스트</h2>
     <div class="head">
       <p><i class="fas fa-times-circle exit-icon"></i></p>
     </div>
+      <br>
 
 
     <table class="list-box">
@@ -13,6 +14,7 @@
         <tr>
           <th class="th-no">no</th>
           <th class="th-title">제목</th>
+          <th class="th-file">파일명</th>
           <th class="th-id">작성자</th>
           <th class="th-date">날짜</th>
         </tr>
@@ -21,7 +23,10 @@
         <tr v-for="(row, idx) in share_list" :key="idx">
           <td>{{idx+1}}</td>
           <td class="txt_left">
-            <a class="a-title" @click="detailClick(row.id)">{{row.share.title}}</a>
+            <a @click="download(row.share.path)" class="a-title">{{row.share.title}}</a>
+          </td>
+          <td class="txt_right">
+            <a @click="download(row.share.path)" class="a-title">{{row.share.original}}</a>
           </td>
           <td>{{row.share.user.nickname}}</td>
           <td>{{row.createdAt}}</td>
@@ -30,7 +35,7 @@
     </table>
     <br>
 
-    <button class="btn" @click="writeClick()">질문하기</button>
+    <button class="btn" @click="writeClick()">공유하기</button>
 
 		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
@@ -75,7 +80,7 @@ export default {
      })
   },
   methods: {
-    ...mapActions(boardStore, ['getShareList']),
+    ...mapActions(boardStore, ['getShareList','shareDownload']),
     ...mapGetters(boardStore, ['share_info']),
     dateFormat(date) {
       let month = date.getMonth() + 1;
@@ -84,7 +89,38 @@ export default {
       day = day >= 10 ? day : '0' + day;
       return date.getFullYear() + '-' + month + '-' + day;
     },
-     
+    
+    writeClick() {
+      this.$router.push({name:"ShareWrite"})
+    },
+    download(e) {
+      console.log(e)
+      this.shareDownload(e)
+      .then((res)=>{
+        const url = window.URL.createObjectURL(new Blob([res.data]),{ type: res.headers['content-type'] });
+        // { type: res.headers['content-type'] }));
+        console.log(url,'url')
+        const link = document.createElement('a');
+        const contentDisposition = res.headers['content-disposition']; // 파일 이름
+        console.log(contentDisposition)
+        const fileName = decodeURI(contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]/g, ''))
+
+        // let fileName = 'unknown';
+        // if (contentDisposition) {
+        //   const [ fileNameMatch ] = contentDisposition.split(';').filter(str => str.includes('filename'));
+        //   if (fileNameMatch)
+        //     [ , fileName ] = fileNameMatch.split('=');
+        // }          
+        link.href = url;
+        link.setAttribute('download',`${fileName}`);
+        // link.setAttribute('download','회의록.md');
+
+        document.body.appendChild(link);
+        link.click();   
+        window.URL.revokeObjectURL(url);
+      })
+
+    },
   },
 
 }
@@ -111,9 +147,11 @@ $button-bg: #17B0E7;
   width: 10%;
 }
 .th-title {
-  width: 60%;
+  width: 50%;
 }
-
+.th-file {
+  width: 15%;
+}
 .list-box {
   width: 80%;
   max-width: 1000px;
@@ -145,7 +183,7 @@ $button-bg: #17B0E7;
   color: #fff;
   margin-bottom: 20px;
   border: none;
-  // padding: 8px;
+  padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
   &:hover {
     background: darken($button-bg, 3%);

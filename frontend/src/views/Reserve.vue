@@ -296,6 +296,7 @@ export default {
     },
     deleteMember(idx){
       this.members.splice(idx,1)
+      this.userid.splice(idx,1)
     }
   },
 }

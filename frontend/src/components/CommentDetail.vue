@@ -5,7 +5,7 @@
       <p class="date">{{commentList.createdAt | timeFor}}</p>
     </div>
       <p class="content">{{commentList.content}}</p>
-      <hr>
+      <!-- <hr> -->
   </div>
 </template>
 
@@ -64,16 +64,25 @@ export default {
 <style scoped>
 .comment-box {
   margin-bottom: 30px;
+  border: 1px gray solid;
+  border-radius: 10px;
+
+  padding: 5px;
 }
 .head {
   display: flex;
   /* justify-content: center; */
+}
+.username {
+  /* padding-left: 5px; */
 }
 .date {
   color:gray;
   margin-left: 10px;
 }
 .content {
+  margin-top: 10px;
+  margin-bottom: 5px;
   text-align:left;
 }
 </style>>
