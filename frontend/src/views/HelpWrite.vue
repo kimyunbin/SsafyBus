@@ -4,14 +4,23 @@
       <h3>제목</h3>
       <input type="text" name="" id="" v-model="title">
     </div>
-     <div class="box">
+     <!-- <div class="box">
       <h3>내용</h3>
-      <textarea name="" id="" cols="30" rows="10"  v-model="content"></textarea>
-    </div>
-    <div class="box">
+      <textarea name="" id="" cols="30" rows="10"  ></textarea>
+    </div> -->
+    <!-- <div class="box">
       <h3>코드내용</h3>
       <textarea name="" id="" cols="30" rows="10"  v-model="code"></textarea>
-    </div>
+    </div> -->
+    <div class="box">
+      <editor
+          :initialValue="content"
+          ref="toastuiEditor"
+          height="500px"
+          initialEditType="markdown"
+          previewStyle="vertical"
+      />
+    </div>      
     <div class="box">
       <h3>링크</h3>
       <input type="text" name="" id=""  v-model="link">
@@ -22,9 +31,15 @@
 </template>
 
 <script>
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/vue-editor';
+
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
 export default {
+  components: {
+    editor: Editor,
+  },
   name: 'HelpWrite',
   data() {
     return {
@@ -38,10 +53,13 @@ export default {
   methods:{
     ...mapActions(boardStore, ['writeHelpList','editHelpItem']),
     ...mapGetters(boardStore, ['help_info','search_user', 'edit_info']),
+
     submitClick() {
+      const content = this.$refs.toastuiEditor.invoke('getHTML');
+      console.log(content)
       const value = {
         "title" : this.title,
-        "content" : this.content,
+        "content" : content,
         "code" : this.code,
         "link" : this.link,
         }
@@ -85,20 +103,24 @@ export default {
 
 <style scoped>
 .container {
-  height: 1000px;
-  width: 100%;
-  max-width: 600px;
+  margin-top: 60px;
+  height: 850px;
+  width: 80%;
+  max-width: 1000px;
   border: 5px solid #17B0E7;
   border-radius: 20px;
 }
 .box {
+  display: flex;
+  justify-content: center;
   margin-top: 30px;
 }
 .box h3 {
-  text-align: left;
-  margin-left: 100px;
+  /* text-align: left; */
+  /* margin-left: 100px; */
 }
 .box input {
+  margin-left: 50px;
   width: 360px;
   height: 35px;
 }
@@ -124,7 +146,7 @@ button {
   background: #17B0E7;
   color: #fff;
   border: none;
-  
+  padding: 8px;
   }
 </style>>
 
