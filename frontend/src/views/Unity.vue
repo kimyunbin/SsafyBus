@@ -1,7 +1,7 @@
 <template>
   <unity
-    src = "./unity/Build/unity.json"
-    unityLoader = "./unity/Build/UnityLoader.js"
+    src = "./unity/WebGL/unity.json"
+    unityLoader = "./unity/WebGL/UnityLoader.js"
     height = "600"
     width = "1000"
     >
