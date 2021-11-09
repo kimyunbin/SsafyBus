@@ -133,34 +133,7 @@ export default {
       this.$emit('updateStream', type);
     },
     shareScreen() {
-      let screen = this.data.OV.initPublisher(undefined, {
-        resolution: "1280x720",
-        videoSource: "screen",
-        publishAudio : this.data.setting.publishAudio,
-        publishVideo : this.data.setting.publishVideo,
-      });
-
-      screen.once("accessAllowed", () => {
-        screen.stream
-          .getMediaStream()
-          .getVideoTracks()[0]
-          .addEventListener("ended", () => {
-            this.data.session.unpublish(screen);
-            this.screenShare = false;
-            this.data.share.active = false;
-            this.data.share.screen = undefined;
-            this.data.session.publish(this.data.publisher);
-          });
-        
-        this.data.session.unpublish(this.data.publisher);
-        this.screenShare = true;
-        this.data.share.active = true;
-        this.data.share.screen = screen;
-        this.data.session.publish(this.data.share.screen);
-      });
-      screen.once("accessDenied", () => {
-        console.warn("ScreenShare: Access Denied");
-      });
+      this.$emit('shareScreen')
     },
     leaveSession() {
         this.data.share.active = false;
