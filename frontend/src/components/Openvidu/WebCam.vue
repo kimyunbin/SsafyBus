@@ -97,10 +97,6 @@ export default {
         this.data.session.on("streamCreated", ({ stream }) => {
           const subscriber = this.data.session.subscribe(stream);
           console.log('*****',subscriber)
-          if(subscriber.stream.typeOfVideo == "SCREEN"){
-            this.data.share.active = true;
-            this.data.share.screen = subscriber;
-          }
           this.data.subscribers.push(subscriber);
           this.data.participants = this.data.subscribers.length+1;
         });
