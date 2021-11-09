@@ -27,19 +27,19 @@
       </div>
     </div>
     <div id="webcam-nav">
-      <button id="btnSetvideo" @click="updateStream(0)" class="webcam-button">
-          <div v-if="!data.setting.publishVideo"><div id="unpublish-video" class="fas fa-video-slash"></div></div>
-          <div v-else><div id="publish-video" class="fas fa-video"></div></div>
+      <button id="btnSetvideo" @click="updateStream(0)" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':data.setting.publishVideo}">
+        <div v-if="!data.setting.publishVideo"><div id="unpublish-video" class="fas fa-video"></div></div>
+        <div v-else><div id="publish-video" class="fas fa-video"></div></div>
       </button>
-      <button id="btnSetAudio" @click="updateStream(1)" class="webcam-button">
-          <div v-if="!data.setting.publishAudio"><div id="unpublish-audio" class="fas fa-microphone-slash"></div></div>
-          <div v-else><div id="publish-audio" class="fas fa-microphone"></div></div>
+      <button id="btnSetAudio" @click="updateStream(1)" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':data.setting.publishAudio}">
+        <div v-if="!data.setting.publishAudio"><div id="unpublish-audio" class="fas fa-microphone-slash"></div></div>
+        <div v-else><div id="publish-audio" class="fas fa-microphone"></div></div>
       </button>
-      <button id="btnShareScreen" @click="shareScreen" class="webcam-button">
+      <button id="btnShareScreen" @click="shareScreen" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':screenShare}">
         <div v-if="!screenShare"><div id="unpublish-screen" class="fas fa-upload"></div></div>
         <div v-else><div id="publish-screen" class="fas fa-upload"></div></div>
       </button>
-      <button id="btnLeaveSession" @click="leaveSession" class="webcam-button"><div id="leave-session" class="fas fa-phone-alt"></div></button>
+      <button id="btnLeaveSession" @click="leaveSession" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':true}"><div id="leave-session" class="fas fa-phone"></div></button>
     </div>
   </div>
 </template>
@@ -133,33 +133,7 @@ export default {
       this.$emit('updateStream', type);
     },
     shareScreen() {
-      let screen = this.data.OV.initPublisher(undefined, {
-        resolution: "1280x720",
-        videoSource: "screen",
-        publishAudio : this.data.setting.publishAudio,
-      });
-
-      screen.once("accessAllowed", () => {
-        screen.stream
-          .getMediaStream()
-          .getVideoTracks()[0]
-          .addEventListener("ended", () => {
-            this.data.session.unpublish(screen);
-            this.screenShare = false;
-            this.data.share.active = false;
-            this.data.share.screen = undefined;
-            this.data.session.publish(this.data.publisher);
-          });
-        
-        this.data.session.unpublish(this.data.publisher);
-        this.screenShare = true;
-        this.data.share.active = true;
-        this.data.share.screen = screen;
-        this.data.session.publish(this.data.share.screen);
-      });
-      screen.once("accessDenied", () => {
-        console.warn("ScreenShare: Access Denied");
-      });
+      this.$emit('shareScreen')
     },
     leaveSession() {
         this.data.share.active = false;
@@ -171,20 +145,28 @@ export default {
 
 <style scoped>
 #webcam-container{
+  /* min-width: 80%; */
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   height: 100%;
+  background-color: #17B0E750;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
 }
 #webcam-title{
   width: 100%;
-  height: 10%;
+  height: 7%;
   text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 #webcam-main{
   width: 100%;
-  height: 90%;
+  height: 86%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -192,7 +174,7 @@ export default {
 }
 
 #share-container{
-  height: 80%;
+  height: 80% !important;
   overflow: hidden;
   padding-right: 10px;
 }
@@ -203,6 +185,8 @@ export default {
   align-content: space-around;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .screen-share{
@@ -215,6 +199,7 @@ export default {
 }
 .screen-share #videos .flex-item{
   width: 10% !important;
+  height: 100%;
   /* height: 10% !important; */
 }
 .screen-share #prev{
@@ -234,13 +219,13 @@ export default {
     flex-basis: 0;
 }
 .flex-row{
-  /* flex-direction: row!important; */
+  flex-direction: row!important;
 }
 .flex-row #next button{
-  /* height: auto!important; */
+  height: auto!important;
 }
 .flex-row #prev button{
-  /* height: auto!important; */
+  height: auto!important;
 }
 .flex-row .inactive-user-name{
     font-size: initial;
@@ -254,15 +239,12 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
-    margin: auto;
     width: 80%;
+    height: 100%;
 }
 
 .screen-video{
   height: 100%;
-}
-.screen-video video{
-  width: 100%;
 }
 .screen-video .active-user-name{
   display: none;
@@ -273,7 +255,10 @@ export default {
 .flex-item {
   flex: 1 auto;
   position:relative;
-  margin : 5px;
+  padding-left : 5px;
+  padding-right: 5px;
+  padding-top: 10px;
+  /* height: 100%; */
 }
 .width-40{
   max-width: 40%;
@@ -295,7 +280,7 @@ export default {
   align-content: center;
   align-items: center;
   width: 100%;
-  height: 75px;
+  height: 7%;
   flex-grow: 1;
   flex-basis: 0;
 }
@@ -306,7 +291,25 @@ export default {
   border-radius : 20px;
   width: 100px;
   height: 45px !important;
+  cursor: pointer;
 }
+
+.ctr-btn{
+  background-color: #bdc3c7;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+}
+
+.ctr-btn:hover{
+  background-color: #6ab04c;
+}
+
+.ctr-btn-on:hover{
+  background-color: #eb4d4b !important;
+}
+
 #btnLeaveSession{
   width: 45px;
   border-radius: 50px;

@@ -1,6 +1,6 @@
 <template>
   <div id="session" v-if="data.session">
-    <Camera :data="data" :location="location" v-on:leaveSession="leaveSession" v-on:updateStream="updateStream"/>
+    <Camera :data="data" :location="location" v-on:leaveSession="leaveSession" v-on:updateStream="updateStream" v-on:shareScreen="shareScreen"/>
     <Chat :data="data" v-on:sendMessage="send"/>
   </div>
 </template>
@@ -18,6 +18,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_URL = "https://k5c104.p.ssafy.io";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
 export default {
     name : "Webcam",
     components : {
@@ -47,13 +48,12 @@ export default {
           receiveMessage: [],
           receiveMessageBell : false,
           share : {
+            OVCamere:undefined,
             active : false,
-            screen : undefined,
+            sessionScreen : undefined,
           },
-          // userName: "user1",
         },
-        user : {},
-        schoolName : '',
+        user : '',
       }
     },
     props : {
@@ -63,7 +63,6 @@ export default {
       this.user = this.user_info.nickname;
       this.data.roomName = this.location;
       this.joinSession();
-
     },
     destroyed(){
       if (this.data.session) this.data.session.disconnect();
@@ -83,9 +82,22 @@ export default {
       joinSession() {
         this.data.OV = new OpenVidu();
         this.data.session = this.data.OV.initSession();
-
+        this.data.share.OVCamere = new OpenVidu();
+        this.data.share.sessionScreen = this.data.share.OVCamere.initSession();
+        
+        this.data.share.sessionScreen.on('streamCreated', ({ stream }) => {
+          console.log('*****++++',this.data.sessionScreen)
+          const subscriber = this.data.session.subscribe(stream);
+          console.log('sssssssss------')
+          if (subscriber.stream.typeOfVideo == "SCREEN") {
+            this.data.share.active = true;
+            this.data.share.screen = subscriber;
+          }
+        });
+        
         this.data.session.on("streamCreated", ({ stream }) => {
           const subscriber = this.data.session.subscribe(stream);
+          console.log('*****',subscriber)
           if(subscriber.stream.typeOfVideo == "SCREEN"){
             this.data.share.active = true;
             this.data.share.screen = subscriber;
@@ -128,7 +140,45 @@ export default {
             });
         });
 
+        this.getToken(this.data.roomName+'share').then((tokenScreen) => {
+          // Create a token for screen share
+          this.data.share.sessionScreen.connect(tokenScreen, { clientData: this.user }).then(() => {
+            // document.getElementById('buttonScreenShare').style.visibility = 'visible';
+            console.log("Session screen connected");
+          }).catch((error => {
+            console.warn('There was an error connecting to the session for screen share:', error.code, error.message);
+          }));
+        });
+
         window.addEventListener("beforeunload", this.data.leaveSession);
+      },
+      shareScreen() {
+        console.log(this.data.share)
+        let screen = this.data.share.OVCamere.initPublisher(undefined, {
+          resolution: "1280x720",
+          videoSource: "screen",
+          publishAudio : this.data.setting.publishAudio,
+        });
+        screen.once("accessAllowed", () => {
+          screen.stream
+            .getMediaStream()
+            .getVideoTracks()[0]
+            .addEventListener("ended", () => {
+              this.data.share.sessionScreen.unpublish(screen);
+              this.screenShare = false;
+              this.data.share.active = false;
+              this.data.share.screen = undefined;
+              this.data.session.publish(this.data.publisher);
+            });
+          this.data.share.sessionScreen.unpublish(screen);
+          this.screenShare = true;
+          this.data.share.active = true;
+          this.data.share.screen = screen;
+          this.data.share.sessionScreen.publish(this.data.share.screen);
+        });
+        screen.once("accessDenied", () => {
+          console.warn("ScreenShare: Access Denied");
+        });
       },
       leaveSession() {
         if (this.data.session) this.data.session.disconnect();
@@ -227,12 +277,16 @@ export default {
 #session{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   width: 90%;
   height: 90%;
-  padding: 10px;
-  border: 5px solid #17B0E7;
-  border-radius: 10px;
+  margin: 10px;
+  border-radius: 30px;
+  background-color: #FFF;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 </style>
