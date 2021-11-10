@@ -50,6 +50,7 @@ export default {
           OVCamere:undefined,
           active : false,
           sessionScreen : undefined,
+          screen : undefined
         },
       },
       user : '',
@@ -103,23 +104,22 @@ export default {
 
       this.data.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.data.session.subscribe(stream);
-        console.log('*****',subscriber)
         this.data.subscribers.push(subscriber);
-        console.log('222222',this.data.subscribers)
         this.data.participants = this.data.subscribers.length+1;
       });
+      
       this.data.session.on("streamDestroyed", ({ stream }) => {
-        console.log('^^^^^^',stream)
-        console.log('222222',this.data.subscribers)
-        console.log('3333333',stream.streamManager)
-        console.log('44444',this.data.subscribers.indexOf(stream.streamManager, 0))
         const index = this.data.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.data.subscribers.splice(index, 1);
         }
         this.data.participants = this.data.subscribers.length+1;
-        console.log('44444',this.data.subscribers)
       });
+			
+      this.session.on('exception', ({ exception }) => {
+				console.warn(exception);
+			});
+
       this.data.session.on("signal:my-chat", (event) => {
         this.data.receiveMessage.push({sender : JSON.parse(event.from.data), message : event.data});
         this.data.receiveMessageBell = true;
@@ -162,7 +162,7 @@ export default {
         }));
       });
 
-      window.addEventListener("beforeunload", this.data.leaveSession);
+      window.addEventListener("beforeunload", this.leaveSession);
     },
     shareScreen() {
       console.log(this.data.share)
@@ -201,7 +201,7 @@ export default {
       this.data.subscribers = [];
       this.data.OV = undefined;
       this.data.receiveMessage = [];
-      window.removeEventListener("beforeunload", this.data.leaveSession);
+      window.removeEventListener("beforeunload", this.leaveSession);
       this.$router.push({name : 'Unity'});
     },
 		getToken (mySessionId) {
