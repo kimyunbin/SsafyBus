@@ -3,7 +3,7 @@
     <div id="webcam-title">
       <p>{{location}}</p>
     </div>
-    <div id="webcam-main">
+    <div id="webcam-main" v-if="sunsu">
       <div id="video-container" :class="{'screen-share' : data.share.active}">
         <div id="prev">
           <button class="webcam-button page-button" @click="page -= 1;" v-if="prev">
@@ -25,6 +25,9 @@
           <user-video class="screen-video" :ss=false :stream-manager="data.share.screen"></user-video>
         </div>
       </div>
+    </div>
+    <div id="webcam-main" v-else>
+      <button @click.prevent="sunsu = !sunsu">자자 선수입장</button>
     </div>
     <div id="webcam-nav">
       <button id="btnSetvideo" @click="updateStream(0)" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':data.setting.publishVideo}">
@@ -59,6 +62,7 @@ export default {
       page : 0,
       screenShare : false,
       maxHeight : 0,
+      sunsu:false
     }
   },
   props :{
