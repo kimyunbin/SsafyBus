@@ -12,7 +12,7 @@
         </div>
         <div id="videos" >
           <user-video :ss=true :class="{publisher : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" :stream-manager="data.publisher" v-if="page == 0"></user-video>
-          <user-video :ss=true :class="{subscribers : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" v-for="(sub, idx) in pageSub" :key="idx" :stream-manager="sub"></user-video>
+          <user-video :ss=true :class="{subscribers : true, 'flex-item': true, 'width-40': setWidth40, 'width-30' : setWidth30}" v-for="sub in pageSub" :key="sub.stream.connection.connectionId" :stream-manager="sub"></user-video>
         </div>
         <div id="next">
           <button class="webcam-button page-button" @click="page += 1;" v-if="next">
