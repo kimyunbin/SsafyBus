@@ -74,19 +74,21 @@ export default {
     this.data.receiveMessage = [];
     this.data.share.active = false;
     this.data.share.screen = undefined;
+    this.data.share.OVCamere = undefined;
+    this.data.share.sessionScreen = undefined;
   },
   computed: {
     ...mapGetters(userStore, ['user_info']),
   },
   methods: {
-    joinSession() {
+    async joinSession() {
       this.data.OV = new OpenVidu();
       this.data.session = this.data.OV.initSession();
       this.data.share.OVCamere = new OpenVidu();
       this.data.share.sessionScreen = this.data.share.OVCamere.initSession();
       
       this.data.share.sessionScreen.on('streamCreated', ({ stream }) => {
-        console.log('*****++++',this.data.sessionScreen)
+        console.log('*****++++',this.data.share.sessionScreen)
         const subscriber = this.data.session.subscribe(stream);
         console.log('sssssssss------')
         if (subscriber.stream.typeOfVideo == "SCREEN") {
@@ -95,7 +97,7 @@ export default {
         }
       });
       this.data.share.sessionScreen.on("streamDestroyed", ({ stream }) => {
-        console.log('*****++++',this.data.sessionScreen)
+        console.log('*****++++',this.data.share.sessionScreen)
         if(stream.typeOfVideo == "SCREEN"){
           this.data.share.active = false;
           this.data.share.screen = undefined;
@@ -125,7 +127,7 @@ export default {
         this.data.receiveMessageBell = true;
       });
 
-      this.getToken(this.data.roomName).then(token => {
+      await this.getToken(this.data.roomName).then(token => {
         this.data.session.connect(token, {clientData:this.user})
           .then(() => {
             let publisher = this.data.OV.initPublisher(undefined, {
@@ -152,7 +154,7 @@ export default {
           });
       });
 
-      this.getToken(this.data.roomName+'share').then(tokenScreen => {
+      await this.getToken(this.data.roomName+'share').then(tokenScreen => {
         // Create a token for screen share
         this.data.share.sessionScreen.connect(tokenScreen, { clientData: this.user }).then(() => {
           // document.getElementById('buttonScreenShare').style.visibility = 'visible';
@@ -201,6 +203,10 @@ export default {
       this.data.subscribers = [];
       this.data.OV = undefined;
       this.data.receiveMessage = [];
+      this.data.share.active = false;
+      this.data.share.screen = undefined;
+      this.data.share.OVCamere = undefined;
+      this.data.share.sessionScreen = undefined;
       window.removeEventListener("beforeunload", this.leaveSession);
       this.$router.push({name : 'Unity'});
     },
