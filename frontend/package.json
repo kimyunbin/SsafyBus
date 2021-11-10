@@ -15,7 +15,7 @@
     "core-js": "^3.6.5",
     "inko": "^1.1.1",
     "node-sass": "^6.0.1",
-    "openvidu-browser": "^2.21.0-beta1",
+    "openvidu-browser": "^2.20.0",
     "sass-loader": "^10.2.0",
     "simple-code-editor": "^1.0.5",
     "vue": "^2.6.14",
