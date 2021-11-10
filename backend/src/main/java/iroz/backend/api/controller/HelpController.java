@@ -11,6 +11,10 @@ import iroz.backend.db.entity.Help;
 import iroz.backend.db.repository.CommentRepository;
 import iroz.backend.db.repository.HelpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +36,8 @@ public class HelpController {
     private CommentRepository commentRepository;
 
     @GetMapping("")
-    public ResponseEntity<?> all(){
-        List<HelpAllMapping> result = helpService.findAll();
+    public ResponseEntity<?> all(@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable){
+        Page<HelpAllMapping> result = helpService.findAll(pageable);
         HashMap map = new HashMap();
         map.put("help",result);
         return ResponseEntity.ok().body(map);
