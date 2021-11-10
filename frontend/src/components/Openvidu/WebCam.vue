@@ -116,7 +116,7 @@ export default {
         this.data.participants = this.data.subscribers.length+1;
       });
 			
-      this.session.on('exception', ({ exception }) => {
+      this.data.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
 
