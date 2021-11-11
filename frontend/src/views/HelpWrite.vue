@@ -109,11 +109,13 @@ export default {
   max-width: 1000px;
   border: 5px solid #17B0E7;
   border-radius: 20px;
+  margin: auto;
 }
 .box {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  max-width: 1000px;
 }
 .box h3 {
   /* text-align: left; */

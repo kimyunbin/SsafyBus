@@ -1,15 +1,21 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <v-app>
+    <div id="app">
+      <router-view/>
+    </div>
+  </v-app>
 </template>
 
 <script>
+
 export default {
   name: 'App',
-}
-</script>
 
+  data: () => ({
+    //
+  }),
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -19,4 +25,5 @@ export default {
   color: #2c3e50;
   /* margin-top: 60px; */
 }
+
 </style>
