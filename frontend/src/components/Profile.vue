@@ -22,32 +22,44 @@
           :profileDetail = profileDetail
         />
       </div>
-      <button class="out">나가기</button>
+
+      <Pagnation
+        :pagnationInfo = pagnation_info
+        @update ="profileList"
+      />
     </div>
+      <button class="out">나가기</button>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
+
+import Pagnation from './Pagnation.vue'
 import ProfileDetail from './ProfileDetail.vue'
 export default {
-  components: { ProfileDetail },
+  components:{ProfileDetail, Pagnation},
   name: 'Profile',
   data() {
     return  {
       profile: {},
       search_name: '',
+      total: '',
+      page: 0, // 현재 페이지
+      
     }
   },
   computed: {
 
   },
   created() {
-    this.getProfile()
-    .then(()=>{
-      this.profile = this.profile_info()
-    })
+    // console.log(this.page,'ddd')
+    this.total = this.profile_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
   },
   methods: {
     ...mapActions(boardStore, ['getProfile', 'searchUser']),
@@ -59,10 +71,23 @@ export default {
         this.profile = this.search_user()
         this.search_name = ''
       })
-    }
+    },
+    profileList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getProfile(page)
+      .then(()=>{
+        this.profile = this.profile_info().content
+        // this.$router.push({name:"Profile", params: this.page})
+      })
+    },
+    
+
   },
   mounted() {
-    // this.searchUser()
+    this.profileList()
+
   }
 }
 </script>

@@ -28,8 +28,12 @@
       </tbody>
     </table>
     <br>
-
     <button class="btn" @click="writeClick()">질문하기</button>
+    <br>
+    <Pagnation
+      :pagnationInfo = pagnation_info
+      @update ="helpList"
+    />
 
 		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
@@ -56,10 +60,12 @@
 
 <script>
 import { mapActions, mapGetters} from 'vuex'
+import Pagnation from '../components/Pagnation.vue'
 // import CodeEditor from 'simple-code-editor';
 const boardStore = 'boardStore'
   export default {
     components: {
+        Pagnation
       // CodeEditor,
     },
     data() {
@@ -78,6 +84,8 @@ const boardStore = 'boardStore'
         help_pk:'',
         comment: '',
         is_active : false,
+        total: '',
+        page: 0, // 현재 페이지
       }
     },
     computed: {},
@@ -135,17 +143,31 @@ const boardStore = 'boardStore'
       .then(()=>{
         this.$router.go()
       })
-    }, 
+    },
+    helpList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getHelpList(page)
+      .then(()=>{
+        this.help_list = this.help_info().content
+        for (let i = 0; i < this.help_list.length; i++) {
+          const createdAt = this.help_list[i].createdAt
+          this.help_list[i].createdAt = this.dateFormat(new Date(createdAt))
+          }
+        })
+    } 
+  },
+  mounted() {
+    this.helpList()
   },
   created() {
-    this.getHelpList()
-  .then(()=>{
-    this.help_list = this.help_info()
-    for (let i = 0; i < this.help_list.length; i++) {
-      const createdAt = this.help_list[i].createdAt
-      this.help_list[i].createdAt = this.dateFormat(new Date(createdAt))
-      }
-     })
+    
+    this.total = this.help_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
     },
   }
 </script>
