@@ -357,7 +357,7 @@ export default {
 
 .sl-content{
   background-color: black;
-  width: 205px;
+  width: 225px;
   height: 150px;
   display: flex;
   flex-direction: column;
