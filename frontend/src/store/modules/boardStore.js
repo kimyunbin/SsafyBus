@@ -92,12 +92,12 @@ const boardStore = {
       console.log(response.data)
       // context.commit("GET_VISITORBOOK",response.data)
     },
-    async getProfile(context) { // 프로필 조회
+    async getProfile(context, page) { // 프로필 조회
       console.log('프로필 조회 들어옴?')
       const instance = createInstance()
-      const response = await instance.get("/users/profile")
+      const response = await instance.get(`/users/profile?page=${page}`)
       console.log(response.data)
-      context.commit("GET_PROFILE",response.data.user.content)
+      context.commit("GET_PROFILE",response.data.user)
     },
     async searchUser(context, name) { // 유저검색 조회
       console.log('유저검색 들어옴?')
@@ -136,10 +136,10 @@ const boardStore = {
       // context.commit("GET_VISITORBOOK",response.data)
     },
     // Help
-    async getHelpList(context) { // 헬프게시판 조회
+    async getHelpList(context, page) { // 헬프게시판 조회
       console.log('헬프게시판 조회 들어옴?')
       const instance = createInstance()
-      const response = await instance.get("/help")
+      const response = await instance.get(`/help?page=${page}`)
       console.log(response.data)
       context.commit("GET_HELPLIST",response.data.help)
     },
@@ -186,10 +186,10 @@ const boardStore = {
     }, 
 
     //
-    async getShareList(context) { // 공유게시판 조회
+    async getShareList(context, page) { // 공유게시판 조회
       console.log('공유게시판 조회 들어옴?')
       const instance = createInstance2()
-      const response = await instance.get("/sharefile")
+      const response = await instance.get(`/sharefile?page=${page}`)
       console.log(response.data)
       context.commit("GET_SHARELIST",response.data.sharefile)
     },
