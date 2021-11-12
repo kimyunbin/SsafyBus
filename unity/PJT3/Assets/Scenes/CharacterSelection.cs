@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class CharacterSelection : MonoBehaviour
 {
     public GameObject[] characters;
@@ -31,6 +32,8 @@ public class CharacterSelection : MonoBehaviour
     public void StartGame()
     {
         PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
-        SceneManager.LoadScene("SampleScene");
+        
+        
+
     }
 }

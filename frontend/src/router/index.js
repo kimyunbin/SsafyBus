@@ -16,79 +16,78 @@ import Unity from "../views/Unity.vue";
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: "/",
-    name: "Login",
-    component: Login,
-  },
-  {
-    path: "/gate",
-    name: "Gate",
-    component: Gate,
-  },
-  {
-    path: "/reserve",
-    name: "Reserve",
-    component: Reserve,
-  },
-  {
-    path: "/studyroom/:roomId",
-    name: "StudyRoom",
-    component: StudyRoom,
-    props: true,
-  },
-  {
-    path: "/locker",
-    name: "Locker",
-    component: Locker,
-  },
-  {
-    path: "/qboard/:userid",
-    name: "QBoard",
-    component: QBoard,
-  },
-  {
-    path: "/help",
-    name: "Help",
-    component: Help,
-  },
-  {
-    path: "/live",
-    name: "Live",
-    component: Live,
-  },
-  {
-    path: "/helpwrite/:help_pk?",
-    name: "HelpWrite",
-    component: HelpWrite,
-  },
-  {
-    path: "/helpdetail/:help_pk",
-    name: "HelpDetail",
-    component: HelpDetail,
-  },
-  {
-    path: "/share",
-    name: "Share",
-    component: Share,
-  },
-  {
-    path: "/sharewrite",
-    name: "ShareWrite",
-    component: ShareWrite,
-  },
-  {
-    path : "/unityGame",
-    name : "Unity",
-    component : Unity,
-  },
+const routes = [{
+        path: "/",
+        name: "Login",
+        component: Login,
+    },
+    {
+        path: "/gate",
+        name: "Gate",
+        component: Gate,
+    },
+    {
+        path: "/reserve",
+        name: "Reserve",
+        component: Reserve,
+    },
+    {
+        path: "/studyroom/:roomId",
+        name: "StudyRoom",
+        component: StudyRoom,
+        props: true,
+    },
+    {
+        path: "/locker",
+        name: "Locker",
+        component: Locker,
+    },
+    {
+        path: "/qboard/:userid",
+        name: "QBoard",
+        component: QBoard,
+    },
+    {
+        path: "/help",
+        name: "Help",
+        component: Help,
+    },
+    {
+        path: "/live",
+        name: "Live",
+        component: Live,
+    },
+    {
+        path: "/helpwrite/:help_pk?",
+        name: "HelpWrite",
+        component: HelpWrite,
+    },
+    {
+        path: "/helpdetail/:help_pk",
+        name: "HelpDetail",
+        component: HelpDetail,
+    },
+    {
+        path: "/share",
+        name: "Share",
+        component: Share,
+    },
+    {
+        path: "/sharewrite",
+        name: "ShareWrite",
+        component: ShareWrite,
+    },
+    {
+        path: "/SSAFY",
+        name: "Unity",
+        component: Unity,
+    },
 ]
 
 const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes,
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes,
 });
 
 export default router;

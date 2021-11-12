@@ -2,8 +2,8 @@
   <unity
     src = "./unity/WebGL/unity.json"
     unityLoader = "./unity/WebGL/UnityLoader.js"
-    height = "600"
-    width = "1000"
+    height = "100%"
+    width = "100%"
     >
   </unity>
 </template>
