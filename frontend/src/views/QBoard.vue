@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imgurl">
     <div class="head">
       <h2 style="font-weight:bold;">{{name}}</h2>
       <h2>에게 무엇이든 물어보는 게시판</h2>
@@ -127,6 +127,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.imgurl {
+  // width: 100vw;
+  // height: 100vh;
+  // background-image: url("../assets/qboard.png");
+  // background-size: cover;
+  // background-position: center;
+  // padding-top: 60px;
+}
+
 .head {
   display: flex;
   justify-content: center;

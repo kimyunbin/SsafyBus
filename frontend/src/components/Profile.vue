@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imgurl">
     <div class="head-box">
       <div class="box">
         <div name="search">
@@ -93,8 +93,22 @@ export default {
 </script>
 
 <style scoped>
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.imgurl {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/locker.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
+}
+
 .head-box {
-  margin-top: 60px;
   display: flex;
   /* justify-content: end; */
   justify-content: center;

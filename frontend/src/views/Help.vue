@@ -185,7 +185,7 @@ $easing: cubic-bezier(.55,0,.1,1);
  */
 
 
-h1, h2, h3, h4, h5, h6 {
+h1,  h3, h4, h5, h6 {
   font-weight: normal;
 }
 
@@ -233,8 +233,19 @@ h3 {
   //  tbody, td, tfoot, th, thead, tr{width: 200px;}
 
 /// 여기부터
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 .my-board {
-  margin-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/board.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
 
 }
 .head {
