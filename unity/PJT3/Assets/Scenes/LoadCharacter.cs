@@ -19,6 +19,8 @@ public class LoadCharacter : MonoBehaviour
         player.gameObject.transform.localScale = new Vector3(x,x,x);
         player.gameObject.tag = "Player";
         player.gameObject.AddComponent<Player>();
+        player.gameObject.AddComponent<SelectItem>();
+        // player.gameObject.AddComponent<SelectItem>();
     }
     // Update is called once per frame
     void Update()
