@@ -1,59 +1,59 @@
 <template>
   <div>
     <div class="my-board">
-      <h2>게시판 리스트</h2>
-    <div class="head">
-      <p><i class="fas fa-times-circle exit-icon"></i></p>
-    </div>
+      <h2>헬프 게시판</h2>
+      <div class="head">
+        <p><i class="fas fa-times-circle exit-icon"></i></p>
+      </div>
 
 
-    <table class="list-box">
-      <thead class="th-list">
-        <tr>
-          <th class="th-no">no</th>
-          <th class="th-title">제목</th>
-          <th class="th-id">작성자</th>
-          <th class="th-date">날짜</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, idx) in help_list.slice().reverse()" :key="idx">
-          <td>{{idx+1}}</td>
-          <td class="txt_left">
-            <a class="a-title" @click="detailClick(row.id)">{{row.title}}</a>
-          </td>
-          <td>{{row.user.nickname}}</td>
-          <td>{{row.createdAt}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-    <button class="btn" @click="writeClick()">질문하기</button>
-    <br>
-    <Pagnation
-      :pagnationInfo = pagnation_info
-      @update ="helpList"
-    />
+      <table class="list-box">
+        <thead class="th-list">
+          <tr>
+            <th class="th-no">no</th>
+            <th class="th-title">제목</th>
+            <th class="th-id">작성자</th>
+            <th class="th-date">날짜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, idx) in help_list.slice()" :key="idx">
+            <td>{{row.id}}</td>
+            <td class="txt_left">
+              <a class="a-title" @click="detailClick(row.id)">{{row.title}}</a>
+            </td>
+            <td>{{row.user.nickname}}</td>
+            <td>{{row.createdAt}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <button class="btn" @click="writeClick()">질문하기</button>
+      <br>
+      <Pagnation
+        :pagnationInfo = pagnation_info
+        @update ="helpList"
+      />
 
-		<!-- <div class="pagination" v-if="paging.totalCount > 0">
-			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
-			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
-			<template v-for=" (n,index) in paginavigation()">
-				<template v-if="paging.page==n">
-					<strong :key="index">{{n}}</strong>
-				</template>
-				<template v-else>
-					<a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
-				</template>
-			</template>
-			<a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
-			<a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
-		</div> -->
-
-      <!-- <div class="btnRightWrap">
-        <a  class="btn">등록</a>
+      <!-- <div class="pagination" v-if="paging.totalCount > 0">
+        <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
+        <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
+        <template v-for=" (n,index) in paginavigation()">
+          <template v-if="paging.page==n">
+            <strong :key="index">{{n}}</strong>
+          </template>
+          <template v-else>
+            <a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
+          </template>
+        </template>
+        <a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
+        <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
       </div> -->
-  </div>
+
+        <!-- <div class="btnRightWrap">
+          <a  class="btn">등록</a>
+        </div> -->
+    </div>
   </div>
 </template>
 
@@ -225,14 +225,6 @@ h3 {
 //   }
 // }
 
-
-
-
-
-
-
-
-
   .tbList{margin-right: 0px}
 	// .tbList th{border-top:1px solid #888;}
 	.tbList th, .tbList td{border-bottom:1px solid #eee; padding:8px 0;}
@@ -295,6 +287,7 @@ h3 {
   border: none;
   padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  border-radius: 10px;
   &:hover {
     background: darken($button-bg, 3%);
   }

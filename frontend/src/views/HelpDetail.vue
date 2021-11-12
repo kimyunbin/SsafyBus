@@ -18,7 +18,7 @@
       <!-- {{help_item.code}} -->
     </div>
 
-    <div class="content">
+    <div class="content center">
       <viewer :initialValue="viewerText" height="500px" />
       <!-- <p class="txt_left">{{help_item.content}}</p> -->
     </div>
@@ -30,7 +30,7 @@
 
     <div class="comment-wirte">
       <!-- <label>댓글:</label> -->
-      <input type="text" name="" id="" class="comment-input"  v-model="comment">
+      <input type="text" name="" id="" class="comment-input"  v-model="comment" @keyup.enter="submitClick(help_item.helpId)">
       <button size="sm" class="btn" @click="submitClick(help_item.helpId)">댓글 등록하기</button>
     </div>
     <div class="comment-list">
@@ -111,7 +111,12 @@ export default {
       console.log(value)
       this.writeComment(value)
       .then(()=>{
-        this.$router.go()
+        this.help_item.comments.push({
+          content:this.comment,
+          user:this.user_info(),
+          createdAt:''
+        })
+        this.comment = ""
       })
     },
     editClick() {
@@ -223,5 +228,9 @@ $button-bg: #17B0E7;
   &:hover {
     background: darken($button-bg, 3%);
   }
+}
+
+.center{
+  text-align: left;
 }
 </style>

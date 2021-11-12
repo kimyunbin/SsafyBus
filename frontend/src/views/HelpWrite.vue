@@ -12,7 +12,7 @@
       <h3>코드내용</h3>
       <textarea name="" id="" cols="30" rows="10"  v-model="code"></textarea>
     </div> -->
-    <div class="box">
+    <div class="box editer">
       <editor
           :initialValue="content"
           ref="toastuiEditor"
@@ -103,13 +103,13 @@ export default {
 
 <style scoped>
 .container {
-  margin-top: 60px;
   height: 850px;
   width: 80%;
   max-width: 1000px;
   border: 5px solid #17B0E7;
   border-radius: 20px;
   margin: auto;
+  margin-top: 40px;
 }
 .box {
   display: flex;
@@ -150,5 +150,8 @@ button {
   border: none;
   padding: 8px;
   }
+.editer{
+  text-align: left;
+}
 </style>>
 

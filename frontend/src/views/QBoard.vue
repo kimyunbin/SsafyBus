@@ -79,7 +79,7 @@ export default {
   methods: {
     ...mapActions(boardStore, ['writeQBoard', 'getQBoard']),
     bclick() {
-    this.is_active = true
+      this.is_active = true
     },
     xclick() {
       this.is_active = false
