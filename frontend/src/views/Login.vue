@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imgurl">
     <img style="margin:auto" src="https://i.ibb.co/5swYQnb/ssafy.png" alt="ssafy" border="0" />
     <div class="cont">
       <div class="form sign-in">
@@ -32,8 +32,8 @@
           </div>
         </div>
         <div class="form sign-up">
-          <h2>신기한 싸피버스에 오신걸 환영합니다!</h2>
-          <br>
+          <!-- <h2>신기한 싸피버스에 오신걸 환영합니다!</h2> -->
+          <!-- <br> -->
           <label>
             <span>ID</span>
             <button class="img__btn" style="background-color:black" @click="idCheckClick()">중복체크</button>
@@ -45,11 +45,11 @@
           </label>
           <label>
             <span>기수</span>
-            <input type="text" v-model='signup_info.generation'/>
+            <input type="number" v-model='signup_info.generation'/>
           </label>
           <label>
             <span>반</span>
-            <input type="text" v-model='signup_info.classNum'/>
+            <input type="number" v-model='signup_info.classNum'/>
           </label>
           <label>
             <span>직위</span>
@@ -120,8 +120,11 @@ export default {
     loginClick() {
       this.login(this.login_info)
       .then(()=>{
-        alert('로그인 되었습니다')
+        // alert('로그인 되었습니다')
         this.$router.push({name:"Gate"})
+      })
+      .catch(()=>{
+        alert('아이디 혹은 비밀번호가 틀렸습니다')
       })
       
     },
@@ -131,16 +134,24 @@ export default {
     },
     idCheckClick() {
       var value = {
-          'userId' : this.signup_info.userId
+        'userId' : this.signup_info.userId
       }
-      this.idCheck(value)
-      .then(()=>{
-        alert('사용가능한 아이디입니다')
-      })
-      .catch((e)=>{
-        console.log(e.response)
-        alert('존재하는 아이디입니다')
-      })
+      console.log(value)
+      if (value.userId == "") {
+        alert('아이디를 입력해주세요')
+      }
+      
+      else {
+        this.idCheck(value)
+        .then(()=>{
+          alert('사용가능한 아이디입니다')
+        })
+        .catch((e)=>{
+          console.log(e.response)
+          alert('존재하는 아이디입니다')
+        })
+
+      }
     },
     
   },
@@ -154,6 +165,21 @@ export default {
   margin: 0;
   padding: 0;
 }
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.imgurl {
+  width: 100vw;
+  height: 100vh;
+  // background-image: url("../assets/login.png");
+  // background-size: cover;
+  // background-position: center;
+}
+
 
 input, button {
   border: none;
