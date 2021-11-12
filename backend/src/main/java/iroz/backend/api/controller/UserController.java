@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 
@@ -108,7 +109,13 @@ public class UserController {
     }
 
     @PostMapping("/answer/{user_id}/{qna_pk}")
-    public  ResponseEntity<? extends BaseResponseBody> postAnswer(@PathVariable String user_id, @PathVariable Long qna_pk, @RequestBody AnswerPostReq answerPostReq){
+    public  ResponseEntity<? extends BaseResponseBody> postAnswer(Authentication authentication, @PathVariable String user_id, @PathVariable Long qna_pk, @Valid @RequestBody AnswerPostReq answerPostReq){
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        if (!userDetails.getUser().getUserId().equals(user_id)) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(401, "incorrect access"));
+        }
+
         userService.answerSave(user_id, qna_pk, answerPostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(201, "success"));
     }
