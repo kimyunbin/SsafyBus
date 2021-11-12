@@ -1,4 +1,7 @@
 <template>
+<div class="main">
+  <!-- {{this.date}}
+  {{(dateFormat(new Date()))}} -->
   <div class="container">
     <!-- {{visitor.guestbook.length}} -->
     <article class="date-carousel">
@@ -7,8 +10,14 @@
       <input type="button" class="date-carousel-next" @click="next()" value="&gt;">
     </article>
     <hr>
-    <div  v-if="visitor.guestbook" class ="write">
-      <WriteModal :list="visitor.guestbook"/>
+    <div v-if="visitor.guestbook"  class ="write">
+      <div v-if="this.date == dateFormat(new Date())">
+        <WriteModal :list="visitor.guestbook"/>
+      </div>
+      <div v-else>
+        <h1>오늘로 돌아가서 방명록을 남겨주세요!✍</h1>
+      </div>
+      
     </div>
     <br>
     <hr>
@@ -21,10 +30,12 @@
         />
       </div>
       <div v-else>
+        <br>
         <h3>방명록이 없습니다</h3>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -133,11 +144,27 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  font-size: 1.875rem;
+  font-weight: 300;
+  margin: 60px 0 30px 0;
+  color: black;
+}
+.main{
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/gate.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
+}
+
 .container {
-  margin-top: 60px;
   width: 1000px;
   max-width: 1000px;
-  margin: auto;
+  margin-left:  auto;
+  margin-right: auto;
+
 }
 
 .list {
@@ -176,7 +203,7 @@ export default {
   color: black;
   background-color: transparent;
   text-align: center;
-  width: 2in;
+  /* width: 2in; */
   font-size: 1.5rem;
 }
 

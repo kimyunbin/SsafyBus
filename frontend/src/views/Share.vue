@@ -153,9 +153,19 @@ export default {
 
 <style lang="scss" scoped>
 $button-bg: #17B0E7;
-
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 .my-board {
-  margin-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/board.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
 
 }
 .head {
@@ -210,6 +220,7 @@ $button-bg: #17B0E7;
   border: none;
   padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  border-radius: 10px;
   &:hover {
     background: darken($button-bg, 3%);
   }

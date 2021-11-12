@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imgurl">
     <div class="head">
       <h2 style="font-weight:bold;">{{name}}</h2>
       <h2>에게 무엇이든 물어보는 게시판</h2>
@@ -40,7 +40,23 @@
     </div>
     <div v-else>
       <h2>아직 질문이 없어요</h2>      
-      <button @click="bclick()">질문하기</button>
+      <button @click="bclick2()">질문하기</button>
+      <div class="modal" v-bind:class="{active: is_active}">
+        <a class="close-modal" @click="xclick()">
+          <svg viewBox="0 0 20 20">
+            <path fill="#000000" d="M15.898,4.045c-0.271-0.272-0.713-0.272-0.986,0l-4.71,4.711L5.493,4.045c-0.272-0.272-0.714-0.272-0.986,0s-0.272,0.714,0,0.986l4.709,4.711l-4.71,4.711c-0.272,0.271-0.272,0.713,0,0.986c0.136,0.136,0.314,0.203,0.492,0.203c0.179,0,0.357-0.067,0.493-0.203l4.711-4.711l4.71,4.711c0.137,0.136,0.314,0.203,0.494,0.203c0.178,0,0.355-0.067,0.492-0.203c0.273-0.273,0.273-0.715,0-0.986l-4.711-4.711l4.711-4.711C16.172,4.759,16.172,4.317,15.898,4.045z"></path>
+          </svg>
+        </a><!-- close modal -->
+
+      <div class="modal-content">
+      <h3>질문하기</h3>
+      <form>
+          <input type="textarea" v-model="content">
+          <button type="button" @click="submitClick()">완료</button>
+      </form>
+      </div><!-- content -->
+      
+    </div>
     </div>
 
   </div>
@@ -79,6 +95,9 @@ export default {
   methods: {
     ...mapActions(boardStore, ['writeQBoard', 'getQBoard']),
     bclick() {
+      this.is_active = true
+    },
+    bclick2() {
     this.is_active = true
     },
     xclick() {
@@ -108,6 +127,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.imgurl {
+  // width: 100vw;
+  // height: 100vh;
+  // background-image: url("../assets/qboard.png");
+  // background-size: cover;
+  // background-position: center;
+  // padding-top: 60px;
+}
+
 .head {
   display: flex;
   justify-content: center;

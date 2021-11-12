@@ -1,7 +1,7 @@
 <template>
   <div id="webcam-container">
     <div id="webcam-title">
-      <p>{{location}}</p>
+      {{location}}
     </div>
     <div id="webcam-main" v-if="sunsu">
       <div id="video-container" :class="{'screen-share' : data.share.active}">
@@ -183,8 +183,10 @@ export default {
 #webcam-title{
   width: 100%;
   height: 7%;
-  text-align: center;
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
   font-weight: 700;
   font-family: 'Nanum Gothic', sans-serif;
 }
