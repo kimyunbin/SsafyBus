@@ -72,6 +72,13 @@ public class Launcher : Photon.PunBehaviour {
         // ChangePanel(ActivePanel.ROOOM);
     }
 
+
+    //임의로 씬 변경
+    public void ChangeScene(){
+        SceneManager.LoadScene("SampleScene");
+        
+    }
+
     // 방입장--------------------------------------------------------------------
     // public void JoinRoom(){
     //     // PhotonNetwork.JoinRoom("광주");}
