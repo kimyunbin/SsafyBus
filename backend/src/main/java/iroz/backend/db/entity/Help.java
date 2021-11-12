@@ -3,10 +3,8 @@ package iroz.backend.db.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +24,8 @@ public class Help extends BaseEntity {
     private String code;
     private String link;
 
-//    @OneToMany(mappedBy = "help", fetch = FetchType.EAGER)
-//    @JsonIgnoreProperties
-//    private List<Comment> comments;
+    @OneToMany(mappedBy = "help", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties
+    private List<Comment> comments = new ArrayList<Comment>();
 
 }
