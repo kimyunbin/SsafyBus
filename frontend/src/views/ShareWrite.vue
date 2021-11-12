@@ -134,6 +134,8 @@ export default {
   max-width: 600px;
   border: 5px solid #17B0E7;
   border-radius: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .search-box {
 

@@ -36,7 +36,11 @@
     <br>
 
     <button class="btn" @click="writeClick()">공유하기</button>
-
+    <br>
+    <Pagnation
+      :pagnationInfo = pagnation_info
+      @update ="shareList"
+    />
 		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
 			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
@@ -62,26 +66,43 @@
 <script>
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
+import Pagnation from '../components/Pagnation.vue'
+
 export default {
   name: "Share",
+  components: {
+    Pagnation
+  },
   data() {
     return {
       share_list: {},
+      page: 0,
+      total: '',
     }
   },
   created() {
-  this.getShareList()
-  .then(()=>{
-    this.share_list = this.share_info()
-    for (let i = 0; i < this.share_list.length; i++) {
-      const createdAt = this.share_list[i].createdAt
-      this.share_list[i].createdAt = this.dateFormat(new Date(createdAt))
-      }
-     })
+    this.total = this.share_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
   },
   methods: {
     ...mapActions(boardStore, ['getShareList','shareDownload']),
     ...mapGetters(boardStore, ['share_info']),
+    shareList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getShareList(page)
+      .then(()=>{
+        this.share_list = this.share_info().content
+        for (let i = 0; i < this.share_list.length; i++) {
+          const createdAt = this.share_list[i].createdAt
+          this.share_list[i].createdAt = this.dateFormat(new Date(createdAt))
+          }
+        })      
+    },
     dateFormat(date) {
       let month = date.getMonth() + 1;
       let day = date.getDate();
@@ -121,16 +142,30 @@ export default {
       })
 
     },
+  
   },
+  mounted() {
+    this.shareList()
+  }
 
 }
 </script>
 
 <style lang="scss" scoped>
 $button-bg: #17B0E7;
-
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 .my-board {
-  margin-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/board.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
 
 }
 .head {
@@ -185,6 +220,7 @@ $button-bg: #17B0E7;
   border: none;
   padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  border-radius: 10px;
   &:hover {
     background: darken($button-bg, 3%);
   }

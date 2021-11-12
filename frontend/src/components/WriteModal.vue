@@ -77,7 +77,7 @@ export default {
         }
         this.writeVisitorBook(JSON.stringify(value))
         .then(()=>{
-          alert('완료됌')
+          alert('완료됨')
         })
         .then(()=>{
           this.$router.go()
@@ -126,6 +126,7 @@ h3 {
 
 button {
   background-color: $button-bg;
+  border-radius: 10px;
   position: relative;
   color: #fff;
   border: none;

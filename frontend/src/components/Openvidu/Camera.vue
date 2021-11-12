@@ -1,9 +1,9 @@
 <template>
   <div id="webcam-container">
     <div id="webcam-title">
-      <p>{{location}}</p>
+      {{location}}
     </div>
-    <div id="webcam-main">
+    <div id="webcam-main" v-if="sunsu">
       <div id="video-container" :class="{'screen-share' : data.share.active}">
         <div id="prev">
           <button class="webcam-button page-button" @click="page -= 1;" v-if="prev">
@@ -24,6 +24,25 @@
         <div class="screen-video">
           <user-video class="screen-video" :ss=false :stream-manager="data.share.screen"></user-video>
         </div>
+      </div>
+    </div>
+    <div id="webcam-main" v-else>
+     <div class="sl-logo">
+       <div class="sl-top">
+        <div class="sl-content">
+          <div>S<span>AMSUNG  </span></div>
+          <div>S<span>W  </span></div>
+          <div>A<span>CADEMY  </span></div>
+          <div>F<span>OR  </span></div>
+          <div>Y<span>OUTH  </span></div>
+        </div>
+        <div class="sl-right"></div>
+       </div>
+       <div class="sl-bottom">
+         <div class="sb-left"></div>
+         <div class="sb-center"></div>
+         <div class="sb-right"></div>
+       </div>
       </div>
     </div>
     <div id="webcam-nav">
@@ -59,6 +78,8 @@ export default {
       page : 0,
       screenShare : false,
       maxHeight : 0,
+      sunsu:false,
+      cnt:3
     }
   },
   props :{
@@ -66,6 +87,9 @@ export default {
     location : String,
   },
   created() {
+    setInterval(() => {
+      this.sunsu = true
+    }, 2700)
   },
   mounted() {
     const target = document.querySelector('#webcam-main')
@@ -159,8 +183,10 @@ export default {
 #webcam-title{
   width: 100%;
   height: 7%;
-  text-align: center;
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
   font-weight: 700;
   font-family: 'Nanum Gothic', sans-serif;
 }
@@ -317,4 +343,100 @@ export default {
 #leave-session{
   color : var(--color-white);
 }
+
+.sl-logo{
+  /* background-color: #FFF; */
+  height: 183px;
+  width: 258px;
+  position: relative;
+}
+.sl-top{
+  width: 100%;
+  height: 150px;
+  display: flex;
+  overflow: hidden;
+}
+
+.sl-content{
+  background-color: black;
+  width: 225px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20px;
+  overflow: hidden;
+  /* justify-content: space-around; */
+}
+
+.sl-content div:first-child{
+  padding-top: 20px !important;
+}
+
+.sl-content div{
+  padding: 0%;
+  margin: 0%;
+  color: #17B0E7;
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  overflow: hidden;
+}
+
+.sl-content div span{
+  padding: 0%;
+  margin: 0%;
+  color: aliceblue;
+  position: relative;
+}
+
+.sl-content div span::after{
+  content: "";
+  position: absolute;
+  left: 0px;
+  height: 30px;
+  width: 100%;
+  background-color: black;
+  overflow: hidden;
+  animation: typing 1.5s infinite;
+}
+
+@keyframes typing{
+  100%{
+    left: 100%;
+  }
+}
+
+.sl-right{
+  content: '';
+  width: 33px;
+  height: 160px;
+}
+
+.sl-bottom{
+  height: 33px;
+  width: 100%;
+  display: flex;
+}
+
+.sb-left{
+  width: 0px;
+  height: 0px;
+  border-top: 33px solid black;
+  border-left: 33px solid transparent;
+}
+
+.sb-center{
+  width: 207px;
+  height: 33px;
+  background-color: black;
+}
+
+.sb-right{
+  width: 0px;
+  height: 0px;
+  border-bottom: 33px solid black;
+  border-right: 33px solid transparent;
+}
+
 </style>

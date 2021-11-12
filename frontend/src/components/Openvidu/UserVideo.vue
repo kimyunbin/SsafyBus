@@ -48,13 +48,22 @@ export default {
     height: 100%;
     bottom: 0px;
 }
-.inactive-user-name{
+.inactive-user-info{
+    position: relative;
+    top: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
-    font-size: var(--font-size-30);
-    color : #007700;
-    text-align: center;
+    color : #FFF;
 }
+
+.inactive-user-name p{
+    text-align: center;
+    margin: 0%;
+    padding: 0%;
+}
+
 .inactive-user-video{
     display: inline-block;
     position: absolute;

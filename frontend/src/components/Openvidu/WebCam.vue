@@ -50,6 +50,7 @@ export default {
           OVCamere:undefined,
           active : false,
           sessionScreen : undefined,
+          screen : undefined
         },
       },
       user : '',
@@ -73,19 +74,21 @@ export default {
     this.data.receiveMessage = [];
     this.data.share.active = false;
     this.data.share.screen = undefined;
+    this.data.share.OVCamere = undefined;
+    this.data.share.sessionScreen = undefined;
   },
   computed: {
     ...mapGetters(userStore, ['user_info']),
   },
   methods: {
-    joinSession() {
+    async joinSession() {
       this.data.OV = new OpenVidu();
       this.data.session = this.data.OV.initSession();
       this.data.share.OVCamere = new OpenVidu();
       this.data.share.sessionScreen = this.data.share.OVCamere.initSession();
       
       this.data.share.sessionScreen.on('streamCreated', ({ stream }) => {
-        console.log('*****++++',this.data.sessionScreen)
+        console.log('*****++++',this.data.share.sessionScreen)
         const subscriber = this.data.session.subscribe(stream);
         console.log('sssssssss------')
         if (subscriber.stream.typeOfVideo == "SCREEN") {
@@ -94,7 +97,7 @@ export default {
         }
       });
       this.data.share.sessionScreen.on("streamDestroyed", ({ stream }) => {
-        console.log('*****++++',this.data.sessionScreen)
+        console.log('*****++++',this.data.share.sessionScreen)
         if(stream.typeOfVideo == "SCREEN"){
           this.data.share.active = false;
           this.data.share.screen = undefined;
@@ -103,29 +106,28 @@ export default {
 
       this.data.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.data.session.subscribe(stream);
-        console.log('*****',subscriber)
         this.data.subscribers.push(subscriber);
-        console.log('222222',this.data.subscribers)
         this.data.participants = this.data.subscribers.length+1;
       });
+      
       this.data.session.on("streamDestroyed", ({ stream }) => {
-        console.log('^^^^^^',stream)
-        console.log('222222',this.data.subscribers)
-        console.log('3333333',stream.streamManager)
-        console.log('44444',this.data.subscribers.indexOf(stream.streamManager, 0))
         const index = this.data.subscribers.indexOf(stream.streamManager, 0);
         if (index >= 0) {
           this.data.subscribers.splice(index, 1);
         }
         this.data.participants = this.data.subscribers.length+1;
-        console.log('44444',this.data.subscribers)
       });
+			
+      this.data.session.on('exception', ({ exception }) => {
+				console.warn(exception);
+			});
+
       this.data.session.on("signal:my-chat", (event) => {
         this.data.receiveMessage.push({sender : JSON.parse(event.from.data), message : event.data});
         this.data.receiveMessageBell = true;
       });
 
-      this.getToken(this.data.roomName).then(token => {
+      await this.getToken(this.data.roomName).then(token => {
         this.data.session.connect(token, {clientData:this.user})
           .then(() => {
             let publisher = this.data.OV.initPublisher(undefined, {
@@ -152,7 +154,7 @@ export default {
           });
       });
 
-      this.getToken(this.data.roomName+'share').then(tokenScreen => {
+      await this.getToken(this.data.roomName+'share').then(tokenScreen => {
         // Create a token for screen share
         this.data.share.sessionScreen.connect(tokenScreen, { clientData: this.user }).then(() => {
           // document.getElementById('buttonScreenShare').style.visibility = 'visible';
@@ -162,7 +164,7 @@ export default {
         }));
       });
 
-      window.addEventListener("beforeunload", this.data.leaveSession);
+      window.addEventListener("beforeunload", this.leaveSession);
     },
     shareScreen() {
       console.log(this.data.share)
@@ -201,7 +203,11 @@ export default {
       this.data.subscribers = [];
       this.data.OV = undefined;
       this.data.receiveMessage = [];
-      window.removeEventListener("beforeunload", this.data.leaveSession);
+      this.data.share.active = false;
+      this.data.share.screen = undefined;
+      this.data.share.OVCamere = undefined;
+      this.data.share.sessionScreen = undefined;
+      window.removeEventListener("beforeunload", this.leaveSession);
       this.$router.push({name : 'Unity'});
     },
 		getToken (mySessionId) {
