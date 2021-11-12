@@ -1,12 +1,27 @@
 <template>
   <div id="app">
     <router-view/>
+    <Unity v-if="showUnity"/>
   </div>
 </template>
 
 <script>
+import Unity from '@/components/Unity';
+// $store.state.userStore.user_info!==null && 
 export default {
   name: 'App',
+  components: {
+    Unity,
+  },
+  computed: {
+    showUnity: function() {
+      if(this.$route.name === 'Login'){
+        return false
+      }else{
+        return true
+      }
+    }
+  },
 }
 </script>
 

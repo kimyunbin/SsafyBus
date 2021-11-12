@@ -12,7 +12,7 @@ import HelpWrite from "../views/HelpWrite.vue";
 import HelpDetail from "../views/HelpDetail.vue";
 import Share from "../views/Share.vue";
 import ShareWrite from "../views/ShareWrite.vue";
-import Unity from "../views/Unity.vue";
+import UnityGame from "../views/UnityGame.vue";
 
 Vue.use(VueRouter)
 
@@ -80,8 +80,8 @@ const routes = [
   },
   {
     path : "/unityGame",
-    name : "Unity",
-    component : Unity,
+    name : "UnityGame",
+    component : UnityGame,
   },
 ]
 
