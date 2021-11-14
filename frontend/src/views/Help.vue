@@ -2,9 +2,6 @@
   <div>
     <div class="my-board">
       <h2>헬프 게시판</h2>
-      <div class="head">
-        <p><i class="fas fa-times-circle exit-icon"></i></p>
-      </div>
 
 
       <table class="list-box">
@@ -30,11 +27,14 @@
       <br>
       <button class="btn" @click="writeClick()">질문하기</button>
       <br>
-      <Pagnation
-        :pagnationInfo = pagnation_info
-        @update ="helpList"
-      />
-
+      <div class="content-bottom">
+        <div class="hide"></div>
+        <Pagnation
+          :pagnationInfo = pagnation_info
+          @update ="helpList"
+        />
+        <div class="out">나가기</div>
+      </div>
       <!-- <div class="pagination" v-if="paging.totalCount > 0">
         <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
         <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
@@ -203,6 +203,9 @@ h3 {
   color: black;
 }
 
+h2{
+  margin-bottom: 20px;
+}
 // button {
 //   background-color: $button-bg;
 //   position: relative;
@@ -248,13 +251,6 @@ body, html{
   padding-top: 60px;
 
 }
-.head {
-  display: flex;
-  justify-content: right;
-  width: 80%;  
-  max-width: 1000px;
-  margin: auto;
-}
 .th-list {
   // background-color:
 }
@@ -270,9 +266,10 @@ body, html{
   max-width: 1000px;
   margin: auto;
   // border: 1px solid black;
-  border: 2px solid #17B0E7;
-
+  // border: 2px solid #17B0E7;
+  background-color: #fff;
   border-radius: 10px;
+  padding: 10px;
   border-collapse: separate !important;
 }
 .list-box th, .list-box td{
@@ -302,6 +299,36 @@ body, html{
   &:hover {
     background: darken($button-bg, 3%);
   }
+}
+
+.out {
+  background: #ffd52d;
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  font-size: 15px;
+  font-weight: bold;
+  border: 0px;
+  cursor: pointer;
+}
+.out:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  color: #000;
+}
+
+.content-bottom{
+  margin: auto;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+}
+.hide{
+  width: 80px;
 }
 
 </style>
