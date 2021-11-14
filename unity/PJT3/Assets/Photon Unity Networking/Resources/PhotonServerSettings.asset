@@ -16,7 +16,7 @@ MonoBehaviour:
   VoiceAppID: 
   ChatAppID: 
   HostType: 1
-  PreferredRegion: 2
+  PreferredRegion: 9
   EnabledRegions: -1
   Protocol: 1
   ServerAddress: 
@@ -24,8 +24,8 @@ MonoBehaviour:
   VoiceServerPort: 5055
   JoinLobby: 0
   EnableLobbyStatistics: 0
-  PunLogging: 0
-  NetworkLogging: 1
+  PunLogging: 2
+  NetworkLogging: 5
   RunInBackground: 1
   RpcList:
   - Chat

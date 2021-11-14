@@ -13,80 +13,107 @@ public class Launcher : Photon.PunBehaviour {
     public GameObject Room;
     public Text RoomInfoText;
 
-    void Update() => StatusText.text = PhotonNetwork.networkingPeer.State.ToString(); //현재 어떤 상태인지
-    // void Update() => RoomInfoText.text = PhotonNetwork.room.ToString();
-    // public enum ActivePanel
-    // {
-    //     ROOM = 1
-    // }
-    // public byte maxPlayer = 10;
-    // public GameObject[] panels;
-    // public GameObject[] room;
-    // public GameObject[] gridTr;
+
+    public Text roomName;
+    public Text playerLength;
+
+
+    // void Update() => StatusText.text = PhotonNetwork.networkingPeer.State.ToString(); //현재 어떤 상태인지
+
+    // 시작 -------------------------------------------
     void Start()
     {
         Debug.Log("마스터 서버 연결 완료");
-        // PhotonNetwork.GameVersion = gameVersion; // 게임 버전 맞추기
         PhotonNetwork.ConnectUsingSettings("0.1"); // 내가 설정한 포톤서버 마스터 서버 연결
     }
+
+
+    void Update() {
+        StatusText.text = PhotonNetwork.networkingPeer.State.ToString();
+        
+    }
+
+    // public void Connect() => PhotonNetwork.ConnectUsingSettings("0.1");
+
+    //     void Update()
+    // {
+    //     StatusText.text = PhotonNetwork.NetworkClientState.ToString();
+    //     LobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
+    // }
 
     // 마스터 서버에 접속 성공했을 때 
     public override void OnConnectedToMaster()
     {
         Debug.Log("마스터 서버로 접속 완료");
-        // connectionInfoText.text = "Online: Connected to the Master Server";
         PhotonNetwork.playerName = "닉네임 임의로 설정";
         PhotonNetwork.JoinLobby();
     }
 
-    // 로비까지 들어 왔으면 
+    //ㅏ로비까지 들어옴
     public override void OnJoinedLobby()
     {
         Debug.Log("로비 들어옴");
     }
 
-    public void SetPanel(){
 
-        if (PhotonNetwork.room != null){
-            Room.SetActive(true);
+    // 방 여부 따라 패널 다른 거 ---------------------------
+    public void SetPanel(){
+ 
+        // 방이 없으면 방만들기 패널 활성화
+        if (PhotonNetwork.GetRoomList().Length == 0){
+            EmptyRoom.SetActive(true); //방만들기 패널
         }
+
+        // 방이 있으면 입장 버튼 패널만 활성화
         else {
-            EmptyRoom.SetActive(true);
+            Room.SetActive(true); //입장버튼 패널
+            // Debug.Log(PhotonNetwork.GetRoomList() );
+            // Debug.Log(PhotonNetwork.GetRoomList().Length );
+            // Debug.Log(PhotonNetwork.room.name );
+            // Debug.Log(PhotonNetwork.room.PlayerCount);
+            // Debug.Log(PhotonNetwork.room.MaxPlayers);
+        // Debug.Log();
+            // playerLength.text = PhotonNetwork.room.name + " / " + PhotonNetwork.room.PlayerCount + "명 / " + PhotonNetwork.room.MaxPlayers + "최대";
+
         }
-        
     }
 
     // 방만들기 ------------------------------------------
-    // public void CreateRoom() => PhotonNetwork.CreateRoom("광주", new RoomOptions { MaxPlayers = 10 });
     public void CreateRoom(){
-        PhotonNetwork.CreateRoom("광주" );
-        EmptyRoom.SetActive(false);
-        Room.SetActive(true);
+        PhotonNetwork.CreateRoom("광주", new RoomOptions { MaxPlayers = 15 } , null);
     }
     
     public override void OnCreatedRoom() {
 
         Debug.Log("방 만들기 완료");
         Debug.Log(PhotonNetwork.room);
-        RoomInfoText.text = PhotonNetwork.room.ToString();
-        // ChangePanel(ActivePanel.ROOOM);
-    }
-
-
-    //임의로 씬 변경
-    public void ChangeScene(){
-        SceneManager.LoadScene("SampleScene");
+        Debug.Log(PhotonNetwork.GetRoomList().Length);
         
+        RoomInfoText.text = PhotonNetwork.room.name.ToString();
+        Debug.Log(RoomInfoText.text);
+
+        // 여기서 바로 씬 변경 이뤄지면 될듯?
+        SceneManager.LoadScene("SampleScene");
     }
 
-    // 방입장--------------------------------------------------------------------
-    // public void JoinRoom(){
-    //     // PhotonNetwork.JoinRoom("광주");}
-    // }
-    // public override void OnJoinedRoom() {
-    //     // Debug.Log("방 참가 완료");
-    //     // SceneManager.LoadScene("SampleScene");
-    // }
+
+    // 입장버튼 누르면 광주로 입장
+    public void ChangeScene(){
+        PhotonNetwork.JoinRoom("광주");
+
+       
+    }
+
+    public override void OnJoinedRoom() {
+        
+        Debug.Log(playerLength.text);
+        Debug.Log(PhotonNetwork.room.name );
+        Debug.Log(PhotonNetwork.room.PlayerCount);
+        Debug.Log(PhotonNetwork.room.MaxPlayers);
+        // Debug.Log();
+        Debug.Log("방 참가 완료");
+        SceneManager.LoadScene("SampleScene");
+    }
 
 
 
