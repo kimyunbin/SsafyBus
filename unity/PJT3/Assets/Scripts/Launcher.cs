@@ -47,6 +47,7 @@ public class Launcher : Photon.PunBehaviour {
         Debug.Log("마스터 서버로 접속 완료");
         PhotonNetwork.playerName = "닉네임 임의로 설정";
         PhotonNetwork.JoinLobby();
+        // PhotonNetwork.automaticallySyncScene = true;
     }
 
     //ㅏ로비까지 들어옴
@@ -94,6 +95,8 @@ public class Launcher : Photon.PunBehaviour {
 
         // 여기서 바로 씬 변경 이뤄지면 될듯?
         SceneManager.LoadScene("SampleScene");
+        // PhotonNetwork.room.IsVisible = false;//게임시작하면 안보임
+        // PhotonNetwork.LoadLevel(1);
     }
 
 
@@ -112,8 +115,27 @@ public class Launcher : Photon.PunBehaviour {
         Debug.Log(PhotonNetwork.room.MaxPlayers);
         // Debug.Log();
         Debug.Log("방 참가 완료");
+
         SceneManager.LoadScene("SampleScene");
+        // PhotonNetwork.Instantiate("ThisrdPersonController", new Vector3(0,3.0f,0), Quaternion.identity, 0);
+        // PhotonNetwork.room.IsVisible = false;//게임시작하면 안보임
+        // PhotonNetwork.LoadLevel(1);
     }
+
+
+
+    // public void UserName(string initName)
+    // {
+    //     if (initName!=null)
+    //     {
+    //         PhotonNetwork.LocalPlayer.NickName = initName;
+    //         connectionBtn.interactable = true;
+    //     }
+    // }
+
+
+
+
 
 
 

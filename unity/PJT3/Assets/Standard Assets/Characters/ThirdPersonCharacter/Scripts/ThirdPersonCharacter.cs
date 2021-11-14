@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityStandardAssets.Utility;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
@@ -29,12 +30,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		// private PhotonView pv;
+
 
 		void Start()
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
 			m_Capsule = GetComponent<CapsuleCollider>();
+			// tr = GetComponent<Transform>();
+			// pv = GetComponent<PhotonView>();
+
+			// if (pv.isMine) {
+			// 	Camera.main.GetComponent<SmoothFollow>().target = true;
+			// }
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
 
