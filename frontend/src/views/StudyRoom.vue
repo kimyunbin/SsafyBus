@@ -130,7 +130,7 @@ input, button {
 }
 #입장{
   cursor: pointer;
-  border: 1px solid #17B0E7;
+  border: 1px solid #84a6b3;
   background-color: #17B0E7;
 }
 #입장:hover{
