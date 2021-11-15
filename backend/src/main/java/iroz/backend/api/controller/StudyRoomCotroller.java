@@ -47,6 +47,13 @@ public class StudyRoomCotroller {
         int dayOfMonth = studyRoomRegisterPostReq.getDate().getDayOfMonth();
         int hour = studyRoomRegisterPostReq.getDate().getHour();
         int room = studyRoomRegisterPostReq.getRoom();
+        System.out.println("-----------------");
+        System.out.println("room = " + room);
+        System.out.println("year = " + year);
+        System.out.println("month = " + month);
+        System.out.println("dayOfMonth = " + dayOfMonth);
+        System.out.println("hour = " + hour);
+
         List<StudyRoom> listGroupBy = studyRoomService.getListGroupBy(year, month, dayOfMonth, hour, room);
         if (listGroupBy.size() > 0) {
             return ResponseEntity.status(400).body(BaseResponseBody.of(403, "already exist"));
@@ -75,6 +82,7 @@ public class StudyRoomCotroller {
         int month = date.getMonthValue();
         int dayOfMonth = date.getDayOfMonth();
         List<Object[]> result = studyRoomService.getListGroupByDay(year, month, dayOfMonth, room);
+
         HashMap map = new HashMap();
         for (int i = 0; i < 24; i++) {
             map.put(i, true);
