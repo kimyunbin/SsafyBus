@@ -160,7 +160,7 @@ export default {
     },
     leaveSession() {
         this.data.share.active = false;
-        this.$emit('leaveSession');
+        this.$router.push('UnityGame')
     },
   },
 };

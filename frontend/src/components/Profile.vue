@@ -27,7 +27,7 @@
           :pagnationInfo = pagnation_info
           @update ="profileList"
         />
-        <div class="out">나가기</div>
+        <div @click="goUnity" class="out">나가기</div>
       </div>
     </div>
       
@@ -84,6 +84,9 @@ export default {
         // this.$router.push({name:"Profile", params: this.page})
       })
     },
+    goUnity(){
+      this.$router.push('UnityGame')
+    }
     
 
   },
