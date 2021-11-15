@@ -121,7 +121,7 @@ export default {
       this.login(this.login_info)
       .then(()=>{
         // alert('로그인 되었습니다')
-        this.$router.push({name:"Gate"})
+        this.$router.push('UnityGame')
       })
       .catch(()=>{
         alert('아이디 혹은 비밀번호가 틀렸습니다')

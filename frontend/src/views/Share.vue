@@ -42,7 +42,7 @@
         :pagnationInfo = pagnation_info
         @update ="shareList"
       />
-      <div class="out">나가기</div>
+      <div @click="goUnity" class="out">나가기</div>
     </div>
 		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
@@ -145,6 +145,9 @@ export default {
       })
 
     },
+    goUnity(){
+      this.$router.push('UnityGame')
+    }
   
   },
   mounted() {
