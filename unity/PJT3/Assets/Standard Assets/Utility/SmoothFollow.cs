@@ -24,7 +24,9 @@ namespace UnityStandardAssets.Utility
 		// PhotonView m_PhotonView;
 		
 		// Use this for initialization
-		void Start() { }
+		void Start() {
+			target = GameObject.FindGameObjectWithTag("Player").transform;
+		 }
 
 		// Update is called once per frame
 		void LateUpdate()
@@ -32,6 +34,8 @@ namespace UnityStandardAssets.Utility
 			// Early out if we don't have a target
 			if (!target)
 				return;
+
+
 
 			// Calculate the current rotation angles
 			var wantedRotationAngle = target.eulerAngles.y;

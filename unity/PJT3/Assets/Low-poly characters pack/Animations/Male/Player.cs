@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-
-public class Player : MonoBehaviour
+using Photon;
+public class Player : Photon.PunBehaviour
 {
     public float speed = 1f;
     float hAxis;
     float vAxis;
+
+    private Transform tr;
     Vector3 moveVec;
     Animator anim;
     public float rotateSpeed = 3.3f; // 좌우 회전 속도
@@ -18,8 +20,18 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
+    void Start()
+    {
+        tr = GetComponent<Transform>();
+        if(photonView.isMine){
+        // Camera.main.GetComponent<SmoothFollow>().target = tr.Find("CamPivot").transform;
+        }
+    }
     void Update()
     {
+        if(!photonView.isMine){
+            return;
+        }
         string stageName = SceneManager.GetActiveScene().name;
         if(stageName == "Selection"){
             anim.SetBool("isSelect", true);
