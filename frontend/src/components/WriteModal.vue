@@ -77,7 +77,7 @@ export default {
         }
         this.writeVisitorBook(JSON.stringify(value))
         .then(()=>{
-          alert('완료됨')
+          alert('출석체크가 완료 되었습니다.')
         })
         .then(()=>{
           this.$router.go()

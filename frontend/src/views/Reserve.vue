@@ -92,7 +92,7 @@
           <div class="select-team">
             <p>친구 초대</p>
             <div class="input-member">
-              <input type="text" v-model="member" @keypress="searchMember">
+              <input autocomplete="off" type="text" v-model="member" @keypress="searchMember">
               <span @click="searchMember">
                 <i class="fas fa-search"></i>
               </span>
@@ -113,7 +113,7 @@
           </div>
           <div class="input-password">
             <p>비밀번호</p>
-            <input type="password" v-model="password">
+            <input  autocomplete="off" type="password" v-model="password">
           </div>
         </div>
         <button @click="reserveStudyRoom">예약 완료</button>
@@ -181,13 +181,14 @@ export default {
       if(this.room!=0 && this.password!= '' && this.yesTime != ''){
       const data = {
         room: this.room,
-        date: this.dates[this.reserve_num]+'T'+this.yesTime+':'+'00',
+        date: this.dates[this.reserve_num]+'T'+this.yesTime+':00:00',
         userid: this.userid,
         password: this.password,
       }
       const instance = createInstance2()
       await instance.post('/studyroom',data)
       this.statusStudyRoom(this.now)
+      console.log(this.now)
       this.room = 0
       this.yesTime = ''
       this.reserve_num = 0
