@@ -8,13 +8,14 @@
     ref= "instance"
     >
   </unity>
-  <div id="unity-object" v-html="object"></div>
+  <div id="unity-object"></div>
 </div>
 </template>
 
 <script>
 import Unity from 'vue-unity-webgl'
-
+import { mapGetters } from 'vuex'
+const userStore = 'userStore'
 
 export default {
     components : {
@@ -26,9 +27,17 @@ export default {
           interval:'',
         }
     },
-    created(){
-      this.interval = setInterval(()=>{
-          let item = document.getElementById('unity-object').innerHTML
+    methods: {
+       ...mapGetters(userStore, ['user_info']),
+       getUnityItem(){
+         this.interval = setInterval(()=>{
+          if(this.$refs.instance !== undefined){
+             this.$refs.instance.message('LobbyManager','UserName',this.user_info().nickname)
+          }
+          let item
+          if(document.getElementById('unity-object').innerHTML !== undefined){
+            item = document.getElementById('unity-object').innerHTML
+          }
           if(item != undefined){
             switch(item){
               case 'GuestBook':
@@ -61,14 +70,16 @@ export default {
             document.getElementById('unity-object').innerHTML = ''
           }
         },1000)
-    },
-    methods:{
+       },
       goUnity(){
 
       },
       quitUnity(){
         clearInterval(this.interval);
       },
+    },
+    created(){
+      this.getUnityItem()
     },
     watch: {
       object: function(object){

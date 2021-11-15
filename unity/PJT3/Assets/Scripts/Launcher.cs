@@ -47,7 +47,7 @@ public class Launcher : Photon.PunBehaviour {
         Debug.Log("마스터 서버로 접속 완료");
         PhotonNetwork.playerName = "닉네임 임의로 설정";
         PhotonNetwork.JoinLobby();
-        // PhotonNetwork.automaticallySyncScene = true;
+        PhotonNetwork.automaticallySyncScene = true;
     }
 
     //ㅏ로비까지 들어옴
