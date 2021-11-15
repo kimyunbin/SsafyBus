@@ -2,7 +2,7 @@
   <div class="imgurl">
     <div class="head">
       <h2 style="font-weight:bold;">{{name}}</h2>
-      <h2>에게 무엇이든 물어보는 게시판</h2>
+      <h2>에게 <span>무</span>엇이든 <span>물</span>어보는 게시판</h2>
     </div>
     <!-- {{this.qboard}} -->
     <div class="board" v-if="this.qboard.length > 0">
@@ -16,6 +16,7 @@
       <div>
         <!-- <button v-if="this.user_info.userId == this.qboard_info" @click="bclick()">질문하기</button> -->
         <button @click="bclick()">질문하기</button>
+        <button @click="goBack">돌아가기</button>
 
         <div class="modal-overlay" v-bind:class="{active: is_active}">
           <div class="modal" v-bind:class="{active: is_active}">
@@ -41,6 +42,7 @@
     <div v-else>
       <h2>아직 질문이 없어요</h2>      
       <button @click="bclick2()">질문하기</button>
+      <button @click="goBack">돌아가기</button>
       <div class="modal" v-bind:class="{active: is_active}">
         <a class="close-modal" @click="xclick()">
           <svg viewBox="0 0 20 20">
@@ -119,6 +121,9 @@ export default {
         this.$router.go()
       })
     },
+    goBack(){
+      this.$router.go(-1);
+    }
   },
   mounted() {
     this.qboard = this.qboard_info.question
@@ -147,6 +152,12 @@ body, html{
   justify-content: center;
   margin-top: 60px;
 }
+
+.goBack{
+  position: absolute;
+  left: 0;
+}
+
 .board {
  border: 4px solid #FFE651;
  border-radius: 10px;
@@ -211,6 +222,7 @@ button {
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
   transition: background 0.25s $easing;
   border-radius: 10px;
+  margin: 0px 20px;
   
   &:hover {
     background: darken($button-bg, 3%);
@@ -251,6 +263,13 @@ button {
   }
 } // media query
 
+h2{
+  font-weight: 700;
+}
+
+h2 span{
+  color: #17B0E7;
+}
 
 
 /**

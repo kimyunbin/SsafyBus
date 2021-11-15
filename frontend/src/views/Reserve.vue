@@ -55,6 +55,8 @@
         </div>
       </div>
       <div class="table">
+        <button class="goBack" @click="goBack">나가기</button>
+        <br>
         <div class="table-box">
           <div class="title">스터디룸 예약
           </div>
@@ -115,6 +117,7 @@
           </div>
         </div>
         <button @click="reserveStudyRoom">예약 완료</button>
+        
       </div>
     </div>
   </div>
@@ -297,6 +300,9 @@ export default {
     deleteMember(idx){
       this.members.splice(idx,1)
       this.userid.splice(idx,1)
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   },
 }
@@ -650,6 +656,10 @@ input, button {
         background: white;
         color: #17B0E7;
         transform: translateY(2px);
+      }
+      .goBack{
+        background-color: #FFE651;
+        color: #191919;
       }
     }
   }

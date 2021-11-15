@@ -15,6 +15,7 @@
           </div>
         </div>
       </div>
+      <button class="goBack" @click="goBack">나가기</button>
     <div v-if="isOpen" @click="isOpen = false" id="modal" class="modal-overlay">
     </div>
     <div v-if="isOpen" class="modal-window">
@@ -70,6 +71,9 @@ export default {
     },
     goStudyroom(){
       console.log('스터디룸 들어가기')
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   },
   filters: {
@@ -199,7 +203,7 @@ input, button {
   align-items: center;
   .studyroom-box{
     width: 410px;
-    height: 510px;
+    height: 530px;
     border: 2px solid #17B0E7;
     // background-color: #17B0E7;
     border-radius: 20px;
@@ -229,6 +233,13 @@ input, button {
         color: white;
         font-weight: bold;
       }
+    }
+    .goBack{
+      border-radius: 10px;
+      padding: 3px 13px;
+      font-weight: bold;
+      color: white;
+      background-color: #17B0E7;
     }
   }
 }
