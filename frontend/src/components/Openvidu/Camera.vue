@@ -47,16 +47,15 @@
     </div>
     <div id="webcam-nav">
       <button id="btnSetvideo" @click="updateStream(0)" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':data.setting.publishVideo}">
-        <div v-if="!data.setting.publishVideo"><div id="unpublish-video" class="fas fa-video"></div></div>
+        <div v-if="data.setting.publishVideo"><div id="unpublish-video" class="fas fa-video-slash"></div></div>
         <div v-else><div id="publish-video" class="fas fa-video"></div></div>
       </button>
       <button id="btnSetAudio" @click="updateStream(1)" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':data.setting.publishAudio}">
-        <div v-if="!data.setting.publishAudio"><div id="unpublish-audio" class="fas fa-microphone-slash"></div></div>
+        <div v-if="data.setting.publishAudio"><div id="unpublish-audio" class="fas fa-microphone-slash"></div></div>
         <div v-else><div id="publish-audio" class="fas fa-microphone"></div></div>
       </button>
       <button id="btnShareScreen" @click="shareScreen" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':screenShare}">
-        <div v-if="!screenShare"><div id="unpublish-screen" class="fas fa-upload"></div></div>
-        <div v-else><div id="publish-screen" class="fas fa-upload"></div></div>
+        <div><div id="unpublish-screen" class="fas fa-upload"></div></div>
       </button>
       <button id="btnLeaveSession" @click="leaveSession" :class="{'webcam-button':true, 'ctr-btn':true, 'ctr-btn-on':true}"><div id="leave-session" class="fas fa-phone"></div></button>
     </div>

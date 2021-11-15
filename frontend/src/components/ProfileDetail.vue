@@ -3,7 +3,7 @@
     <div class="card">
       <div class="box">
         <div class="content">
-          <i class="fas fax-circle online"></i>
+          <i class="fas fa-circle online"></i>
           <h3>{{profileDetail.nickname}}</h3>
           <p>{{profileDetail.generation}}기 {{profileDetail.classNum}}반</p>
           <p>{{profileDetail.position}}</p>
@@ -76,6 +76,7 @@ export default {
   position: relative;
   min-width: 220px;
   height: 300px;
+  background-color: #fff;
   box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
     inset -5px -5px 15px rgba(255, 255, 255, 0.1),
     5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
@@ -173,7 +174,7 @@ export default {
 }
 
 .online {
-  background-color: green;
+  // background-color: green;
   color: rgb(5, 214, 5);
 }
 </style>>
