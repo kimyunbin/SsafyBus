@@ -6,6 +6,7 @@ import iroz.backend.common.auth.SsafyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -60,7 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/answer/*").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .antMatchers("/api-boot/users/answer/**").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+                .antMatchers("/api-boot/guestbook").authenticated()
+                .antMatchers("/api-boot/studyroom").authenticated()
+                .antMatchers("/api-boot/sharefile","/api-boot/sharefile?page").authenticated()
+                .antMatchers("/api-boot/help").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/api-boot/help/**").authenticated()
+                .antMatchers(HttpMethod.PUT,"/api-boot/help/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/api-boot/help/**").authenticated()
                 .anyRequest().permitAll()
                 .and().cors();
     }

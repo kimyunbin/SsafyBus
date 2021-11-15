@@ -27,6 +27,7 @@
     </div>
     <button v-if="this.$route.params.help_pk > 0" @click="editClick()">수정완료</button>
     <button v-else @click="submitClick()">등록</button>
+    <button class="cancle" @click="goBack()">취소</button>
   </div>
 </template>
 
@@ -85,6 +86,9 @@ export default {
       .then(()=>{
         this.$router.push({name:"Help"})
       })
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   },
   created() {
@@ -143,6 +147,7 @@ export default {
   appearance: none;
 }
 button {
+  margin: 20px;
   margin-top: 40px;
   margin-bottom: 20px;
   background: #17B0E7;
@@ -150,6 +155,10 @@ button {
   border: none;
   padding: 8px;
   }
+
+.cancle{
+  background-color: #eb4d4b; 
+}
 .editer{
   text-align: left;
 }

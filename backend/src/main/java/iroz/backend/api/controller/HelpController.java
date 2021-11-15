@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +47,7 @@ public class HelpController {
     @PostMapping("")
     public ResponseEntity<? extends BaseResponseBody> postHelp(Authentication authentication, @RequestBody HelpPostReq helpPostReq){
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+
         helpService.postHelp(userDetails.getUser(), helpPostReq);
         return ResponseEntity.status(200).body(BaseResponseBody.of(201, "success"));
     }
@@ -89,7 +91,7 @@ public class HelpController {
     }
 
     @PostMapping("/{help_pk}")
-    public ResponseEntity<? extends BaseResponseBody> postComment(Authentication authentication, @PathVariable Long help_pk, @RequestBody QuestionPostReq commentPostReq){
+    public ResponseEntity<? extends BaseResponseBody> postComment(Authentication authentication, @PathVariable Long help_pk, @Valid @RequestBody QuestionPostReq commentPostReq){
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String msg = helpService.postComment(userDetails.getUser(), help_pk, commentPostReq.getContent());
         return ResponseEntity.status(200).body(BaseResponseBody.of(201, msg));
