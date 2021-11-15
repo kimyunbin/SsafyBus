@@ -13,18 +13,21 @@ public class SelectItem : MonoBehaviour
     public float shortDis;
     public GameObject enemy;
     // Start is called before the first frame update
+
     void Start()
     {
         FoundObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("item"));
+        enemy = FoundObjects[0]; // 첫번째를 먼저 
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        shortDis = Vector3.Distance(gameObject.transform.position, FoundObjects[0].transform.position); // 첫번째를 기준으로 잡아주기 
+        shortDis = Vector3.Distance(gameObject.transform.position, enemy.transform.position); // 첫번째를 기준으로 잡아주기 
+        cakeslice.Outline outline = enemy.GetComponent<cakeslice.Outline>();
+        outline.eraseRenderer = true;
  
-        enemy = FoundObjects[0]; // 첫번째를 먼저 
  
         foreach (GameObject found in FoundObjects)
         {
@@ -37,10 +40,10 @@ public class SelectItem : MonoBehaviour
             }
         }
 
-        float limit = 2.0f;
-
+        outline = enemy.GetComponent<cakeslice.Outline>();
+        float limit = 3.0f;
         if(shortDis < limit) {
-            // shader 빨갛게
+            outline.eraseRenderer = false;
             if(Input.GetKey(KeyCode.LeftShift)){
                 if(enemy.name == "check"){
                     Application.OpenURL("https://edu.ssafy.com/comm/login/SecurityLoginForm.do");
@@ -56,6 +59,9 @@ public class SelectItem : MonoBehaviour
                 SendToItem(itemName);
                 }
             }
+        }
+        else{
+            outline.eraseRenderer = true;
         }
     }
 }
