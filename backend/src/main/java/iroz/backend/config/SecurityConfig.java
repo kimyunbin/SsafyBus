@@ -63,9 +63,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api-boot/users/answer/**").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
                 .antMatchers(HttpMethod.POST,"/api-boot/guestbook").authenticated()
-                .antMatchers("/api-boot/studyroom").authenticated()
+                .antMatchers(HttpMethod.POST,"/api-boot/studyroom").authenticated()
                 .antMatchers("/api-boot/sharefile","/api-boot/sharefile?page").authenticated()
-                .antMatchers("/api-boot/help").authenticated()
+                .antMatchers(HttpMethod.POST,"/api-boot/help").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/api-boot/help/**").authenticated()
                 .antMatchers(HttpMethod.PUT,"/api-boot/help/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/api-boot/help/**").authenticated()
