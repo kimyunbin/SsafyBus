@@ -33,6 +33,9 @@
         <br>
         <h3>방명록이 없습니다</h3>
       </div>
+      <br>
+      <div class="out">나가기</div>
+
     </div>
   </div>
 </div>
@@ -169,6 +172,9 @@ h1 {
 
 .list {
   margin-top: 30px;
+  background-color: rgba( 255, 255, 255, 0.5 );
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .date-carousel {
@@ -213,5 +219,27 @@ h1 {
 .date-carousel-input::-webkit-input-placeholder{
     display: none;
     -webkit-appearance: none;
+}
+
+
+.out {
+  margin: auto;
+  width: 90px;
+  background: #ffd52d;
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  font-size: 15px;
+  font-weight: bold;
+  border: 0px;
+  cursor: pointer;
+}
+.out:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  color: #000;
 }
 </style>
