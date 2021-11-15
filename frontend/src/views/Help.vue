@@ -33,7 +33,7 @@
           :pagnationInfo = pagnation_info
           @update ="helpList"
         />
-        <div class="out">나가기</div>
+        <div class="out" @click="goUnity">나가기</div>
       </div>
       <!-- <div class="pagination" v-if="paging.totalCount > 0">
         <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
@@ -156,7 +156,10 @@ const boardStore = 'boardStore'
           this.help_list[i].createdAt = this.dateFormat(new Date(createdAt))
           }
         })
-    } 
+    },
+    goUnity(){
+      this.$router.push('UnityGame')
+    }
   },
   mounted() {
     this.helpList()
