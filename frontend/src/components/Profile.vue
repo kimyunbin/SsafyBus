@@ -1,6 +1,7 @@
 <template>
   <div class="imgurl">
     <div class="head-box">
+      
       <div class="box">
         <div name="search">
           <input type="text" class="input" 
@@ -11,8 +12,6 @@
           <i class="fas fa-search search-icon"></i>
       </div>
     </div>
-    
-      <i class="fas fa-times-circle exit-icon"></i>
 
     <div class="content-box">
       <div class="card-box" >
@@ -22,13 +21,16 @@
           :profileDetail = profileDetail
         />
       </div>
-
-      <Pagnation
-        :pagnationInfo = pagnation_info
-        @update ="profileList"
-      />
+      <div class="content-bottom">
+        <div class="hide"></div>
+        <Pagnation
+          :pagnationInfo = pagnation_info
+          @update ="profileList"
+        />
+        <div class="out">나가기</div>
+      </div>
     </div>
-      <button class="out">나가기</button>
+      
   </div>
 </template>
 
@@ -105,7 +107,7 @@ body, html{
   background-image: url("../assets/locker.png");
   background-size: cover;
   background-position: center;
-  padding-top: 60px;
+  padding-top: 30px;
 }
 
 .head-box {
@@ -188,18 +190,28 @@ body, html{
   border-radius: 5px;
   text-decoration: none;
   color: white;
-  margin-top: 20px;
-  margin-bottom: 40px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
   font-size: 15px;
   font-weight: bold;
   border: 0px;
+  cursor: pointer;
 }
 .out:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
   background: #fff;
   color: #000;
+}
+
+.content-bottom{
+  margin: auto;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+}
+.hide{
+  width: 80px;
 }
 </style>>
 

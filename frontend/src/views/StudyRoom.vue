@@ -192,10 +192,11 @@ input, button {
   }
 }
 .studyroom-page{
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   .studyroom-box{
     width: 410px;
     height: 510px;
