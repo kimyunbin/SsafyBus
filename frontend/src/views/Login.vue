@@ -11,7 +11,7 @@
         </label>
         <label>
           <span>Password</span>
-          <input type="password" v-model='login_info.password'/>
+          <input type="password" v-model='login_info.password' @keyup.enter="loginClick()"/>
         </label>
         <br>
         <button type="button" class="submit" @click="loginClick()">LOGIN</button>
