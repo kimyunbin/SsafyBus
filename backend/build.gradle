@@ -51,6 +51,11 @@ dependencies {
 	//configurations
 	compile "org.springframework.boot:spring-boot-configuration-processor"
 
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.0'
+
+
+
 }
 //def generated='src/main/generated'
 //sourceSets {
