@@ -110,16 +110,20 @@ export default {
         'help_pk' : help_pk,
         'content' : JSON.stringify(comment)
       }
-      console.log(value)
-      this.writeComment(value)
-      .then(()=>{
-        this.help_item.comments.push({
-          content:this.comment,
-          user:this.user_info(),
-          createdAt:''
+      if (this.content===''){
+        console.log('입력이 없습니다.')
+      } else {
+        console.log(value)
+        this.writeComment(value)
+        .then(()=>{
+          this.help_item.comments.push({
+            content:this.comment,
+            user:this.user_info(),
+            createdAt:''
+          })
+          this.comment = ""
         })
-        this.comment = ""
-      })
+      }
     },
     editClick() {
       const value = {

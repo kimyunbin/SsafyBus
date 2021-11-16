@@ -29,7 +29,7 @@
             <div class="modal-content">
             <h3>질문하기</h3>
             <form>
-                <input type="textarea" v-model="content">
+                <input type="textarea" v-model="content" @keyup.enter="submitClick()">
                 <button type="button" @click="submitClick()">완료</button>
             </form>
             </div><!-- content -->
@@ -53,7 +53,7 @@
       <div class="modal-content">
       <h3>질문하기</h3>
       <form>
-          <input type="textarea" v-model="content">
+          <input type="textarea" v-model="content" @keyup.enter="submitClick()">
           <button type="button" @click="submitClick()">완료</button>
       </form>
       </div><!-- content -->
