@@ -17,6 +17,8 @@ public class StudyRoomRegisterPostReq {
     @Min(1)
     @Max(3)
     int room;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     LocalDateTime date;
     List userid;

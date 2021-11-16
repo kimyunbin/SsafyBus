@@ -156,9 +156,11 @@ h1 {
 .main{
   width: 100vw;
   height: 100vh;
-  background-image: url("../assets/gate.png");
+  background: url("../assets/gate.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  background-position: center;
   padding-top: 60px;
 }
 

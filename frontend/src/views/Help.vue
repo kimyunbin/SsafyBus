@@ -245,14 +245,19 @@ body, html{
   margin: 0;
   padding: 0;
 }
+
+body{
+  }
+
 .my-board {
   width: 100vw;
   height: 100vh;
-  background-image: url("../assets/board.png");
-  background-size: cover;
-  background-position: center;
   padding-top: 60px;
-
+  background: url("../assets/board.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .th-list {
   // background-color:
