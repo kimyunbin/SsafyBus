@@ -1,8 +1,8 @@
 <template>
 <div :class="{'hidden': showGame}">
   <unity
-    src = "./unity/Build/unity.json"
-    unityLoader = "./unity/Build/UnityLoader.js"
+    src = "./unity/PJT3/unity.json"
+    unityLoader = "./unity/PJT3/UnityLoader.js"
     height = "600"
     width = "1000"
     ref= "instance"
