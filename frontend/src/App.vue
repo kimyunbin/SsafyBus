@@ -25,6 +25,7 @@ export default {
 }
 </script>
 
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -34,4 +35,11 @@ export default {
   color: #2c3e50;
   /* margin-top: 60px; */
 }
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
 </style>

@@ -1,15 +1,17 @@
 <template>
   <div class="container">
-    <!-- {{help_item}} -->
     <div class="title">
       <!-- <h2>제목</h2> -->
+      <button @click="goBack">📚목록으로</button>
       <h2>{{help_item.title}}</h2>
       <div class="change" v-if="this.nickname == help_item.user">
         <button class="btn" @click="editClick(help_item.helpId)">수정</button>
         <button class="btn" @click="deleteClick(help_item.helpId)" style="margin-left:8px">삭제</button>
       </div>
-    </div>
+      <div class="change" v-else>
 
+      </div>
+    </div>
     <div class="code">
       <!-- <CodeEditor
 
@@ -18,7 +20,7 @@
       <!-- {{help_item.code}} -->
     </div>
 
-    <div class="content">
+    <div class="content center">
       <viewer :initialValue="viewerText" height="500px" />
       <!-- <p class="txt_left">{{help_item.content}}</p> -->
     </div>
@@ -30,7 +32,7 @@
 
     <div class="comment-wirte">
       <!-- <label>댓글:</label> -->
-      <input type="text" name="" id="" class="comment-input"  v-model="comment">
+      <input type="text" name="" id="" class="comment-input"  v-model="comment" @keyup.enter="submitClick(help_item.helpId)">
       <button size="sm" class="btn" @click="submitClick(help_item.helpId)">댓글 등록하기</button>
     </div>
     <div class="comment-list">
@@ -108,11 +110,20 @@ export default {
         'help_pk' : help_pk,
         'content' : JSON.stringify(comment)
       }
-      console.log(value)
-      this.writeComment(value)
-      .then(()=>{
-        this.$router.go()
-      })
+      if (this.content===''){
+        console.log('입력이 없습니다.')
+      } else {
+        console.log(value)
+        this.writeComment(value)
+        .then(()=>{
+          this.help_item.comments.push({
+            content:this.comment,
+            user:this.user_info(),
+            createdAt:''
+          })
+          this.comment = ""
+        })
+      }
     },
     editClick() {
       const value = {
@@ -137,6 +148,9 @@ export default {
       })
 
     },
+    goBack(){
+      this.$router.go(-1);
+    }
   }
   
 }
@@ -149,15 +163,18 @@ $button-bg: #17B0E7;
 }
 
 .title {
+  margin: auto;
   margin-top: 60px;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  max-width: 1000px;
+  justify-content: space-between;
 }
 .change {
-  margin: auto;
-  width: 80%;
-  max-width: 1000px;
   display: flex;
   justify-content: end;
+  width: 116px;
 }
 .code {
   width: 80%;
@@ -223,5 +240,9 @@ $button-bg: #17B0E7;
   &:hover {
     background: darken($button-bg, 3%);
   }
+}
+
+.center{
+  text-align: left;
 }
 </style>

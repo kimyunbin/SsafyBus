@@ -1,56 +1,38 @@
 <template>
 <div id="chat-container">
-  <div id="chat-main">
+  <div id="chat-main"  v-if="showChatting">
     <div id="chat-title">
         <p v-if="showChatting">Chat</p>
-        <p v-if="showUsers">User</p>
     </div>
-    <div id="receive-container" v-if="showChatting||showUsers">
+    <div id="receive-container">
         <div class="message"  v-for="(message, index) in data.receiveMessage" :key="index">
-        <table class="message-table" v-if="message.sender.clientData !== user.nickname">
-          <tr class="user-profile">
-            <td class="user-name">{{message.sender.clientData}}</td>
-          </tr>
-          <tr>
-            <td><p class="user-message">{{message.message}}</p></td>
-          </tr>
-        </table>
-        <table class="message-table my-message" v-else>
+          <table class="message-table" v-if="message.sender.clientData !== user.nickname">
             <tr class="user-profile">
               <td class="user-name">{{message.sender.clientData}}</td>
             </tr>
             <tr>
               <td><p class="user-message">{{message.message}}</p></td>
             </tr>
-        </table>
-        </div>
-    </div>
-    <div id="participant-container" v-if="showUsers">
-        <div class="participant-info my-info">
-            <p class="inline-p">{{user.userNickname}} (me)</p>
-        </div>
-        <div class="participant-info" v-for="(sub, index) in data.subscribers" :key="index">
-            <p class="inline-p">{{JSON.parse(sub.stream.connection.data).userNickname}}</p>
+          </table>
+          <table class="message-table my-message" v-else>
+              <tr>
+                <td><p class="user-message">{{message.message}}</p></td>
+              </tr>
+          </table>
         </div>
     </div>
     <div id="input-container" v-if="showChatting">
       <div id="input-form">
-      <input id="sendMessage" class="input-message" type="text" v-model="sendMessage" @keyup.enter="send">
+      <input id="sendMessage" autocomplete="off" class="input-message" type="text" v-model="sendMessage" @keyup.enter="send">
       <div id="btnSendMessage" class="fas fa-location-arrow" @click="send"></div>
       </div>
     </div>
   </div>
   <div id="chat-nav">
-    <div class="icon" @click="showChange(0)">
-      <button>bbbb</button>
-    </div>
     <div class="icon-bottom">
-      <div @click="showChange(1)" class="messenger">
-        <i id="message-icon" class="fas fa-comments" :class="{active : showChatting}"></i>
-        <!-- <div class="bell" v-if="showBell">fas fa-bell</div> -->
-      </div>
-      <div @click="showChange(2)">
-        <div id="participant-icon" class="fas fa-user" :class="{active : showUsers}"></div>
+      <div @click="showChange" class="messenger">
+        <div id="message-icon" class="fas fa-comments" :class="{active : showChatting}"></div>
+        <div class="bell fas fa-circle" v-if="showBell"></div>
       </div>
       <div id="live-container">
         <div id="live-circle"></div>
@@ -72,8 +54,6 @@ export default {
     return {
       sendMessage : "",
       showChatting : false,
-      showUsers : false,
-      user : {},
     }
   },
   props :{
@@ -88,13 +68,13 @@ export default {
   },
   computed : {
     ...mapGetters(userStore, ['user_info']),
-    // showBell : function(){
-    //     if(this.showChatting){
-    //         this.data.receiveMessageBell = false;
-    //         return false;
-    //     }
-    //     return this.data.receiveMessageBell;
-    // },
+    showBell : function(){
+        if(this.showChatting){
+            this.changeBell()
+            return false;
+        }
+        return this.data.receiveMessageBell;
+    },
   },
   methods: {
     send(){
@@ -103,18 +83,12 @@ export default {
         this.sendMessage = '';
       }
     },
-    showChange(type){
-      if(type == 1){
-        this.showChatting = true;
-        this.showUsers = false;
-        this.data.receiveMessageBell = false;
-      }else if(type == 2){
-        this.showChatting = false;
-        this.showUsers = true;
-      }else{
-        this.showChatting = false;
-        this.showUsers = false;
-      }
+    showChange(){
+      this.showChatting = !this.showChatting
+      this.data.receiveMessageBell = false;
+    },
+    changeBell(){
+      this.data.receiveMessageBell = false;
     }
   },
 }
@@ -122,15 +96,28 @@ export default {
 
 <style scoped>
 #chat-container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    background-color: #17B0E7;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: #FFE65180;
+  height: 100%;
+  width: auto;
+  right: 0% !important;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 #chat-nav{
     display: flex;
     flex-direction: column;
+    min-width: 50px;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
 }
 #chat-nav .icon{
     margin: 10px;
@@ -144,15 +131,15 @@ export default {
 }
 #chat-nav #message-icon{
     color : var(--color-white);
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     margin : auto;
     cursor: pointer;
 }
 #chat-nav #participant-icon{
     color : var(--color-white);
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     margin : auto;
     cursor: pointer;
 }
@@ -165,10 +152,11 @@ export default {
     vertical-align: -webkit-baseline-middle;
 }
 #chat-nav .bell{
-    color: var(--color-mainYellow);
+    color: #eb4d4b;
     font-size: 14px;
     position: absolute;
     right: 10px;
+    cursor: pointer;
 }
 #chat-nav #live-container{
     width : 80%;
@@ -177,41 +165,40 @@ export default {
 #chat-nav #live-circle{
     height: 6px;
     width: 6px;
-    background-color: var(--color-green-live);
     border-radius: 3px;
     vertical-align: middle;
     display: inline-block;
 }
 #chat-nav #participant-counter{
-    font-size : var(--font-size-14);
-    font-family: 'AppleSDGothicNeoB';
-    font-weight: var(--weight-regular);
-    color : var(--color-green-live);
     display: inline-block;
     vertical-align: middle;
     margin: 0px 0px 0px 5px;
 }
 #chat-main{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    background-color: #FFE651;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: #FFF;
+  border-top: 5px solid #FFE65180;
+  border-bottom : 5px solid #FFE65180;
+  border-left : 5px solid #FFE65180;
+  -webkit-transition: all 0.3s ease-in-out; 
+  -moz-transition: all 0.3s ease-in-out; 
+  -o-transition: all 0.3s ease-in-out; 
+  transition: all 0.3s ease-in-out;
+
 }
 #chat-main #chat-title{
-    width: 100%;
-    border-bottom: 1px solid var(--color-grey-6);
-    text-align: left;
-    flex-grow: 0.5;
-    flex-basis: 0;
+  width: 100%;
+  margin: 10px;
+  text-align: center;
+  flex-grow: 0.5;
+  flex-basis: 0;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: 800;
 }
 #chat-main #chat-title p{
-    font-size : var(--font-size-30);
-    font-family: 'AppleSDGothicNeoEB';
-    font-weight: var(--weight-regular);
-    color : var(--color-white);
-    margin : 25px 0px 0px 0px;
-    padding-left: 20px;
-    opacity: 1;
+  opacity: 1;
 }
 #receive-container{
     overflow-y: auto;
@@ -219,50 +206,70 @@ export default {
     height: 90%;
     flex-grow: 9;
     flex-basis: 0;
+    
 }
 #receive-container .message{
     width : 100%;
     opacity: 1;
 }
 #receive-container .message-table{
-    color: var(--color-white);
-    text-align: left;
-    padding : 10px;
-    table-layout: fixed;
-    border-collapse: separate;
-    text-indent: initial;
-    border-spacing: 2px;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    padding: 0px 5px;
 }
 #receive-container .my-message{
-    text-align: right;
-    margin-left : auto;
+  align-items: flex-end;
+  text-align: right;
+  margin-left : auto;
+}
+.my-message .user-message{
+  padding: 6px 10px !important;
+  border-radius: 6px 0 6px 0 !important;
+  position: relative !important;
+  background: #17B0E750 !important;
+  color: #6c6c6c !important;
+  font-size: 12px !important;
+}
+.my-message .user-message::after{
+  content: "";
+  position: absolute;
+  border: 10px solid transparent;
+  border-top: 10px solid #17B0E750;
+  border-right: none;
+  bottom: -20px;
+  right: 9px;
+  top: auto !important;
+  left: auto !important;
 }
 #receive-container .user-profile{
-    vertical-align: baseline;
-}
-#receive-container .user-profile .user-img{
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    vertical-align: middle;
-    border: 1px solid var(--color-grey-2);
+  font-size: 12px;
+  color: #191919;
 }
 #receive-container .user-profile .user-name{
-    font-size: var(--font-size-16);
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-light);
     margin-left : 5px;
+    width: auto;
 }
 #receive-container .message .user-message{
-    width: fit-content;
-    font-size: var(--font-size-14);
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-light);
-    word-break: break-all;
-    white-space: normal;
-    max-width: 200px;
-    text-align: left;
-    display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px 0 6px 0;
+  position: relative;
+  color: #6c6c6c;
+  font-size: 12px;
+  background: #FFE65150;
+  /* border: 2px solid #FFE651; */
+  align-self: flex-start;
+}
+.user-message::after{
+  content: "";
+  position: absolute;
+  right: auto;
+  bottom: auto;
+  top: -20px;
+  left: 9px;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #FFE65150;
+  border-left: none;
 }
 #input-container{
     width : 100%;
@@ -273,8 +280,8 @@ export default {
 #input-form{
     margin : 10px;
     background-color : var(--color-white);
-    border: 1px solid var(--color-mainBlue);
-    border-radius: 20px;
+    border: 5px solid #17B0E750;
+    border-radius: 10px 0 10px 0 !important;
     opacity: 1;
     padding: 5px;
     min-width: 250px;
@@ -284,10 +291,6 @@ export default {
     border: none;
     text-align: left;
     letter-spacing: 0px;
-    color: var(--color-grey-2);
-    font-size : var(--font-size-16);
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
     margin : 0px 5px 0px 0px;
     width: 80%;
 }
@@ -297,11 +300,12 @@ export default {
 }
 
 #input-form input[type="text"]:focus{
-    outline:none;
+  outline:none;
 }
+
+
 #input-form #btnSendMessage{
     display: inline-block;
-    color : var(--color-mainBlue);
     opacity: 1;
     font-size: 15px;
 }
@@ -313,25 +317,6 @@ export default {
     overflow-y: auto;
     flex-grow: 9;
     flex-basis: 0;
-}
-.my-info{
-    font-size : var(--font-size-20)!important;
-    font-family: 'AppleSDGothicNeoB'!important;
-}
-.participant-info{
-    font-size : var(--font-size-18);
-    font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
-    color : var(--color-white);
-    margin : 5px;
-    padding : 5px;
-}
-.participant-info .user-img{
-    width: 30px;
-    height: 30px;
-    border-radius: 30px;
-    vertical-align: middle;
-    border: 1px solid var(--color-grey-2);
 }
 .inline-p{
     display: inline-block;

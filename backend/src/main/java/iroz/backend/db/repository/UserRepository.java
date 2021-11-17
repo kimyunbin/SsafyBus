@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserId(String userId);
-    List<UserMapping> findAllByNickname(String nickname);
+    List<UserMapping> findAllByNicknameContaining(String nickname);
     Page<UserMapping> findAllBy(Pageable pageable);
 }

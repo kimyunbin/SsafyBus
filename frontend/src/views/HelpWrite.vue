@@ -12,7 +12,7 @@
       <h3>코드내용</h3>
       <textarea name="" id="" cols="30" rows="10"  v-model="code"></textarea>
     </div> -->
-    <div class="box">
+    <div class="box editer">
       <editor
           :initialValue="content"
           ref="toastuiEditor"
@@ -27,6 +27,7 @@
     </div>
     <button v-if="this.$route.params.help_pk > 0" @click="editClick()">수정완료</button>
     <button v-else @click="submitClick()">등록</button>
+    <button class="cancle" @click="goBack()">취소</button>
   </div>
 </template>
 
@@ -85,6 +86,9 @@ export default {
       .then(()=>{
         this.$router.push({name:"Help"})
       })
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   },
   created() {
@@ -103,17 +107,19 @@ export default {
 
 <style scoped>
 .container {
-  margin-top: 60px;
   height: 850px;
   width: 80%;
   max-width: 1000px;
   border: 5px solid #17B0E7;
   border-radius: 20px;
+  margin: auto;
+  margin-top: 40px;
 }
 .box {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  max-width: 1000px;
 }
 .box h3 {
   /* text-align: left; */
@@ -141,6 +147,7 @@ export default {
   appearance: none;
 }
 button {
+  margin: 20px;
   margin-top: 40px;
   margin-bottom: 20px;
   background: #17B0E7;
@@ -148,5 +155,12 @@ button {
   border: none;
   padding: 8px;
   }
+
+.cancle{
+  background-color: #eb4d4b; 
+}
+.editer{
+  text-align: left;
+}
 </style>>
 

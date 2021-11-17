@@ -9,6 +9,8 @@ import iroz.backend.db.entity.User;
 import iroz.backend.db.repository.CommentRepository;
 import iroz.backend.db.repository.HelpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class HelpServiceImpl implements HelpService{
     private CommentRepository commentRepository;
 
     @Override
-    public List<HelpAllMapping> findAll(){
-        return helpRepository.findAllBy();
+    public Page<HelpAllMapping> findAll(Pageable pageable){
+        return helpRepository.findAllBy(pageable);
     }
 
     @Override

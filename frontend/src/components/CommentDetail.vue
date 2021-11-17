@@ -2,10 +2,10 @@
   <div class="comment-box">
     <div class="head">
       <p class="username">{{commentList.user.nickname}}</p>
-      <p class="date">{{commentList.createdAt | timeFor}}</p>
-    </div>
       <p class="content">{{commentList.content}}</p>
-      <!-- <hr> -->
+      <p class="date" v-if="commentList.createdAt===''">방금전</p>
+      <p class="date" v-else>{{commentList.createdAt | timeFor}}</p>
+    </div>
   </div>
 </template>
 
@@ -62,27 +62,38 @@ export default {
 </script>
 
 <style scoped>
+p{
+  padding: 0%;
+  margin: 0%;
+}
+
 .comment-box {
   margin-bottom: 30px;
-  border: 1px gray solid;
-  border-radius: 10px;
-
-  padding: 5px;
+  background: #19191915;
+  border-radius: 5px;
+  padding: 10px;
 }
 .head {
   display: flex;
-  /* justify-content: center; */
+  justify-content: space-between;
+  align-items: center;
 }
+
 .username {
-  /* padding-left: 5px; */
+  font-size: 20px;
+  padding: 0% 10px;
+  color:gray;
 }
 .date {
   color:gray;
   margin-left: 10px;
+  font-size: 12px;
 }
 .content {
+  flex: 1;
   margin-top: 10px;
   margin-bottom: 5px;
   text-align:left;
+  font-size: 15px;
 }
 </style>>

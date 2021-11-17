@@ -28,6 +28,7 @@ public class StudyRoomServiceImpl implements StudyRoomService {
 
     @Override
     public StudyRoom register(User user, StudyRoomRegisterPostReq studyRoomRegisterPostReq) {
+        System.out.println("studyRoomRegisterPostReq = " + studyRoomRegisterPostReq.getDate());
         StudyRoom studyroom = StudyRoom.builder()
                 .user(user)
                 .reservation(studyRoomRegisterPostReq.getDate())

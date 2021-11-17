@@ -42,34 +42,28 @@ export default {
 </script>
 
 <style scoped>
-.active-user {
-    width: 100%;
-    height: auto;
-    border-radius : 20px;
-    vertical-align: middle;
-}
 .inactive-user{
     position: absolute;
     width: 100%;
     height: 100%;
     bottom: 0px;
 }
-.inactive-user-img{
-    width : 30%;
-    border-radius: 50%;
-    background-color: none;
-    display: block;
-    margin: auto;
-    margin-top : 10%;
-    margin-bottom: 5%;
-}
-.inactive-user-name{
+.inactive-user-info{
+    position: relative;
+    top: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     font-family: 'AppleSDGothicNeoSB';
-    font-weight: var(--weight-regular);
-    font-size: var(--font-size-30);
-    color : #007700;
-    text-align: center;
+    color : #FFF;
 }
+
+.inactive-user-name p{
+    text-align: center;
+    margin: 0%;
+    padding: 0%;
+}
+
 .inactive-user-video{
     display: inline-block;
     position: absolute;

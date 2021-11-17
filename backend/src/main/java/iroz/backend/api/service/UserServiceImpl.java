@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
 
     public List<UserMapping> getUserByNickname(String nickname) {
-        return userRepository.findAllByNickname(nickname);
+        return userRepository.findAllByNicknameContaining(nickname);
     }
     public Page<UserMapping> findAll(Pageable pageable){
         return userRepository.findAllBy(pageable);

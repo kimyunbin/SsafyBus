@@ -1,65 +1,71 @@
 <template>
   <div>
     <div class="my-board">
-      <h2>게시판 리스트</h2>
-    <div class="head">
-      <p><i class="fas fa-times-circle exit-icon"></i></p>
-    </div>
+      <h2>헬프 게시판</h2>
 
 
-    <table class="list-box">
-      <thead class="th-list">
-        <tr>
-          <th class="th-no">no</th>
-          <th class="th-title">제목</th>
-          <th class="th-id">작성자</th>
-          <th class="th-date">날짜</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, idx) in help_list.slice().reverse()" :key="idx">
-          <td>{{idx+1}}</td>
-          <td class="txt_left">
-            <a class="a-title" @click="detailClick(row.id)">{{row.title}}</a>
-          </td>
-          <td>{{row.user.nickname}}</td>
-          <td>{{row.createdAt}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-
-    <button class="btn" @click="writeClick()">질문하기</button>
-
-		<!-- <div class="pagination" v-if="paging.totalCount > 0">
-			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
-			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
-			<template v-for=" (n,index) in paginavigation()">
-				<template v-if="paging.page==n">
-					<strong :key="index">{{n}}</strong>
-				</template>
-				<template v-else>
-					<a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
-				</template>
-			</template>
-			<a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
-			<a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
-		</div> -->
-
-      <!-- <div class="btnRightWrap">
-        <a  class="btn">등록</a>
+      <table class="list-box">
+        <thead class="th-list">
+          <tr>
+            <th class="th-no">no</th>
+            <th class="th-title">제목</th>
+            <th class="th-id">작성자</th>
+            <th class="th-date">날짜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, idx) in help_list.slice()" :key="idx">
+            <td>{{row.id}}</td>
+            <td class="txt_left">
+              <a class="a-title" @click="detailClick(row.id)">{{row.title}}</a>
+            </td>
+            <td>{{row.user.nickname}}</td>
+            <td>{{row.createdAt}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <button class="btn" @click="writeClick()">질문하기</button>
+      <br>
+      <div class="content-bottom">
+        <div class="hide"></div>
+        <Pagnation
+          :pagnationInfo = pagnation_info
+          @update ="helpList"
+        />
+        <div class="out" @click="goUnity">나가기</div>
+      </div>
+      <!-- <div class="pagination" v-if="paging.totalCount > 0">
+        <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
+        <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
+        <template v-for=" (n,index) in paginavigation()">
+          <template v-if="paging.page==n">
+            <strong :key="index">{{n}}</strong>
+          </template>
+          <template v-else>
+            <a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
+          </template>
+        </template>
+        <a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
+        <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
       </div> -->
-  </div>
+
+        <!-- <div class="btnRightWrap">
+          <a  class="btn">등록</a>
+        </div> -->
+    </div>
   </div>
 </template>
 
 
 <script>
 import { mapActions, mapGetters} from 'vuex'
+import Pagnation from '../components/Pagnation.vue'
 // import CodeEditor from 'simple-code-editor';
 const boardStore = 'boardStore'
   export default {
     components: {
+        Pagnation
       // CodeEditor,
     },
     data() {
@@ -78,6 +84,8 @@ const boardStore = 'boardStore'
         help_pk:'',
         comment: '',
         is_active : false,
+        total: '',
+        page: 0, // 현재 페이지
       }
     },
     computed: {},
@@ -135,17 +143,34 @@ const boardStore = 'boardStore'
       .then(()=>{
         this.$router.go()
       })
-    }, 
+    },
+    helpList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getHelpList(page)
+      .then(()=>{
+        this.help_list = this.help_info().content
+        for (let i = 0; i < this.help_list.length; i++) {
+          const createdAt = this.help_list[i].createdAt
+          this.help_list[i].createdAt = this.dateFormat(new Date(createdAt))
+          }
+        })
+    },
+    goUnity(){
+      this.$router.push('UnityGame')
+    }
+  },
+  mounted() {
+    this.helpList()
   },
   created() {
-    this.getHelpList()
-  .then(()=>{
-    this.help_list = this.help_info()
-    for (let i = 0; i < this.help_list.length; i++) {
-      const createdAt = this.help_list[i].createdAt
-      this.help_list[i].createdAt = this.dateFormat(new Date(createdAt))
-      }
-     })
+    
+    this.total = this.help_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
     },
   }
 </script>
@@ -163,7 +188,7 @@ $easing: cubic-bezier(.55,0,.1,1);
  */
 
 
-h1, h2, h3, h4, h5, h6 {
+h1,  h3, h4, h5, h6 {
   font-weight: normal;
 }
 
@@ -181,6 +206,9 @@ h3 {
   color: black;
 }
 
+h2{
+  margin-bottom: 20px;
+}
 // button {
 //   background-color: $button-bg;
 //   position: relative;
@@ -203,14 +231,6 @@ h3 {
 //   }
 // }
 
-
-
-
-
-
-
-
-
   .tbList{margin-right: 0px}
 	// .tbList th{border-top:1px solid #888;}
 	.tbList th, .tbList td{border-bottom:1px solid #eee; padding:8px 0;}
@@ -219,16 +239,25 @@ h3 {
   //  tbody, td, tfoot, th, thead, tr{width: 200px;}
 
 /// 여기부터
-.my-board {
-  margin-top: 60px;
-
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
-.head {
-  display: flex;
-  justify-content: right;
-  width: 80%;  
-  max-width: 1000px;
-  margin: auto;
+
+body{
+  }
+
+.my-board {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 60px;
+  background: url("../assets/board.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .th-list {
   // background-color:
@@ -245,9 +274,10 @@ h3 {
   max-width: 1000px;
   margin: auto;
   // border: 1px solid black;
-  border: 2px solid #17B0E7;
-
+  // border: 2px solid #17B0E7;
+  background-color: #fff;
   border-radius: 10px;
+  padding: 10px;
   border-collapse: separate !important;
 }
 .list-box th, .list-box td{
@@ -273,8 +303,40 @@ h3 {
   border: none;
   padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  border-radius: 10px;
   &:hover {
     background: darken($button-bg, 3%);
   }
 }
+
+.out {
+  background: #ffd52d;
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  font-size: 15px;
+  font-weight: bold;
+  border: 0px;
+  cursor: pointer;
+}
+.out:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  color: #000;
+}
+
+.content-bottom{
+  margin: auto;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+}
+.hide{
+  width: 80px;
+}
+
 </style>

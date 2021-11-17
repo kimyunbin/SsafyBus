@@ -15,7 +15,7 @@
         <div class="modal-content">
          <h3>출석체크!</h3>
          <form>
-            <input type="textarea" v-model="content">
+            <input type="textarea" v-model="content" @keyup.enter="submitClick()">
             <button type="button" @click="submitClick()">완료</button>
          </form>
         </div><!-- content -->
@@ -77,7 +77,7 @@ export default {
         }
         this.writeVisitorBook(JSON.stringify(value))
         .then(()=>{
-          alert('완료됌')
+          alert('출석체크가 완료 되었습니다.')
         })
         .then(()=>{
           this.$router.go()
@@ -126,6 +126,7 @@ h3 {
 
 button {
   background-color: $button-bg;
+  border-radius: 10px;
   position: relative;
   color: #fff;
   border: none;

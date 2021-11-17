@@ -8,6 +8,10 @@ import iroz.backend.common.auth.SsafyUserDetails;
 import iroz.backend.common.model.response.BaseResponseBody;
 import iroz.backend.db.Mapping.UserShareMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +52,9 @@ public class ShareController {
     }
 
     @GetMapping()
-    public ResponseEntity getShare(Authentication authentication) {
+    public ResponseEntity getShare(Authentication authentication, @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable) {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        List<UserShareMapping> result = userShareService.findShare(userDetails.getUser());
+        Page<UserShareMapping> result = userShareService.findShare(userDetails.getUser(), pageable);
         HashMap map = new HashMap();
         map.put("sharefile",result);
         return ResponseEntity.ok().body(map);

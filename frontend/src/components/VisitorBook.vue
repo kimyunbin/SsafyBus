@@ -1,4 +1,7 @@
 <template>
+<div class="main">
+  <!-- {{this.date}}
+  {{(dateFormat(new Date()))}} -->
   <div class="container">
     <!-- {{visitor.guestbook.length}} -->
     <article class="date-carousel">
@@ -7,8 +10,15 @@
       <input type="button" class="date-carousel-next" @click="next()" value="&gt;">
     </article>
     <hr>
-    <div  v-if="visitor.guestbook" class ="write">
-      <WriteModal :list="visitor.guestbook"/>
+    <div v-if="visitor.guestbook"  class ="write">
+      <div v-if="this.date == dateFormat(new Date())">
+        <WriteModal :list="visitor.guestbook"/>
+      </div>
+      <div v-else>
+        <h1>오늘로 돌아가서 방명록을 남겨주세요!✍</h1>
+        <button @click="refresh()">오늘로 돌아가기</button>
+      </div>
+      
     </div>
     <br>
     <hr>
@@ -21,10 +31,15 @@
         />
       </div>
       <div v-else>
+        <br>
         <h3>방명록이 없습니다</h3>
       </div>
+      <br>
+      <div class="out" @click="unitygo()">나가기</div>
+
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -122,6 +137,12 @@ export default {
       }) 
 
     },
+    refresh(){
+      this.$router.go()
+    },
+    unitygo() {
+      this.$router.push({name:"UnityGame"}) 
+    }
 
     
   },
@@ -132,16 +153,43 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+$button-bg: #19191980;
+$speed: 0.6s;
+$delay: ($speed * .5);
+$easing: cubic-bezier(.55,0,.1,1);
+
+h1 {
+  font-size: 1.875rem;
+  font-weight: 300;
+  margin: 60px 0 30px 0;
+  color: black;
+}
+.main{
+  width: 100vw;
+  height: 100vh;
+  background: url("../assets/gate.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 60px;
+}
+
 .container {
-  margin-top: 60px;
   width: 1000px;
   max-width: 1000px;
-  margin: auto;
+  margin-left:  auto;
+  margin-right: auto;
+
 }
 
 .list {
   margin-top: 30px;
+  background-color: rgba( 255, 255, 255, 0.5 );
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .date-carousel {
@@ -176,7 +224,7 @@ export default {
   color: black;
   background-color: transparent;
   text-align: center;
-  width: 2in;
+  /* width: 2in; */
   font-size: 1.5rem;
 }
 
@@ -186,5 +234,50 @@ export default {
 .date-carousel-input::-webkit-input-placeholder{
     display: none;
     -webkit-appearance: none;
+}
+
+
+.out {
+  margin: auto;
+  width: 90px;
+  background: #ffd52d;
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  font-size: 15px;
+  font-weight: bold;
+  border: 0px;
+  cursor: pointer;
+}
+.out:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  color: #000;
+}
+
+button {
+  background-color: $button-bg;
+  border-radius: 10px;
+  position: relative;
+  color: #fff;
+  border: none;
+  padding: 1.25em 2em;
+  font-size: 0.75em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  transition: background 0.25s $easing;
+  
+  &:hover {
+    background: darken($button-bg, 3%);
+  }
+  
+  &:focus {
+    outline: none;
+  }
 }
 </style>

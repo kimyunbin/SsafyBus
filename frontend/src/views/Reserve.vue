@@ -55,6 +55,8 @@
         </div>
       </div>
       <div class="table">
+        <button class="goBack" @click="goBack">나가기</button>
+        <br>
         <div class="table-box">
           <div class="title">스터디룸 예약
           </div>
@@ -90,7 +92,7 @@
           <div class="select-team">
             <p>친구 초대</p>
             <div class="input-member">
-              <input type="text" v-model="member" @keypress="searchMember">
+              <input autocomplete="off" type="text" v-model="member" @keypress="searchMember">
               <span @click="searchMember">
                 <i class="fas fa-search"></i>
               </span>
@@ -111,10 +113,11 @@
           </div>
           <div class="input-password">
             <p>비밀번호</p>
-            <input type="password" v-model="password">
+            <input  autocomplete="off" type="password" v-model="password">
           </div>
-          <button @click="reserveStudyRoom">예약 완료</button>
         </div>
+        <button @click="reserveStudyRoom">예약 완료</button>
+        
       </div>
     </div>
   </div>
@@ -178,13 +181,14 @@ export default {
       if(this.room!=0 && this.password!= '' && this.yesTime != ''){
       const data = {
         room: this.room,
-        date: this.dates[this.reserve_num]+'T'+this.yesTime+':'+'00',
+        date: this.dates[this.reserve_num]+'T'+this.yesTime+':00:00',
         userid: this.userid,
         password: this.password,
       }
       const instance = createInstance2()
       await instance.post('/studyroom',data)
       this.statusStudyRoom(this.now)
+      console.log(this.now)
       this.room = 0
       this.yesTime = ''
       this.reserve_num = 0
@@ -297,6 +301,9 @@ export default {
     deleteMember(idx){
       this.members.splice(idx,1)
       this.userid.splice(idx,1)
+    },
+    goBack(){
+      this.$router.go(-1);
     }
   },
 }
@@ -366,10 +373,11 @@ input, button {
   color: white;
 }
 .reserve-page{
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   .reserve-box{
     display: flex;
     justify-content: space-evenly;
@@ -449,10 +457,11 @@ input, button {
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       .table-box{
         padding: 15px 10px;
         width: 75%;
-        height: 65%;
+        height: 70%;
         border-radius: 10px;
         background-color:rgba(#17B0E7, 1.0);
         .title{
@@ -522,7 +531,7 @@ input, button {
           // border-radius: 5px;
           background-color: white;
           width: 245px;
-          height: 70px;
+          height: 80px;
           padding: 7px 3px;
           .time {
             // color: #17B0E7;
@@ -590,7 +599,7 @@ input, button {
           width: 245px;
           height: 40px;
           margin-left: 15px;
-          margin-top: 10px;
+          margin-top: 5px;
           // border-radius: 5px;
           overflow-x: auto;
           white-space:nowrap;
@@ -629,25 +638,29 @@ input, button {
             padding: 4px 8px 0px 8px;
           }
         }
-        button {
-          margin-top: 13px;
-          background-color: #39c3f5;
-          border-radius: 5px;
-          font-weight: bold;
-          padding: 5px;
-          border: 2px solid white;
-          color: white;
-          cursor: pointer;
-        }
-        button:hover{
-          background-color: white;
-          color: #17B0E7;
-        }
-        button:active{
-          background: white;
-          color: #17B0E7;
-          transform: translateY(2px);
-        }
+      }
+      button {
+        margin-top: 13px;
+        background-color: #39c3f5;
+        border-radius: 5px;
+        font-weight: bold;
+        padding: 5px;
+        border: 2px solid white;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover{
+        background-color: white;
+        color: #17B0E7;
+      }
+      button:active{
+        background: white;
+        color: #17B0E7;
+        transform: translateY(2px);
+      }
+      .goBack{
+        background-color: #FFE651;
+        color: #191919;
       }
     }
   }

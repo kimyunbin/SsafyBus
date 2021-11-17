@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="imgurl">
     <div class="head-box">
+      
       <div class="box">
         <div name="search">
           <input type="text" class="input" 
@@ -11,8 +12,6 @@
           <i class="fas fa-search search-icon"></i>
       </div>
     </div>
-    
-      <i class="fas fa-times-circle exit-icon"></i>
 
     <div class="content-box">
       <div class="card-box" >
@@ -22,32 +21,47 @@
           :profileDetail = profileDetail
         />
       </div>
-      <button class="out">나가기</button>
+      <div class="content-bottom">
+        <div class="hide"></div>
+        <Pagnation
+          :pagnationInfo = pagnation_info
+          @update ="profileList"
+        />
+        <div @click="goUnity" class="out">나가기</div>
+      </div>
     </div>
+      
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
+
+import Pagnation from './Pagnation.vue'
 import ProfileDetail from './ProfileDetail.vue'
 export default {
-  components: { ProfileDetail },
+  components:{ProfileDetail, Pagnation},
   name: 'Profile',
   data() {
     return  {
       profile: {},
       search_name: '',
+      total: '',
+      page: 0, // 현재 페이지
+      
     }
   },
   computed: {
 
   },
   created() {
-    this.getProfile()
-    .then(()=>{
-      this.profile = this.profile_info()
-    })
+    // console.log(this.page,'ddd')
+    this.total = this.profile_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
   },
   methods: {
     ...mapActions(boardStore, ['getProfile', 'searchUser']),
@@ -59,17 +73,47 @@ export default {
         this.profile = this.search_user()
         this.search_name = ''
       })
+    },
+    profileList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getProfile(page)
+      .then(()=>{
+        this.profile = this.profile_info().content
+        // this.$router.push({name:"Profile", params: this.page})
+      })
+    },
+    goUnity(){
+      this.$router.push('UnityGame')
     }
+    
+
   },
   mounted() {
-    // this.searchUser()
+    this.profileList()
+
   }
 }
 </script>
 
 <style scoped>
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.imgurl {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/locker.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 30px;
+}
+
 .head-box {
-  margin-top: 60px;
   display: flex;
   /* justify-content: end; */
   justify-content: center;
@@ -135,18 +179,28 @@ export default {
   border-radius: 5px;
   text-decoration: none;
   color: white;
-  margin-top: 20px;
-  margin-bottom: 40px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   transition: 0.5s;
   font-size: 15px;
   font-weight: bold;
   border: 0px;
+  cursor: pointer;
 }
 .out:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
   background: #fff;
   color: #000;
+}
+
+.content-bottom{
+  margin: auto;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+}
+.hide{
+  width: 80px;
 }
 </style>>
 

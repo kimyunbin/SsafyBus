@@ -4,7 +4,6 @@
     <div class="my-board">
       <h2>공유 리스트</h2>
     <div class="head">
-      <p><i class="fas fa-times-circle exit-icon"></i></p>
     </div>
       <br>
         <tr>
@@ -30,7 +29,15 @@
     <br>
 
     <button class="btn" @click="writeClick()">공유하기</button>
-
+    <br>
+    <div class="content-bottom">
+      <div class="hide"></div>
+      <Pagnation
+        :pagnationInfo = pagnation_info
+        @update ="shareList"
+      />
+      <div @click="goUnity" class="out">나가기</div>
+    </div>
 		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
 			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
@@ -56,26 +63,43 @@
 <script>
 import { mapActions, mapGetters} from 'vuex'
 const boardStore = 'boardStore'
+import Pagnation from '../components/Pagnation.vue'
+
 export default {
   name: "Share",
+  components: {
+    Pagnation
+  },
   data() {
     return {
       share_list: {},
+      page: 0,
+      total: '',
     }
   },
   created() {
-  this.getShareList()
-  .then(()=>{
-    this.share_list = this.share_info()
-    for (let i = 0; i < this.share_list.length; i++) {
-      const createdAt = this.share_list[i].createdAt
-      this.share_list[i].createdAt = this.dateFormat(new Date(createdAt))
-      }
-     })
+    this.total = this.share_info().totalPages
+    this.pagnation_info = {
+      'page': this.page,
+      'total': this.total
+    }
   },
   methods: {
     ...mapActions(boardStore, ['getShareList','shareDownload']),
     ...mapGetters(boardStore, ['share_info']),
+    shareList(value) {
+      console.log(value)
+      this.page = value-1
+      const page = this.page
+      this.getShareList(page)
+      .then(()=>{
+        this.share_list = this.share_info().content
+        for (let i = 0; i < this.share_list.length; i++) {
+          const createdAt = this.share_list[i].createdAt
+          this.share_list[i].createdAt = this.dateFormat(new Date(createdAt))
+          }
+        })      
+    },
     dateFormat(date) {
       let month = date.getMonth() + 1;
       let day = date.getDate();
@@ -115,16 +139,33 @@ export default {
       })
 
     },
+    goUnity(){
+      this.$router.push('UnityGame')
+    }
+  
   },
+  mounted() {
+    this.shareList()
+  }
 
 }
 </script>
 
 <style lang="scss" scoped>
 $button-bg: #17B0E7;
-
+body, html{
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 .my-board {
-  margin-top: 60px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/board.png");
+  background-size: cover;
+  background-position: center;
+  padding-top: 60px;
 
 }
 .head {
@@ -151,7 +192,9 @@ $button-bg: #17B0E7;
   max-width: 1000px;
   margin: auto;
   // border: 1px solid black;
-  border: 2px solid #17B0E7;
+  background-color: #fff;
+  padding: 10px;
+  // border: 2px solid #17B0E7;
 
   border-radius: 10px;
   border-collapse: separate !important;
@@ -179,9 +222,40 @@ $button-bg: #17B0E7;
   border: none;
   padding: 8px;
   box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  border-radius: 10px;
   &:hover {
     background: darken($button-bg, 3%);
   }
+}
+
+.out {
+  background: #ffd52d;
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+  font-size: 15px;
+  font-weight: bold;
+  border: 0px;
+  cursor: pointer;
+}
+.out:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  background: #fff;
+  color: #000;
+}
+
+.content-bottom{
+  margin: auto;
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: space-around;
+}
+.hide{
+  width: 80px;
 }
 
 </style>
