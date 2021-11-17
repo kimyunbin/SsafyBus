@@ -32,7 +32,7 @@ export default {
        getUnityItem(){
          this.interval = setInterval(()=>{
           if(this.$refs.instance !== undefined){
-             this.$refs.instance.message('LobbyManager','UserName',this.user_info().nickname)
+            //  this.$refs.instance.message('Canvas','UserName',this.user_info().nickname)
           }
           let item
           if(document.getElementById('unity-object').innerHTML !== undefined){

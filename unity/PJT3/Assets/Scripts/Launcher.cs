@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon;
+// using Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
 
-public class Launcher : Photon.PunBehaviour {
-
+public class Launcher :  MonoBehaviourPunCallbacks {
+    private readonly string gameVersion = "1.0";
     public Text StatusText;
     public GameObject EmptyRoom;
     public GameObject Room;
@@ -24,12 +26,21 @@ public class Launcher : Photon.PunBehaviour {
     void Start()
     {
         Debug.Log("마스터 서버 연결 완료");
-        PhotonNetwork.ConnectUsingSettings("0.1"); // 내가 설정한 포톤서버 마스터 서버 연결
+        // PhotonNetwork.ConnectUsingSettings("1.0"); // 내가 설정한 포톤서버 마스터 서버 연결
+        PhotonNetwork.GameVersion = gameVersion;
+        // 설정 정보를 가지고 마스터 서버에 접속 시도
+        PhotonNetwork.ConnectUsingSettings();
+        // PhotonNetwork.ConnectUsingSettings("1.0"); // 내가 설정한 포톤서버 마스터 서버 연결
+        // PhotonNetwork.ConnectToMaster("http://localhost:8080/", int port, string appID, string gameVersion)
+        // PhotonNetwork.ConnectToMaster("http://localhost", 8080, "ffab2165-f864-4fc0-9e9a-9ef945691bc7", "1");
+
+        // Debug.Log(PhotonNetwork.ConnectUsingSettings("1.0"));
+        Debug.Log("----------------------------------------");
     }
 
 
     void Update() {
-        StatusText.text = PhotonNetwork.networkingPeer.State.ToString();
+        StatusText.text =  PhotonNetwork.NetworkClientState.ToString();
         
     }
 
@@ -41,14 +52,55 @@ public class Launcher : Photon.PunBehaviour {
     //     LobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
     // }
 
+    // public void OnConnectedToPhoton()
+    // {
+    //     Debug.Log("ㅎㅇㅎㅇㅎㅇㅎㅇ");
+    // }
+    // public void OnDisconnectedFromPhoton()
+    // {
+    //     Debug.Log("OnDisconnectedFromPhoton");   
+    // }
+    // public override void OnConnectionFail(DisconnectCause cause)
+    // {
+    //     Debug.Log("OnConnectionFail");
+    // }
+    //     public void OnFailedToConnectToPhoton()
+    // {
+    //     Debug.Log("OnFailedToConnectToPhoton");
+    // }
+    //     // 수동으로 메인에 있으면 조인룸 및 예외처리
+    // public void Connect()
+    // {
+    //     Debug.Log("6666666");
+
+    //     // if (PhotonNetwork.IsConnected)
+    //     // {
+    //     //     Debug.Log("0000000000000");
+    //     // }
+    //     // else
+    //     // {
+    //     //     Debug.Log("6666666");
+    //     // }
+    // }
+
+
+
     // 마스터 서버에 접속 성공했을 때 
     public override void OnConnectedToMaster()
     {
         Debug.Log("마스터 서버로 접속 완료");
-        PhotonNetwork.playerName = "닉네임 임의로 설정";
+        PhotonNetwork.LocalPlayer.NickName = "닉네임 임의로 설정";
         PhotonNetwork.JoinLobby();
-        PhotonNetwork.automaticallySyncScene = true;
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
+
+    // public override void OnDisconnected()
+    // {
+    //     connectionBtn.interactable = false;
+    //     connectionInfoText.text = $"Offline: No connection with the master server\n {cause.ToString()}";
+
+    //     PhotonNetwork.ConnectUsingSettings("1.0");
+    // }
 
     //ㅏ로비까지 들어옴
     public override void OnJoinedLobby()
@@ -61,7 +113,7 @@ public class Launcher : Photon.PunBehaviour {
     public void SetPanel(){
  
         // 방이 없으면 방만들기 패널 활성화
-        if (PhotonNetwork.GetRoomList().Length == 0){
+        if ( PhotonNetwork.CountOfRooms == 0){
             EmptyRoom.SetActive(true); //방만들기 패널
         }
 
@@ -78,19 +130,27 @@ public class Launcher : Photon.PunBehaviour {
 
         }
     }
+    
 
     // 방만들기 ------------------------------------------
     public void CreateRoom(){
-        PhotonNetwork.CreateRoom("광주", new RoomOptions { MaxPlayers = 15 } , null);
+
+        // string maxPlayer = "15";
+
+        string RoomName = "광주";
+        // UnityroomHook(RoomName);
+        PhotonNetwork.CreateRoom(RoomName, new RoomOptions { MaxPlayers = 15});
+      
+ 
     }
     
     public override void OnCreatedRoom() {
 
         Debug.Log("방 만들기 완료");
-        Debug.Log(PhotonNetwork.room);
-        Debug.Log(PhotonNetwork.GetRoomList().Length);
+        Debug.Log(PhotonNetwork.CurrentRoom);
+        // Debug.Log(PhotonNetwork.GetRoomList().Length);
         
-        RoomInfoText.text = PhotonNetwork.room.name.ToString();
+        RoomInfoText.text = PhotonNetwork.CurrentRoom.Name.ToString();
         Debug.Log(RoomInfoText.text);
 
         // 여기서 바로 씬 변경 이뤄지면 될듯?
@@ -102,17 +162,15 @@ public class Launcher : Photon.PunBehaviour {
 
     // 입장버튼 누르면 광주로 입장
     public void ChangeScene(){
-        PhotonNetwork.JoinRoom("광주");
-
-       
+        PhotonNetwork.JoinRoom("광주");       
     }
 
     public override void OnJoinedRoom() {
         
         Debug.Log(playerLength.text);
-        Debug.Log(PhotonNetwork.room.name );
-        Debug.Log(PhotonNetwork.room.PlayerCount);
-        Debug.Log(PhotonNetwork.room.MaxPlayers);
+        Debug.Log(PhotonNetwork.CurrentRoom.Name );
+        Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
+        Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
         // Debug.Log();
         Debug.Log("방 참가 완료");
 
@@ -124,14 +182,14 @@ public class Launcher : Photon.PunBehaviour {
 
 
 
-    // public void UserName(string initName)
-    // {
-    //     if (initName!=null)
-    //     {
-    //         PhotonNetwork.LocalPlayer.NickName = initName;
-    //         connectionBtn.interactable = true;
-    //     }
-    // }
+    public void UserName(string initName)
+    {
+        if (initName!=null)
+        {
+            PhotonNetwork.NickName = initName;
+            // connectionBtn.interactable = true;
+        }
+    }
 
 
 
@@ -144,7 +202,7 @@ public class Launcher : Photon.PunBehaviour {
     public void JoinOrCreateRoom(){
         // PhotonNetwork.JoinOrCreateRoom("광주", new RoomOptions { MaxPlayers = 15 }, null);
         // SceneManager.LoadScene("SampleScene");
-        Debug.Log(PhotonNetwork.room);
+        Debug.Log(PhotonNetwork.CurrentRoom);
         // RoomInfoText.text = PhotonNetwork.room.ToString();
     }
 
@@ -194,12 +252,12 @@ public class Launcher : Photon.PunBehaviour {
     // // 연결 끊기
     // public void Disconnect() => PhotonNetwork.Disconnect();
 
-    // public override void OnDisconnected(DisconnectCause cause)
+    // public void OnDisconnected(DisconnectCause cause)
     // {
     //     Debug.Log("연결끊김");
     // }
 
-}
+
 
 
 
@@ -244,3 +302,4 @@ public class Launcher : Photon.PunBehaviour {
 // }
 
 
+}

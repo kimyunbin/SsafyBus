@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon;
+using Photon.Pun;
 
-public class LoadCharacter :  Photon.PunBehaviour
+public class LoadCharacter :  MonoBehaviourPunCallbacks
 {
 
     // Start is called before the first frame update

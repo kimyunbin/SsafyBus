@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using Photon;
-public class Player : Photon.PunBehaviour
+using Photon.Pun;
+public class Player : MonoBehaviourPunCallbacks
 {
     public float speed = 1f;
     float hAxis;
@@ -23,13 +24,13 @@ public class Player : Photon.PunBehaviour
     void Start()
     {
         tr = GetComponent<Transform>();
-        if(photonView.isMine){
+        if(photonView.IsMine){
         // Camera.main.GetComponent<SmoothFollow>().target = tr.Find("CamPivot").transform;
         }
     }
     void Update()
     {
-        if(!photonView.isMine){
+        if(!photonView.IsMine){
             return;
         }
         string stageName = SceneManager.GetActiveScene().name;

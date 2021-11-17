@@ -1,58 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon;
+using Photon.Pun;
 using UnityEngine.UI;
 
-public class Chatting : Photon.PunBehaviour
+public class Chatting : MonoBehaviourPunCallbacks
 {
-
     public Text[] ChatText;
     public InputField ChatInput;
-
-    // public static readonly string ChatRPC = "Chat";
-
     public PhotonView PV;
     // Start is called before the first frame update
     void Start()
     {
         ChatInput.text = "";
         for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
-        
     }
 
-
-
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            Send();
+        }
+        
+    }
 
     // Update is called once per frame
     public void Send()
     {
-
-        // PhotonView pv = this.gameObject.GetPhotonView();
         if (PV == null)
         {
             Debug.LogError("Can't do manual instantiation without PhotonView component.");
             return;
         }
         else {
-            PV.RPC("ChatRPC", PhotonTargets.All, PhotonNetwork.playerName + " : " + ChatInput.text);
-            ChatInput.text = "";
+            if (ChatInput.text == "") {
+                return;
+            }
+            else {
+                PV.RPC("ChatRPC", RpcTarget.All, PhotonNetwork.NickName + " : " + ChatInput.text);
+                ChatInput.text = "";
+            }
+            
         }
-
-
-
-
-
-
-        // PhotonView pv = this.gameObject.GetPhotonView();
-        // if (pv == null)
-        // {
-        //     Debug.LogError("Can't do manual instantiation without PhotonView component.");
-        //     return;
-        // }
-
-        // int viewID = PhotonNetwork.AllocateViewID();
-        // pv.RPC("InstantiateRpc", PhotonTargets.AllBuffered, viewID);
     }
 
     [PunRPC] // RPC는 플레이어가 속해있는 방 모든 인원에게 전달한다

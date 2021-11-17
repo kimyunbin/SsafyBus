@@ -121,7 +121,7 @@ export default {
       this.login(this.login_info)
       .then(()=>{
         alert('로그인 되었습니다')
-        this.$router.push({name:"Unity"})
+        this.$router.push({name:"UnityGame"})
       })
       
     },
