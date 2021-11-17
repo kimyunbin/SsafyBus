@@ -35,7 +35,7 @@
         <h3>방명록이 없습니다</h3>
       </div>
       <br>
-      <div class="out">나가기</div>
+      <div class="out" @click="unitygo()">나가기</div>
 
     </div>
   </div>
@@ -139,6 +139,9 @@ export default {
     },
     refresh(){
       this.$router.go()
+    },
+    unitygo() {
+      this.$router.push({name:"UnityGame"}) 
     }
 
     
