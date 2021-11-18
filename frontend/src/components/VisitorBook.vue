@@ -34,7 +34,11 @@
         <h3>방명록이 없습니다</h3>
       </div>
       <br>
+<<<<<<< HEAD
       <div class="out">나가기</div>
+=======
+      <div class="out" @click="unitygo()">나가기</div>
+>>>>>>> fb286248bfb378746582c98e768094818c45c88c
 
     </div>
   </div>
@@ -136,12 +140,20 @@ export default {
       }) 
 
     },
+<<<<<<< HEAD
     postVisit(value){
       console.log(value, '-----')
       this.visitor.guestbook.push({
         user:{'nickname':value.nickname},
         'content':value.content
       })
+=======
+    refresh(){
+      this.$router.go()
+    },
+    unitygo() {
+      this.$router.push({name:"UnityGame"}) 
+>>>>>>> fb286248bfb378746582c98e768094818c45c88c
     }
 
     
