@@ -96,7 +96,9 @@ export default {
       console.log(value)
       this.writeQBoardAS(value)
       .then(()=>{
-        this.$router.go()
+        this.QBoardDetail.answer=this.answer
+        this.answer=''
+        this.is_active = false
       })
     }, 
   },

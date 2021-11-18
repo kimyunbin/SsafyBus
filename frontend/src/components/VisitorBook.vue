@@ -12,11 +12,10 @@
     <hr>
     <div v-if="visitor.guestbook"  class ="write">
       <div v-if="this.date == dateFormat(new Date())">
-        <WriteModal :list="visitor.guestbook"/>
+        <WriteModal :list="visitor.guestbook" @postVisit="postVisit"/>
       </div>
       <div v-else>
         <h1>오늘로 돌아가서 방명록을 남겨주세요!✍</h1>
-        <button @click="refresh()">오늘로 돌아가기</button>
       </div>
       
     </div>
@@ -35,7 +34,7 @@
         <h3>방명록이 없습니다</h3>
       </div>
       <br>
-      <div class="out" @click="unitygo()">나가기</div>
+      <div @click="goUnity" class="out">나가기</div>
 
     </div>
   </div>
@@ -137,11 +136,15 @@ export default {
       }) 
 
     },
-    refresh(){
-      this.$router.go()
+    postVisit(value){
+      console.log(value, '-----')
+      this.visitor.guestbook.push({
+        user:{'nickname':value.nickname},
+        'content':value.content
+      })
     },
-    unitygo() {
-      this.$router.push({name:"UnityGame"}) 
+    goUnity(){
+      this.$router.push({name:'UnityGame'})
     }
 
     

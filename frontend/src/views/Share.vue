@@ -6,6 +6,10 @@
     <div class="head">
     </div>
       <br>
+
+
+    <table class="list-box">
+      <thead class="th-list">
         <tr>
           <th class="th-no">no</th>
           <th class="th-title">제목</th>
@@ -13,6 +17,7 @@
           <th class="th-id">작성자</th>
           <th class="th-date">날짜</th>
         </tr>
+      </thead>
       <tbody>
         <tr v-for="(row, idx) in share_list" :key="idx">
           <td>{{idx+1}}</td>
@@ -26,6 +31,7 @@
           <td>{{row.createdAt}}</td>
         </tr>
       </tbody>
+    </table>
     <br>
 
     <button class="btn" @click="writeClick()">공유하기</button>
@@ -140,7 +146,7 @@ export default {
 
     },
     goUnity(){
-      this.$router.push('UnityGame')
+      this.$router.push({name:'UnityGame'})
     }
   
   },
@@ -174,9 +180,6 @@ body, html{
   width: 80%;  
   max-width: 1000px;
   margin: auto;
-}
-.th-list {
-  // background-color:
 }
 .th-no {
   width: 10%;

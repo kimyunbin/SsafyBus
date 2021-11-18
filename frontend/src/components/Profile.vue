@@ -85,7 +85,7 @@ export default {
       })
     },
     goUnity(){
-      this.$router.push('UnityGame')
+      this.$router.push({name:'UnityGame'})
     }
     
 
@@ -156,6 +156,8 @@ body, html{
 
 }
 .box:hover .search-icon{
+    opacity: 0;
+    z-index: -1;
 }
 .exit-icon {
   margin-left: 50px;
@@ -171,6 +173,18 @@ body, html{
   justify-content: center;
   /* align-items: center; */
   flex-wrap: wrap;
+  /* width: 220px; */
+  max-width: 1200px;
+  margin: auto;
+  /* border: 1px solid black; */
+}
+.content-box {
+  margin-top: 20px ;
+  max-width: 1200px;
+  margin: auto;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* flex-wrap: wrap; */
   /* border: 1px solid black; */
 }
 .out {
