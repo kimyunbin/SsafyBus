@@ -34,7 +34,7 @@
         <h3>방명록이 없습니다</h3>
       </div>
       <br>
-      <div class="out">나가기</div>
+      <div @click="goUnity" class="out">나가기</div>
 
     </div>
   </div>
@@ -142,6 +142,9 @@ export default {
         user:{'nickname':value.nickname},
         'content':value.content
       })
+    },
+    goUnity(){
+      this.$router.push({name:'UnityGame'})
     }
 
     
