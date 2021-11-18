@@ -33,19 +33,19 @@
 
 > 스터디룸을 예약하고 우리만의 방을 생성하여 화상회의,화면공유, 채팅을 지원합니다.
 
-
+![study](README.assets/study.gif)
 
 ### 공유게시판
 
 > 원하는 사람에게 자료를 공유할수 있는 공유게시판입니다.
 
-
+![share](README.assets/share.gif)
 
 ### 출석체크
 
 > 출석인증을 위한 출석체크, 방명록을 남길 수 있습니다.
 
-
+![guestbook](README.assets/guestbook.gif)
 
 ### 무물 
 
