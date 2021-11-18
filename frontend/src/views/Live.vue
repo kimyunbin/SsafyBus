@@ -13,15 +13,21 @@ export default {
   },
   data() {
     return {
-      location : "computer",
+      // location : "computer",
     }
   },
+  props: {
+    location: {
+      type: String,
+    }
+  },
+
   created(){
     if(this.$store.getters.getUser === null){
       this.$router.push('/login');
     } else if(this.$store.getters.getSchoolId === null) {
       this.$router.push({
-        name: 'Unity',
+        name: 'UnityGame',
       })
     }
   }

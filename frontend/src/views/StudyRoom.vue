@@ -14,6 +14,10 @@
           <button @click="openModal($event)" :id="room.reservation | timeCom">{{room.reservation | timeCom}}</button>
           </div>
         </div>
+        <div v-if="emptyRoom" class="empty-room">
+          아직 예약이 없습니다 😋<br>
+          예약페이지로 가서 예약해주세요 🙏
+        </div>
       </div>
       <button class="goBack" @click="goBack">나가기</button>
     <div v-if="isOpen" @click="isOpen = false" id="modal" class="modal-overlay">
@@ -37,6 +41,7 @@ export default {
       today: '',
       studyRoom: [],
       isOpen : false,
+      emptyRoom: false,
     }
   },
   props: {
@@ -56,6 +61,9 @@ export default {
       const response = await instance.get(`/studyroom/${this.roomId}?date=${this.today}`)
       this.studyRoom= response.data.room[`${this.roomId}`]
       console.log(this.studyRoom)
+      if(this.studyRoom.length == 0){
+        this.emptyRoom = true
+      }
     },
     customDate(date) {
       let year = date.getFullYear()
@@ -70,10 +78,11 @@ export default {
       }
     },
     goStudyroom(){
-      console.log('스터디룸 들어가기')
+      var room = 'study' + toString(this.roomId)
+      this.$router.push({name: 'Live', params: {location: room}})
     },
     goBack(){
-      this.$router.go(-1);
+      this.$router.push({name: "UnityGame"});
     }
   },
   filters: {
@@ -106,7 +115,10 @@ input, button {
   background: none;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
-
+.empty-room{
+  margin-top: 15vh;
+  font-size: 17px;
+}
 ::-webkit-scrollbar{
     height: 5px;
     width: 3px;
@@ -201,10 +213,14 @@ input, button {
   display: flex;
   justify-content: center;
   align-items: center;
+    background-image: url("../assets/studyroom.png");
+  background-size: cover;
+  background-position: center;
   .studyroom-box{
+    background-color: white;
     width: 410px;
     height: 530px;
-    border: 2px solid #17B0E7;
+    border: 3px solid #17B0E7;
     // background-color: #17B0E7;
     border-radius: 20px;
     padding: 15px 30px 10px 30px;

@@ -53,9 +53,10 @@ const routes = [{
         component: Help,
     },
     {
-        path: "/live",
+        path: "/live/:location",
         name: "Live",
         component: Live,
+        props: true,
     },
     {
         path: "/helpwrite/:help_pk?",
