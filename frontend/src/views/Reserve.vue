@@ -378,6 +378,10 @@ input, button {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url("../assets/kiosk.png");
+  // background-color: #du;
+  background-size: cover;
+  background-position: center;
   .reserve-box{
     display: flex;
     justify-content: space-evenly;

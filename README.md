@@ -143,6 +143,7 @@ $ docker run -p 4443:4443 --rm -e OPENVIDU_SECRET=MY_SECRET openvidu/openvidu-se
     <ul>
       	<li>Vue.js @2.6.11</li>
       	<li>Unity</li>
+      	<li>Photon</li>
       	<li>Openvidu</li>
       	<li>WebGL</li>
         <li>JS, HTML, CSS</li>

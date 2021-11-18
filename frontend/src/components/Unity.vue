@@ -3,12 +3,12 @@
   <unity
     src = "./unity/PJT3/unity.json"
     unityLoader = "./unity/PJT3/UnityLoader.js"
-    height = "90%"
+    height = "80%"
     width = "90%"
     ref= "instance"
     >
   </unity>
-  <div id="unity-object"></div>
+  <div id="unity-object" hidden></div>
   <!-- <input type="text"> -->
 </div>
 </template>
@@ -32,7 +32,7 @@ export default {
        ...mapGetters(userStore, ['user_info']),
        getUnityItem(){
            if(this.$refs.instance !== undefined){
-              this.$refs.instance.message('Canvas','UserName',this.user_info().nickname)
+              // this.$refs.instance.message('Canvas','UserName',this.user_info().nickname)
            }
          this.interval = setInterval(()=>{
            let item
