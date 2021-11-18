@@ -3,12 +3,13 @@
   <unity
     src = "./unity/PJT3/unity.json"
     unityLoader = "./unity/PJT3/UnityLoader.js"
-    height = "600"
-    width = "1000"
+    height = "90%"
+    width = "90%"
     ref= "instance"
     >
   </unity>
   <div id="unity-object"></div>
+  <!-- <input type="text"> -->
 </div>
 </template>
 
@@ -30,15 +31,15 @@ export default {
     methods: {
        ...mapGetters(userStore, ['user_info']),
        getUnityItem(){
+           if(this.$refs.instance !== undefined){
+              this.$refs.instance.message('Canvas','UserName',this.user_info().nickname)
+           }
          this.interval = setInterval(()=>{
-          if(this.$refs.instance !== undefined){
-            //  this.$refs.instance.message('Canvas','UserName',this.user_info().nickname)
-          }
-          let item
+           let item
           if(document.getElementById('unity-object').innerHTML !== undefined){
             item = document.getElementById('unity-object').innerHTML
           }
-          if(item != undefined){
+          if(item){
             switch(item){
               case 'GuestBook':
                 this.$router.push({name: 'Gate'})
@@ -50,6 +51,7 @@ export default {
                 this.$router.push({name: 'Share'})
                 break
               case 'kiosk':
+                console.log("찍힘")
                 this.$router.push({name: 'Reserve'})
                 break
               case 'Locker':
@@ -65,9 +67,11 @@ export default {
                 this.$router.push({name: 'StudyRoom', params: {roomId: 3}})
                 break
               default:
+                this.$router.push({name: 'Live', params: {location: item}})
                 break
             }
             document.getElementById('unity-object').innerHTML = ''
+            // clearInterval(this.interval)
           }
         },1000)
        },
@@ -75,17 +79,18 @@ export default {
 
       },
       quitUnity(){
-        clearInterval(this.interval);
+        clearInterval(this.interval)
       },
     },
     created(){
-      this.getUnityItem()
+      if(this.$route.name === 'UnityGame'){
+        this.getUnityItem()
+      }
+      else{
+        clearInterval(this.interval);
+      }
     },
     watch: {
-      object: function(object){
-        console.log(object)
-        this.object = ''
-      }
     },
     computed: {
       showGame: function() {
@@ -102,6 +107,6 @@ export default {
 
 <style scoped>
 .hidden{
-  visibility: hidden;
+  display: none;
 }
 </style>
