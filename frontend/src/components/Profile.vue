@@ -85,7 +85,7 @@ export default {
       })
     },
     goUnity(){
-      this.$router.push('UnityGame')
+      this.$router.push({name:'UnityGame'})
     }
     
 

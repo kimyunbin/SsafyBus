@@ -12,11 +12,10 @@
     <hr>
     <div v-if="visitor.guestbook"  class ="write">
       <div v-if="this.date == dateFormat(new Date())">
-        <WriteModal :list="visitor.guestbook"/>
+        <WriteModal :list="visitor.guestbook" @postVisit="postVisit"/>
       </div>
       <div v-else>
         <h1>오늘로 돌아가서 방명록을 남겨주세요!✍</h1>
-        <button @click="refresh()">오늘로 돌아가기</button>
       </div>
       
     </div>
@@ -137,8 +136,12 @@ export default {
       }) 
 
     },
-    refresh(){
-      this.$router.go()
+    postVisit(value){
+      console.log(value, '-----')
+      this.visitor.guestbook.push({
+        user:{'nickname':value.nickname},
+        'content':value.content
+      })
     }
 
     

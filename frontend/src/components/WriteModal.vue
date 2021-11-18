@@ -68,10 +68,11 @@ export default {
       }
       console.log(arr,'arr')
       console.log(this.user_info.userId,'nick')
-      if (arr.includes(this.user_info.userId) ) {
-        alert('이미 출석체크 했습니다!')
-      }
-      else {
+      // if (arr.includes(this.user_info.userId) ) {
+      //   alert('이미 출석체크 했습니다!')
+      // }
+      // else 
+      {
         var value = {
           'content' : this.content
         }
@@ -80,7 +81,11 @@ export default {
           alert('출석체크가 완료 되었습니다.')
         })
         .then(()=>{
-          this.$router.go()
+          this.$emit("postVisit",{
+            content:this.content,
+            nickname:this.user_info.userId
+          })
+          this.is_active = false
         })
       }
     }

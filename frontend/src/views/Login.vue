@@ -110,7 +110,6 @@ export default {
           alert('회원가입이 완료되었습니다')
         })
         // this.$router.push({name:"Login"})
-        this.$router.go()
 
       }
       else if (this.signup_info.password != this.signup_info.password_confirmation) {
@@ -121,7 +120,7 @@ export default {
       this.login(this.login_info)
       .then(()=>{
         // alert('로그인 되었습니다')
-        this.$router.push('UnityGame')
+        this.$router.push({name:'UnityGame'})
       })
       .catch(()=>{
         alert('아이디 혹은 비밀번호가 틀렸습니다')

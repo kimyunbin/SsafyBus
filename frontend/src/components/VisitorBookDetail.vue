@@ -8,7 +8,9 @@
       <p class="content">: {{visitorDetail.content}}</p>
     </div>
 
-    <p class="date">{{visitorDetail.createdAt | timeFor}}</p>
+    
+    <p v-if="visitorDetail.createdAt" class="date">{{visitorDetail.createdAt | timeFor}}</p>
+    <p v-else class="date">방금전</p>
     
   </div>
 </template>

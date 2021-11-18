@@ -118,12 +118,17 @@ export default {
       this.writeQBoard(value)
       .then(()=>{
         alert('답변이 언젠가 올꺼에요!')
-        this.$router.go()
+        this.qboard.push({
+          answer:null,
+          content:this.content
+        })
+        this.content=''
+        this.is_active = false
       })
     },
     goBack(){
       this.$router.go(-1);
-    }
+    },
   },
   mounted() {
     this.qboard = this.qboard_info.question

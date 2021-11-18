@@ -119,7 +119,7 @@ const boardStore = 'boardStore'
       this.deleteHelpItem(help_pk)
       .then(()=>{
         alert('삭제되었습니다')
-        this.$router.go()
+        this.$router.go(-1)
       })
 
     },
@@ -141,7 +141,7 @@ const boardStore = 'boardStore'
       console.log(value)
       this.writeComment(value)
       .then(()=>{
-        this.$router.go()
+        this.$router.go(-1)
       })
     },
     helpList(value) {
@@ -158,7 +158,7 @@ const boardStore = 'boardStore'
         })
     },
     goUnity(){
-      this.$router.push('UnityGame')
+      this.$router.push({name:'UnityGame'})
     }
   },
   mounted() {
