@@ -1,4 +1,4 @@
- <p align="center"><img src="README.assets/ssafy_bus.png" width="400" height="200" /></p>
+ <p align="center"><img src="README.assets/ssafy_bus.png" width="400" height="400" /></p>
 
 
 
@@ -53,13 +53,13 @@
 >
 > 익명인점을 이용하여 비대면 수업에서 조금 더 친해지기 위한 익명게시판입니다.
 
-
+![locker](README.assets/locker.gif)
 
 ### 헬프게시판
 
 > Markdown 기반의 헬프게시판을 통한 문제 해결 커뮤니티입니다.
 
-
+![help](README.assets/help.gif)
 
 
 
@@ -76,7 +76,7 @@
 - [발표자료](https://drive.google.com/file/d/1utqRM5L9R8FpSjrZKSj8o-H1APt00476/view?usp=sharing)
 
 
-- [UCC]()
+- [UCC](https://www.youtube.com/watch?v=kF9CiiEl2aw)
 
 
 ## 😋 Installation
