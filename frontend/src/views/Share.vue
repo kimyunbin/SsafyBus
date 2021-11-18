@@ -146,7 +146,7 @@ export default {
 
     },
     goUnity(){
-      this.$router.push('UnityGame')
+      this.$router.push({name:'UnityGame'})
     }
   
   },
@@ -180,9 +180,6 @@ body, html{
   width: 80%;  
   max-width: 1000px;
   margin: auto;
-}
-.th-list {
-  // background-color:
 }
 .th-no {
   width: 10%;

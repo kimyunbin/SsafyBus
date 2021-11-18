@@ -12,7 +12,7 @@
     <hr>
     <div v-if="visitor.guestbook"  class ="write">
       <div v-if="this.date == dateFormat(new Date())">
-        <WriteModal :list="visitor.guestbook"/>
+        <WriteModal :list="visitor.guestbook" @postVisit="postVisit"/>
       </div>
       <div v-else>
         <h1>오늘로 돌아가서 방명록을 남겨주세요!✍</h1>
@@ -34,7 +34,7 @@
         <h3>방명록이 없습니다</h3>
       </div>
       <br>
-      <div class="out">나가기</div>
+      <div @click="goUnity" class="out">나가기</div>
 
     </div>
   </div>
@@ -136,6 +136,16 @@ export default {
       }) 
 
     },
+    postVisit(value){
+      console.log(value, '-----')
+      this.visitor.guestbook.push({
+        user:{'nickname':value.nickname},
+        'content':value.content
+      })
+    },
+    goUnity(){
+      this.$router.push({name:'UnityGame'})
+    }
 
     
   },
@@ -146,7 +156,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
+$button-bg: #19191980;
+$speed: 0.6s;
+$delay: ($speed * .5);
+$easing: cubic-bezier(.55,0,.1,1);
+
 h1 {
   font-size: 1.875rem;
   font-weight: 300;
@@ -243,5 +259,28 @@ h1 {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
   background: #fff;
   color: #000;
+}
+
+button {
+  background-color: $button-bg;
+  border-radius: 10px;
+  position: relative;
+  color: #fff;
+  border: none;
+  padding: 1.25em 2em;
+  font-size: 0.75em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,.1);
+  transition: background 0.25s $easing;
+  
+  &:hover {
+    background: darken($button-bg, 3%);
+  }
+  
+  &:focus {
+    outline: none;
+  }
 }
 </style>
