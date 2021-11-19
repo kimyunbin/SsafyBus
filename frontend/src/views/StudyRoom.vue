@@ -42,6 +42,7 @@ export default {
       studyRoom: [],
       isOpen : false,
       emptyRoom: false,
+      roomName: '',
     }
   },
   props: {
@@ -78,8 +79,16 @@ export default {
       }
     },
     goStudyroom(){
-      console.log(this.roomId)
-      this.$router.push({name: 'Live', params: {location: this.roomId}})
+      if(this.roomId == 1){
+        this.roomName = "study1"
+      }
+      else if(this.roomId == 2){
+        this.roomName = "study2"
+      }
+      else if(this.roomId == 3){
+        this.roomName = "study3"
+      }
+      this.$router.push({name: 'Live', params: {location: this.roomName}})
     },
     goBack(){
       this.$router.push({name: "UnityGame"});
