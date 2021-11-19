@@ -1,7 +1,7 @@
 <template>
   <div id="webcam-container">
     <div id="webcam-title">
-      {{location}}
+      <!-- {{location}} -->
     </div>
     <div id="webcam-main" v-if="sunsu">
       <div id="video-container" :class="{'screen-share' : data.share.active}">
