@@ -78,8 +78,8 @@ export default {
       }
     },
     goStudyroom(){
-      var room = 'study' + toString(this.roomId)
-      this.$router.push({name: 'Live', params: {location: room}})
+      console.log(this.roomId)
+      this.$router.push({name: 'Live', params: {location: this.roomId}})
     },
     goBack(){
       this.$router.push({name: "UnityGame"});
