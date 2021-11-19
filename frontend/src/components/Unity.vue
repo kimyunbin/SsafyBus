@@ -83,6 +83,8 @@ export default {
       },
     },
     created(){
+      // console.log('c')
+
       if(this.$route.name === 'UnityGame'){
         this.getUnityItem()
       }
@@ -95,9 +97,15 @@ export default {
     computed: {
       showGame: function() {
         if(this.$route.name === 'UnityGame'){
+          if(this.$refs.instance !== undefined){
+              this.$refs.instance.message('Game Manager','focusing',"true");
+          }  
           return false
         }
         else{
+          if(this.$refs.instance !== undefined) {
+            this.$refs.instance.message('Game Manager','focusing',"false");
+          }
           return true
         }
       }

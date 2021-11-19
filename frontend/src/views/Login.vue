@@ -73,6 +73,7 @@
         </div>
       </div>
     </div>
+    <div id="unity-object" hidden></div>
   </div>
 </template>
 
